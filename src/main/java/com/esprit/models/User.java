@@ -1,4 +1,4 @@
 package com.esprit.models;
 
-public class Templates {
+public class User {
 }
