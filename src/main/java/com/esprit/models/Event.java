@@ -15,11 +15,12 @@ import java.util.List;
 @Setter
 
 public class Event {
+    private Integer id;
     private String name;
     private String description;
     private LocalDateTime dateTime;
-    private List<String> participants;
+    private List<User> participants;
     private String address;
-    private String organizer;
+    private User organizer;
 
 }
