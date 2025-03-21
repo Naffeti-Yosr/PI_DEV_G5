@@ -1,23 +1,23 @@
 package com.esprit.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Commande {
     private int id;
     private int utilisateurId;
     private float total;
+    private List<CommandeProduit> commandeProduits; // Many-to-many relationship with Produit
 
     public Commande() {
+        commandeProduits = new ArrayList<>();
     }
 
     public Commande(int id, int utilisateurId, float total) {
         this.id = id;
         this.utilisateurId = utilisateurId;
         this.total = total;
-    }
-
-    public Commande(int id, float total, int utilisateurId) {
-        this.id = id;
-        this.total = total;
-        this.utilisateurId = utilisateurId;
+        commandeProduits = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -43,6 +43,14 @@ public class Commande {
 
     public void setTotal(float total) {
         this.total = total;
+    }
+
+    public List<CommandeProduit> getCommandeProduits() {
+        return commandeProduits;
+    }
+
+    public void setCommandeProduits(List<CommandeProduit> commandeProduits) {
+        this.commandeProduits = commandeProduits;
     }
 
     @Override

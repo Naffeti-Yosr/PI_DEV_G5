@@ -4,15 +4,19 @@ public class Produit {
     private int id;
     private String nom;
     private String description;
-    private int categorieId;
+    private String picture; // Path or URL to the product image
+    private float price;    // Price of the product
+    private int categorieId; // Foreign key to Categorie
 
     public Produit() {
     }
 
-    public Produit(int id, String nom, String description, int categorieId) {
+    public Produit(int id, String nom, String description, String picture, float price, int categorieId) {
         this.id = id;
         this.nom = nom;
         this.description = description;
+        this.picture = picture;
+        this.price = price;
         this.categorieId = categorieId;
     }
 
@@ -41,6 +45,22 @@ public class Produit {
         this.description = description;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public int getCategorieId() {
         return categorieId;
     }
@@ -55,6 +75,8 @@ public class Produit {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", description='" + description + '\'' +
+                ", picture='" + picture + '\'' +
+                ", price=" + price +
                 ", categorieId=" + categorieId +
                 '}';
     }
