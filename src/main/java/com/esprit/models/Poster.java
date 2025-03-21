@@ -11,13 +11,13 @@ import java.util.List;
 @Getter
 @Setter
 
-public class Event {
-    private Integer id;
-    private String name;
+public class Poster {
+    private int id;
+    private String title;
     private String description;
-    private LocalDateTime dateTime;
-    private List<User> participants;
-    private String address;
-    private User organizer;
+    private String imageUrl;
+    private LocalDateTime createdAt;
+    private Event event;
+    private User createdBy;
 
 }

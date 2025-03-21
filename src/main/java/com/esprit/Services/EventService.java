@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventService implements IService<Event> {
+public abstract class EventService implements IService<Event> {
     private final Connection connection;
 
     public EventService() {
@@ -51,7 +51,6 @@ public class EventService implements IService<Event> {
             System.out.println("add() error: " + e.getMessage());
         }
 
-        // Insert into join table only if participants exist.
         if (event.getParticipants() != null && !event.getParticipants().isEmpty()) {
             String insertJoinSql = "INSERT INTO event_participants(event_id, user_id) VALUES (?, ?)";
             try (PreparedStatement psJoin = connection.prepareStatement(insertJoinSql)) {
@@ -71,7 +70,6 @@ public class EventService implements IService<Event> {
         System.out.println("Event added!");
     }
 
-    // Helper method to check if a user exists in the 'users' table.
     private boolean userExists(int userId) {
         String sql = "SELECT id FROM users WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -87,7 +85,6 @@ public class EventService implements IService<Event> {
 
     @Override
     public void update(Event event) {
-        // Check if organizer exists
         int organizerId = event.getOrganizer().getId();
         if (!userExists(organizerId)) {
             System.out.println("Organizer with id " + organizerId + " does not exist. Event not updated.");
@@ -119,7 +116,6 @@ public class EventService implements IService<Event> {
             System.out.println("Error deleting event participants: " + ex.getMessage());
         }
 
-        // Then, delete the event record
         String sql = "DELETE FROM events WHERE id=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, event.getId());
@@ -145,7 +141,6 @@ public class EventService implements IService<Event> {
                     event.setDateTime(ts.toLocalDateTime());
                 }
                 event.setAddress(rs.getString("address"));
-                // Retrieve the organizer id and create a User object.
                 int organizerId = rs.getInt("organizer");
                 User organizer = new User();
                 organizer.setId(organizerId);
@@ -168,7 +163,6 @@ public class EventService implements IService<Event> {
                 while (rs.next()) {
                     User user = new User();
                     user.setId(rs.getInt("id"));
-                    // Set additional user fields as needed.
                     participants.add(user);
                 }
             }
@@ -178,7 +172,6 @@ public class EventService implements IService<Event> {
         return participants;
     }
 
-    // Method to let a user join an existing event.
     public void addParticipant(int eventId, User user) {
         String sql = "INSERT INTO event_participants(event_id, user_id) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
