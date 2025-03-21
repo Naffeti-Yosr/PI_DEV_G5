@@ -1,35 +1,81 @@
 package com.esprit.models;
 
 import java.util.Date;
+import java.util.List;
 
 public class Blog {
     private int id;
     private String titre;
-    private String contenu;
-    private int auteurId;
-    private Date datePublication;
+    private String description;
+    private String imageUrl;
+    private Date date;
+    private User auteur;
+    private List<Commentaire> commentaires; // List of comments for this blog
 
-    public Blog(int id, String titre, String contenu, int auteurId, Date datePublication) {
+
+    public Blog(int id, String titre, String description, String imageUrl, Date date, User auteur) {
         this.id = id;
         this.titre = titre;
-        this.contenu = contenu;
-        this.auteurId = auteurId;
-        this.datePublication = datePublication;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.date = date;
+        this.auteur = auteur;
     }
 
-    // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
 
-    public String getTitre() { return titre; }
-    public void setTitre(String titre) { this.titre = titre; }
+    public int getId() {
+        return id;
+    }
 
-    public String getContenu() { return contenu; }
-    public void setContenu(String contenu) { this.contenu = contenu; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public int getAuteurId() { return auteurId; }
-    public void setAuteurId(int auteurId) { this.auteurId = auteurId; }
+    public String getTitre() {
+        return titre;
+    }
 
-    public Date getDatePublication() { return datePublication; }
-    public void setDatePublication(Date datePublication) { this.datePublication = datePublication;}
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public User getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(User auteur) {
+        this.auteur = auteur;
+    }
+
+    public List<Commentaire> getCommentaires() {
+        return commentaires;
+    }
+
+    public void setCommentaires(List<Commentaire> commentaires) {
+        this.commentaires = commentaires;
+    }
 }

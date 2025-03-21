@@ -4,32 +4,58 @@ import java.util.Date;
 
 public class Commentaire {
     private int id;
-    private String contenu;
-    private int auteurId;
-    private int blogId;
+    private String content;
     private Date date;
+    private User auteur;
+    private Blog blog; // Reference to the blog this comment belongs to
 
-    public Commentaire(int id, String contenu, int auteurId, int blogId, Date date) {
+
+    public Commentaire(int id, String content, Date date, User auteur, Blog blog) {
         this.id = id;
-        this.contenu = contenu;
-        this.auteurId = auteurId;
-        this.blogId = blogId;
+        this.content = content;
+        this.date = date;
+        this.auteur = auteur;
+        this.blog = blog;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public User getAuteur() {
+        return auteur;
+    }
 
-    public String getContenu() { return contenu; }
-    public void setContenu(String contenu) { this.contenu = contenu; }
+    public void setAuteur(User auteur) {
+        this.auteur = auteur;
+    }
 
-    public int getAuteurId() { return auteurId; }
-    public void setAuteurId(int auteurId) { this.auteurId = auteurId; }
+    public Blog getBlog() {
+        return blog;
+    }
 
-    public int getBlogId() { return blogId; }
-    public void setBlogId(int blogId) { this.blogId = blogId; }
-
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date=date;}
+    public void setBlog(Blog blog) {
+        this.blog = blog;
+    }
 }
