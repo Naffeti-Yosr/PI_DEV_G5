@@ -3,11 +3,7 @@ package com.esprit.models;
 import lombok.*;
 
 import java.util.Date;
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
 public class User {
     private int id;
     private String nom;
@@ -17,7 +13,7 @@ public class User {
     private String password;
     private String role;
 
-/*    public User(int id, String nom, String prenom, Date birth_date, String email, String password, String role) {
+   public User(int id, String nom, String prenom, Date birth_date, String email, String password, String role) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -75,7 +71,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';
-    }*/
+    }
 }
 
 

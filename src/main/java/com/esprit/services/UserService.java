@@ -10,9 +10,8 @@ import java.util.List;
 public class UserService implements IService<User> {
     private Connection connection;
 
-    public UserService() {
-        connection = DataSource.getInstance().getConnection();
-    }
+
+
 
     @Override
     public List<User> get() {
