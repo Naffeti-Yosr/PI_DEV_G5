@@ -3,7 +3,6 @@ package com.esprit.services;
 import com.esprit.models.Truck;
 import com.esprit.services.IService;
 import com.esprit.utils.DataSource;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +17,12 @@ public class TruckService implements IService<Truck> {
 
     @Override
     public void add(Truck truck) {
-        String req = "INSERT INTO trucks(id, capaciteMax, niveauRemplissageActuel, statut) VALUES (?, ?, ?, ?)";
+        String req = "INSERT INTO trucks(capaciteMax, niveauRemplissageActuel,section , statut) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
-            pst.setInt(1, truck.getId());
-            pst.setDouble(2, truck.getCapaciteMax());
-            pst.setDouble(3, truck.getNiveauRemplissageActuel());
-            pst.setString(4, truck.getStatut());
+            pst.setDouble(1, truck.getCapaciteMax());
+            pst.setDouble(2, truck.getNiveauRemplissageActuel());
+            pst.setString(3, truck.getStatut());
+            pst.setString(4,truck.getSection());
             pst.executeUpdate();
             System.out.println("Truck ajouté !");
         } catch (SQLException e) {
@@ -33,12 +32,13 @@ public class TruckService implements IService<Truck> {
 
     @Override
     public void update(Truck truck) {
-        String req = "UPDATE trucks SET capaciteMax=?, niveauRemplissageActuel=?, statut=? WHERE id=?";
+        String req = "UPDATE trucks SET capaciteMax=?, niveauRemplissageActuel=?, section=?, statut=? WHERE id=?";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setDouble(1, truck.getCapaciteMax());
             pst.setDouble(2, truck.getNiveauRemplissageActuel());
-            pst.setString(3, truck.getStatut());
-            pst.setInt(4, truck.getId());
+            pst.setString(3, truck.getSection());
+            pst.setString(4, truck.getStatut());
+            pst.setInt(5, truck.getId());
             pst.executeUpdate();
             System.out.println("Truck modifié !");
         } catch (SQLException e) {
