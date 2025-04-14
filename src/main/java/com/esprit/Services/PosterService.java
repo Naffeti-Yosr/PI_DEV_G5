@@ -96,28 +96,4 @@ public abstract class PosterService implements IService<Poster> {
         }
         return posters;
     }
-
-
-
-    private boolean userExists(int userId) {
-        String sql = "SELECT id FROM users WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            return ps.executeQuery().next();
-        } catch (SQLException e) {
-            System.err.println("Erreur userExists(): " + e.getMessage());
-            return false;
-        }
-    }
-
-    private boolean eventExists(int eventId) {
-        String sql = "SELECT id FROM evenement WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, eventId);
-            return ps.executeQuery().next();
-        } catch (SQLException e) {
-            System.err.println("Erreur eventExists(): " + e.getMessage());
-            return false;
-        }
-    }
 }
