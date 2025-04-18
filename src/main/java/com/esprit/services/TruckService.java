@@ -22,7 +22,7 @@ public class TruckService implements IService<Truck> {
             pst.setDouble(1, truck.getCapaciteMax());
             pst.setDouble(2, truck.getNiveauRemplissageActuel());
             pst.setString(3, truck.getStatut());
-            pst.setString(4,truck.getSection());
+            pst.setString(4, truck.getSection());
             pst.executeUpdate();
             System.out.println("Truck ajouté !");
         } catch (SQLException e) {
@@ -77,6 +77,16 @@ public class TruckService implements IService<Truck> {
             System.out.println(e.getMessage());
         }
         return trucks;
+    }
+
+    public List<Truck> getAll() {
+        // Implémentez la logique pour récupérer tous les camions
+        // Exemple basique (à adapter selon votre système de persistance)
+        return List.of(
+                new Truck(1000.0, 500.0, "Section A", "Actif"),
+                new Truck(2000.0, 1500.0, "Section B", "En maintenance")
+        );
+
     }
 
 }

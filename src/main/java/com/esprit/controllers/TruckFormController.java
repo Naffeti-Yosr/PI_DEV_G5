@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import com.esprit.models.Truck;
 import com.esprit.services.TruckService;
+import javafx.stage.Stage;
 
 public class TruckFormController {
     @FXML private TextField TC;  // Capacité Max
@@ -128,5 +129,11 @@ public class TruckFormController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleBackButton() {
+        // Close the current window
+        ((Stage) TC.getScene().getWindow()).close();
     }
 }

@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import com.esprit.models.Bin;
 import com.esprit.services.BinService;
+import javafx.stage.Stage;
 
 public class BinFormController {
     @FXML private TextField Location;
@@ -123,5 +124,11 @@ public class BinFormController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleBackButton() {
+        // Close the current window
+        ((Stage) Location.getScene().getWindow()).close();
     }
 }

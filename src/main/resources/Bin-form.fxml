@@ -11,7 +11,6 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.esprit.controllers.BinFormController">
 
-   <!-- En-tête avec fond vert et structure identique au dashboard -->
    <HBox alignment="CENTER" layoutX="150.0" layoutY="20.0" spacing="20" styleClass="header" prefWidth="350.0">
       <ImageView fitHeight="40.0" fitWidth="40.0" preserveRatio="true">
          <image>
@@ -24,40 +23,32 @@
             <Font name="System Bold" size="24.0"/>
          </font>
       </Label>
-
    </HBox>
 
-   <!-- Conteneur du formulaire -->
    <VBox layoutX="150.0" layoutY="90.0" spacing="15" styleClass="form-container" prefWidth="350.0">
-      <!-- Location -->
       <HBox spacing="10" alignment="CENTER_LEFT">
          <Label text="Location:" styleClass="form-label"/>
          <TextField fx:id="Location" styleClass="form-input"/>
       </HBox>
 
-      <!-- Type Déchet -->
       <HBox spacing="10" alignment="CENTER_LEFT">
          <Label text="Type:" styleClass="form-label"/>
          <TextField fx:id="TypeDechet" styleClass="form-input"/>
       </HBox>
 
-      <!-- Niveau Remplissage -->
       <HBox spacing="10" alignment="CENTER_LEFT">
          <Label text="Remplissage:" styleClass="form-label"/>
          <TextField fx:id="Remplissage" styleClass="form-input" promptText="0-100%"/>
       </HBox>
 
-      <!-- Statut -->
       <HBox spacing="10" alignment="CENTER_LEFT">
          <Label text="Statut:" styleClass="form-label"/>
          <TextField fx:id="Statut" styleClass="form-input"/>
       </HBox>
 
-      <!-- Bouton Ajouter -->
-      <Button fx:id="addButton" text="AJOUTER" onAction="#handleAddButton" styleClass="btn-add-product">
-         <HBox.margin>
-            <Insets top="15.0" left="0.0" right="0.0"/>
-         </HBox.margin>
-      </Button>
+      <HBox spacing="10" alignment="CENTER_RIGHT">
+         <Button fx:id="addButton" text="AJOUTER" onAction="#handleAddButton" styleClass="btn-add-product"/>
+         <Button fx:id="backButton" text="Back" onAction="#handleBackButton" styleClass="btn-back"/>
+      </HBox>
    </VBox>
 </AnchorPane>
