@@ -11,6 +11,7 @@ public class Client extends User {
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
+    
 
     public String getAddress() {
         return address;

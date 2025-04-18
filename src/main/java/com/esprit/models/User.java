@@ -1,6 +1,6 @@
 package com.esprit.models;
 
-import lombok.*;
+
 
 import java.util.Date;
 
@@ -68,7 +68,6 @@ public class User {
                 ", prenom='" + prenom + '\'' +
                 ", birth_date=" + birth_date +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';
     }

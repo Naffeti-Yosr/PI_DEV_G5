@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+<AnchorPane prefHeight="600" prefWidth="900" styleClass="root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.controllers.AddUserController">
+    <stylesheets>
+        <URL value="@styles/energy.css"/>
+    </stylesheets>
+
+    <GridPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="40"/>
+            <ColumnConstraints percentWidth="60"/>
+        </columnConstraints>
+
+        <!-- Left Panel -->
+        <VBox styleClass="welcome-panel" alignment="CENTER" spacing="30" GridPane.columnIndex="0">
+            <padding>
+                <Insets top="50" bottom="50" left="40" right="40"/>
+            </padding>
+
+            <Text styleClass="app-title" text="Rejoignez-nous"/>
+            <Text styleClass="welcome-text" text="Créez votre compte"/>
+            <Text styleClass="slogan-text" text="Pour une énergie plus verte"/>
+
+            <Button styleClass="back-button" onAction="#handleBackToLogin" text="Retour à la connexion"/>
+        </VBox>
+
+        <!-- Right Panel - Registration Form -->
+        <VBox styleClass="register-panel" spacing="25" GridPane.columnIndex="1">
+            <padding>
+                <Insets top="40" bottom="40" left="50" right="50"/>
+            </padding>
+
+            <Text styleClass="form-title" text="Inscription"/>
+
+            <GridPane vgap="20" hgap="20">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <!-- Nom -->
+                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label styleClass="input-label" text="Nom"/>
+                    <TextField fx:id="tfNom" styleClass="modern-input" promptText="Votre nom"/>
+                </VBox>
+
+                <!-- Prénom -->
+                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label styleClass="input-label" text="Prénom"/>
+                    <TextField fx:id="tfPrenom" styleClass="modern-input" promptText="Votre prénom"/>
+                </VBox>
+
+                <!-- Email -->
+                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label styleClass="input-label" text="Email"/>
+                    <TextField fx:id="tfEmail" styleClass="modern-input" promptText="exemple@email.com"/>
+                </VBox>
+
+                <!-- Date de naissance -->
+                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label styleClass="input-label" text="Date de naissance"/>
+                    <DatePicker fx:id="dpBirthDate" styleClass="modern-input"/>
+                </VBox>
+
+                <!-- Mot de passe -->
+                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label styleClass="input-label" text="Mot de passe"/>
+                    <PasswordField fx:id="tfPassword" styleClass="modern-input" promptText="Votre mot de passe"/>
+                </VBox>
+
+                <!-- Rôle -->
+                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label styleClass="input-label" text="Rôle"/>
+                    <ComboBox fx:id="cbRole" styleClass="modern-input" promptText="Sélectionnez un rôle" maxWidth="Infinity"/>
+                </VBox>
+            </GridPane>
+
+            <Button styleClass="register-submit-button" onAction="#addPerson" text="Créer mon compte" maxWidth="Infinity"/>
+
+            <VBox alignment="CENTER" spacing="5">
+                <Label styleClass="footer-text" text="powered by solaris.org"/>
+                <Label styleClass="version-text" text="Version 0.5"/>
+            </VBox>
+        </VBox>
+    </GridPane>
+</AnchorPane>

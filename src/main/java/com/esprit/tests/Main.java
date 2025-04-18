@@ -31,6 +31,8 @@ public class Main {
                 "22556677"
         );
         clientService.add(client);
+        System.out.println(clientService.get());
+
 
     }
 }

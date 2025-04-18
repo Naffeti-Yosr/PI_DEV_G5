@@ -7,7 +7,7 @@ public class DataSource {
     private Connection connection;
     private static DataSource instance;
 
-    private final String URL = "jdbc:mysql://localhost:3306/esprit";
+    private final String URL = "jdbc:mysql://localhost:3306/renewable_energy_db";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
 
