@@ -1,21 +1,15 @@
 package com.esprit.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Categorie {
     private int id;
-    private String nom;
-    private List<Produit> produits; // One-to-many relationship with Produit
+    private String nom; // Category name
+    private String description; // Category description
 
-    public Categorie() {
-        produits = new ArrayList<>();
-    }
-
-    public Categorie(int id, String nom) {
+    // Constructor
+    public Categorie(int id, String nom, String description) {
         this.id = id;
         this.nom = nom;
-        produits = new ArrayList<>();
+        this.description = description;
     }
 
     // Getters and Setters
@@ -35,12 +29,12 @@ public class Categorie {
         this.nom = nom;
     }
 
-    public List<Produit> getProduits() {
-        return produits;
+    public String getDescription() {
+        return description;
     }
 
-    public void setProduits(List<Produit> produits) {
-        this.produits = produits;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -48,6 +42,7 @@ public class Categorie {
         return "Categorie{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

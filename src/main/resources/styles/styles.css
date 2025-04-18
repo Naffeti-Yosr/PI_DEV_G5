@@ -1,0 +1,44 @@
+/* Basic styles for ProductFormView */
+
+.root {
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    -fx-background-color: #f9f9f9;
+}
+
+.title {
+    -fx-font-size: 24px;
+    -fx-text-fill: #0d3b1e;
+    -fx-font-weight: bold;
+}
+
+.text-field {
+    -fx-border-color: #ccc;
+    -fx-border-radius: 3px;
+    -fx-padding: 5px;
+}
+
+.check-box {
+    -fx-padding: 5px;
+}
+
+.combo-box {
+    -fx-padding: 5px;
+}
+
+.btn-browse-image {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.btn-save-product {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.btn-cancel {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}

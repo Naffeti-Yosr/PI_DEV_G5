@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.esprit.controllers.ProductDashboardController"
+      spacing="15"
+      styleClass="dashboard-root"
+      stylesheets="@/styles/product-dashboard.css">
+
+
+<TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" prefHeight="600" prefWidth="900">
+
+    <Tab text="Products">
+        <VBox spacing="15" styleClass="tab-content">
+
+            <!-- Header with Eco Icon -->
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header">
+                <ImageView fitWidth="80" fitHeight="80">
+                    <Image url="@/images/logo.png"/>
+                </ImageView>
+                <Label text="Solaris Products Dashboard" styleClass="header-title"/>
+            </HBox>
+
+            <!-- Filter Toolbar -->
+            <HBox spacing="15" styleClass="toolbar">
+                <ComboBox fx:id="categoryCombo" promptText="Select Category" styleClass="category-combo"/>
+                <Button text="Add Category" onAction="#handleAddCategory" styleClass="btn-add-category"/>
+                <Button text="Delete Category" onAction="#handleDeleteCategory" styleClass="btn-delete-category"/>
+            </HBox>
+
+            <!-- Product Table -->
+            <TableView fx:id="productTable" styleClass="product-table" >
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="Product" prefWidth="200" sortable="false" reorderable="false"/>
+                    <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="300" sortable="false" reorderable="false"/>
+                    <TableColumn fx:id="priceColumn" text="Price (DT)" prefWidth="100" sortable="false" reorderable="false"/>
+                    <TableColumn fx:id="stockColumn" text="Stock" prefWidth="80" sortable="false" reorderable="false"/>
+                    <TableColumn fx:id="categoryColumn" text="Category" prefWidth="150" sortable="false" reorderable="false"/>
+                    <TableColumn fx:id="recyclableColumn" text="Eco Status" prefWidth="120" sortable="false" reorderable="false"/>
+                    <TableColumn fx:id="imageColumn" text="Image" prefWidth="300" sortable="false" reorderable="false"/>
+                </columns>
+            </TableView>
+
+            <!-- Action Buttons -->
+            <HBox spacing="15" styleClass="action-bar">
+                <Button text="Add Product" onAction="#handleAdd" styleClass="btn-add-product"/>
+                <Button fx:id="updateButton" text="Edit Product" onAction="#handleUpdate" styleClass="btn-edit-product" disable="true"/>
+                <Button text="Preview Product" onAction="#handlePreview" styleClass="btn-prev-product" disable="true" fx:id="previewButton"/>
+                <Button text="Delete Product" onAction="#handleDelete" styleClass="btn-delete-product"/>
+            </HBox>
+        </VBox>
+    </Tab>
+
+    <Tab text="Orders" fx:id="ordersTab">
+        <fx:include source="OrderDashboardView.fxml"/>
+    </Tab>
+
+</TabPane>
+</VBox>

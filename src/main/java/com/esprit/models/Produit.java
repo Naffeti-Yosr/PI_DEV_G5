@@ -4,21 +4,26 @@ public class Produit {
     private int id;
     private String nom;
     private String description;
-    private String picture; // Path or URL to the product image
-    private float price;    // Price of the product
-    private int categorieId; // Foreign key to Categorie
+    private double prix;
+    private int quantiteStock;
+    private String image;
+    private boolean recyclable;
+    private int categorieId;
 
-    public Produit() {
-    }
-
-    public Produit(int id, String nom, String description, String picture, float price, int categorieId) {
+    public Produit(int id, String nom, String description, double prix, int quantiteStock, String image, boolean recyclable, int categorieId) {
         this.id = id;
         this.nom = nom;
         this.description = description;
-        this.picture = picture;
-        this.price = price;
+        this.prix = prix;
+        this.quantiteStock = quantiteStock;
+        this.image = image;
+        this.recyclable = recyclable;
         this.categorieId = categorieId;
     }
+    public Produit() {
+       
+    }
+
 
     // Getters and Setters
     public int getId() {
@@ -45,20 +50,36 @@ public class Produit {
         this.description = description;
     }
 
-    public String getPicture() {
-        return picture;
+    public double getPrix() {
+        return prix;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPrix(double prix) {
+        this.prix = prix;
     }
 
-    public float getPrice() {
-        return price;
+    public int getQuantiteStock() {
+        return quantiteStock;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setQuantiteStock(int quantiteStock) {
+        this.quantiteStock = quantiteStock;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isRecyclable() {
+        return recyclable;
+    }
+
+    public void setRecyclable(boolean recyclable) {
+        this.recyclable = recyclable;
     }
 
     public int getCategorieId() {
@@ -75,8 +96,10 @@ public class Produit {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", description='" + description + '\'' +
-                ", picture='" + picture + '\'' +
-                ", price=" + price +
+                ", prix=" + prix +
+                ", quantiteStock=" + quantiteStock +
+                ", image='" + image + '\'' +
+                ", recyclable=" + recyclable +
                 ", categorieId=" + categorieId +
                 '}';
     }

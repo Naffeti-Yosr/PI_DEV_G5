@@ -1,0 +1,184 @@
+/* Root and Background */
+.dashboard-root {
+    -fx-padding: 20;
+    -fx-background-color: #f5fff5;
+    -fx-spacing: 15;
+}
+
+/* Header Styles */
+.header {
+    -fx-padding: 10 20;
+    -fx-alignment: center-left;
+}
+
+.header-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00695c;
+}
+
+/* Table Styles */
+.product-table {
+    -fx-background-color: white;
+    -fx-border-color: #a5d6a7;
+    -fx-border-width: 2px;
+}
+
+.product-table .column-header {
+    -fx-background-color: #2e7d32;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.product-table .table-row-cell {
+    -fx-background-color: white;
+}
+
+.product-table .table-row-cell:odd {
+    -fx-background-color: #f1f8e9;
+}
+
+.product-table .table-row-cell:hover {
+    -fx-background-color: #dcedc8;
+}
+
+.product-table .table-row-cell:selected {
+    -fx-background-color: #c8e6c9;
+}
+
+.product-table .table-cell {
+    -fx-alignment: center;
+    -fx-padding: 8px;
+    -fx-border-color: transparent;
+}
+
+
+
+/* Special Elements */
+.recyclable-badge {
+    -fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-padding: 3 10;
+    -fx-background-radius: 15;
+}
+
+.category-combo {
+    -fx-pref-width: 200;
+    -fx-background-color: white;
+    -fx-border-color: #81c784;
+}
+
+/* Layout Spacing */
+.toolbar, .action-bar {
+    -fx-spacing: 15;
+    -fx-padding: 10 0;
+}
+
+/* Make product action buttons equal size and oval shaped */
+.btn-add-product, .btn-edit-product, .btn-delete-product, .btn-add-category,.btn-delete-category, .btn-prev-product {
+    -fx-pref-width: 140px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 20px; /* Oval shape */
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+    -fx-padding: 0 20px;
+}
+
+/* Specific background colors for each button */
+.btn-add-product {
+    -fx-background-color: #4CAF50; /* Green */
+}
+
+.btn-edit-product {
+    -fx-background-color: #2196F3; /* Blue */
+}
+
+.btn-delete-product {
+    -fx-background-color: #f44336; /* Red */
+}
+.btn-add-category {
+    -fx-background-color: #4CAF50;
+
+}
+
+.btn-delete-category {
+    -fx-background-color: #c62828;
+
+}
+.btn-prev-product{
+    -fx-background-color: #454545;
+
+}
+/* Order Table Styles */
+.order-table {
+    -fx-background-color: white;
+    -fx-border-color: #aed581;
+    -fx-border-width: 2px;
+}
+
+.order-table .column-header {
+    -fx-background-color: #33691e;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.order-table .table-row-cell {
+    -fx-background-color: white;
+}
+
+.order-table .table-row-cell:odd {
+    -fx-background-color: #f9fbe7;
+}
+
+.order-table .table-row-cell:hover {
+    -fx-background-color: #dce775;
+}
+
+.order-table .table-row-cell:selected {
+    -fx-background-color: #c5e1a5;
+}
+
+.order-table .table-cell {
+    -fx-alignment: center;
+    -fx-padding: 8px;
+    -fx-border-color: transparent;
+}
+
+/* ComboBoxes */
+.client-combo, .status-combo {
+    -fx-pref-width: 200;
+    -fx-background-color: white;
+    -fx-border-color: #aed581;
+}
+
+/* Buttons */
+.btn-prev-order, .btn-delete-order {
+    -fx-pref-width: 140px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+    -fx-padding: 0 20px;
+}
+
+.btn-prev-order {
+    -fx-background-color: #455a64; /* Dark Gray-Blue */
+}
+
+.btn-prev-order:hover {
+    -fx-background-color: #263238;
+}
+
+.btn-delete-order {
+    -fx-background-color: #e53935; /* Red */
+}
+
+.btn-delete-order:hover {
+    -fx-background-color: #b71c1c;
+}

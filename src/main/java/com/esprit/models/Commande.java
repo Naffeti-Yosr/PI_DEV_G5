@@ -1,23 +1,21 @@
 package com.esprit.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class Commande {
     private int id;
-    private int utilisateurId;
-    private float total;
-    private List<CommandeProduit> commandeProduits; // Many-to-many relationship with Produit
+    private Date date;
+    private String statut;
+    private int clientId;
 
     public Commande() {
-        commandeProduits = new ArrayList<>();
     }
 
-    public Commande(int id, int utilisateurId, float total) {
+    public Commande(int id, Date date, String statut, int clientId) {
         this.id = id;
-        this.utilisateurId = utilisateurId;
-        this.total = total;
-        commandeProduits = new ArrayList<>();
+        this.date = date;
+        this.statut = statut;
+        this.clientId = clientId;
     }
 
     // Getters and Setters
@@ -29,36 +27,27 @@ public class Commande {
         this.id = id;
     }
 
-    public int getUtilisateurId() {
-        return utilisateurId;
+    public Date getDate() {
+        return date;
     }
 
-    public void setUtilisateurId(int utilisateurId) {
-        this.utilisateurId = utilisateurId;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public float getTotal() {
-        return total;
+    public String getStatut() {
+        return statut;
     }
 
-    public void setTotal(float total) {
-        this.total = total;
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
 
-    public List<CommandeProduit> getCommandeProduits() {
-        return commandeProduits;
+    public int getClientId() {
+        return clientId;
     }
 
-    public void setCommandeProduits(List<CommandeProduit> commandeProduits) {
-        this.commandeProduits = commandeProduits;
-    }
-
-    @Override
-    public String toString() {
-        return "Commande{" +
-                "id=" + id +
-                ", utilisateurId=" + utilisateurId +
-                ", total=" + total +
-                '}';
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 }
