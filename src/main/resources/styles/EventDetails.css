@@ -1,64 +1,40 @@
-.header {
-    -fx-background-color: #ffffff;
-    -fx-padding: 15;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 0 0 1 0;
-    -fx-alignment: center-left;
+.dashboard-root {
+    -fx-padding: 20;
+    -fx-background-color: #f5fff5;
+    -fx-spacing: 15;
+    -fx-font-family: "Segoe UI", sans-serif;
 }
 
-.title {
+.header {
+    -fx-padding: 10 20;
+    -fx-alignment: center-left;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0 0 1 0;
+}
+
+.header-title {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-text-fill: #333;
+    -fx-text-fill: #00695c;
 }
 
-.back-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #2196f3;
+.btn-edit-product {
+    -fx-pref-width: 140px;
+    -fx-pref-height: 40px;
+    -fx-background-color: #2196F3;
+    -fx-background-radius: 20px;
     -fx-font-weight: bold;
+    -fx-text-fill: white;
     -fx-cursor: hand;
 }
 
-.details-container {
-    -fx-padding: 40;
-    -fx-spacing: 20;
-    -fx-alignment: center;
-    -fx-background-color: #f9f9f9;
-    -fx-border-radius: 10;
-}
-
-.event-title {
-    -fx-font-size: 24px;
-    -fx-text-fill: #222;
+.btn-delete-product {
+    -fx-pref-width: 140px;
+    -fx-pref-height: 40px;
+    -fx-background-color: #f44336;
+    -fx-background-radius: 20px;
     -fx-font-weight: bold;
-}
-
-.event-info {
-    -fx-font-size: 16px;
-    -fx-text-fill: #444;
-}
-
-.event-description {
-    -fx-text-fill: #555;
-    -fx-wrap-text: true;
-    -fx-max-width: 600;
-}
-
-.participate-button {
-    -fx-background-color: #00c853;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
     -fx-cursor: hand;
-}
-
-.edit-button {
-    -fx-background-color: #2979ff;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-
-.delete-button {
-    -fx-background-color: #d32f2f;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
 }

@@ -4,10 +4,12 @@ import com.esprit.Services.EvenementService;
 import com.esprit.Services.UserService;
 import com.esprit.models.Evenement;
 import com.esprit.models.User;
-import com.esprit.tests.App;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,13 +20,17 @@ import java.util.List;
 
 public class AjoutEvent {
 
-    private App mainApp;
+    @FXML private TextField titreField;
+    @FXML private TextField descriptionField;
+    @FXML private DatePicker datePicker;
+    @FXML private TextField heureField;
+    @FXML private TextField adresseField;
+    @FXML private ComboBox<User> organisateurCombo;
+    @FXML private Button submitButton;
+
     private String mode = "add";
     private Evenement currentEvenement;
-
-    public void setMainApp(App mainApp) {
-        this.mainApp = mainApp;
-    }
+    private VBox mainContainer;
 
     public void setMode(String mode) {
         this.mode = mode;
@@ -34,13 +40,9 @@ public class AjoutEvent {
         this.currentEvenement = evenement;
     }
 
-    @FXML private TextField titreField;
-    @FXML private TextField descriptionField;
-    @FXML private DatePicker datePicker;
-    @FXML private TextField heureField;
-    @FXML private TextField adresseField;
-    @FXML private ComboBox<User> organisateurCombo;
-    @FXML private Button submitButton;
+    public void setMainContainer(VBox mainContainer) {
+        this.mainContainer = mainContainer;
+    }
 
     @FXML
     public void initialize() {
@@ -97,8 +99,7 @@ public class AjoutEvent {
 
         LocalDateTime dateTime = LocalDateTime.of(date, heure);
 
-        if (mode.equals("edit") && currentEvenement != null) {
-            // 🔁 Mode modification
+        if ("edit".equals(mode) && currentEvenement != null) {
             currentEvenement.setTitre(titre);
             currentEvenement.setDescription(description);
             currentEvenement.setDate(dateTime);
@@ -106,24 +107,26 @@ public class AjoutEvent {
             currentEvenement.setOrganisateur(organisateur);
 
             evenementService.update(currentEvenement);
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Événement modifié avec succès !");
+            // ✅ attendre que l’utilisateur clique sur OK
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Succès");
+            alert.setHeaderText(null);
+            alert.setContentText("Événement modifié avec succès !");
+            alert.showAndWait().ifPresent(btn -> retourAEventsView());
         } else {
             Evenement evenement = new Evenement(0, titre, description, dateTime, adresse, organisateur);
             evenementService.add(evenement);
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Événement ajouté avec succès !");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Succès");
+            alert.setHeaderText(null);
+            alert.setContentText("Événement ajouté avec succès !");
+            alert.showAndWait().ifPresent(btn -> retourAEventsView());
         }
-
-        titreField.clear();
-        descriptionField.clear();
-        datePicker.setValue(null);
-        heureField.clear();
-        adresseField.clear();
-        organisateurCombo.setValue(null);
-        submitButton.setText("Submit Request");
+        com.esprit.tests.App.getInstance().showEventsScreen();
     }
 
     public void prefillFieldsIfEdit() {
-        if (mode.equals("edit") && currentEvenement != null) {
+        if (currentEvenement != null) {
             titreField.setText(currentEvenement.getTitre());
             descriptionField.setText(currentEvenement.getDescription());
             if (currentEvenement.getDate() != null) {
@@ -137,6 +140,15 @@ public class AjoutEvent {
         }
     }
 
+    private void retourAEventsView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventsView.fxml"));
+            Parent view = loader.load();
+            mainContainer.getChildren().setAll(view);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
@@ -145,4 +157,4 @@ public class AjoutEvent {
         alert.setContentText(content);
         alert.showAndWait();
     }
-} 
+}

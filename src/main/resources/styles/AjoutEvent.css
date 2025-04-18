@@ -1,19 +1,44 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<BorderPane fx:id="mainContainer" xmlns:fx="http://javafx.com/fxml" fx:controller="com.esprit.controllers.AjoutEvent" style="-fx-padding: 30;">
+.form-container {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-border-color: #a5d6a7;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0.0, 0, 2);
+}
 
-    <center>
-        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 20;">
-            <TextField fx:id="titreField" promptText="Titre de l'événement" />
-            <TextField fx:id="descriptionField" promptText="Description" />
-            <DatePicker fx:id="datePicker" />
-            <TextField fx:id="heureField" promptText="Heure (HH:mm)" />
-            <TextField fx:id="adresseField" promptText="Adresse" />
-            <ComboBox fx:id="organisateurCombo" promptText="Organisateur" />
-            <Button fx:id="submitButton" text="Ajouter l'événement" />
-        </VBox>
-    </center>
+.text-field, .combo-box, .date-picker {
+    -fx-pref-width: 300px;
+    -fx-padding: 8;
+    -fx-border-color: #81c784;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
 
-</BorderPane>
+.header {
+    -fx-padding: 15 20;
+    -fx-background-color: #f5fff5;
+    -fx-border-color: #c8e6c9;
+    -fx-border-width: 0 0 1 0;
+}
 
+.header-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2e7d32;
+}
+
+.btn {
+    -fx-pref-width: 200px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.btn-add-product {
+    -fx-background-color: #4CAF50;
+}

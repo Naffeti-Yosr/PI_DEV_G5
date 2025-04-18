@@ -1,25 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:id="mainContainer"
-      fx:controller="com.esprit.controllers.EventController"
-      spacing="20" style="-fx-padding: 20;"
-      stylesheets="/styles/EventsView.css">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:id="mainContainer"
+            fx:controller="com.esprit.controllers.EventController"
+            stylesheets="@/styles/EventsView.css"
+            prefWidth="1200" prefHeight="800">
 
-    <!-- Barre de recherche -->
-    <VBox fx:id="searchContainer" spacing="10" alignment="CENTER">
-        <Label text="📅 Liste des Événements" styleClass="header-title"/>
-        <TextField fx:id="searchField" promptText="🔍 Rechercher un événement..." maxWidth="400"/>
-    </VBox>
+    <!-- Sidebar toggle button (Burger Menu) -->
+    <top>
+        <VBox fx:id="searchContainer" spacing="10">
+            <HBox spacing="20" alignment="CENTER_LEFT" styleClass="header">
+                <Button fx:id="burgerButton" text="≡" styleClass="burger-button"/>
+                <ImageView fx:id="logoImage" fitHeight="50" fitWidth="50" preserveRatio="true"/>
+                <Label text="📅 Liste des Événements" styleClass="header-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="searchField" promptText="🔍 Rechercher un événement..." maxWidth="300" styleClass="search-bar"/>
+            </HBox>
+        </VBox>
+    </top>
 
-    <!-- Liste responsive -->
-    <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="scroll">
-        <FlowPane fx:id="eventsFlowPane"
-                  hgap="20" vgap="20"
-                  prefWrapLength="600"
-                  styleClass="grid-container"/>
-    </ScrollPane>
-</VBox>
+    <!-- Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" spacing="15" styleClass="sidebar" visible="false" managed="false">
+            <Button text="👤 Profil" styleClass="menu-button"/>
+            <Button text="📅 Événements" styleClass="menu-button"/>
+            <Button text="🖼️ Poster" styleClass="menu-button"/>
+            <Button text="🚪 Déconnexion" styleClass="menu-button"/>
+        </VBox>
+    </left>
+
+    <!-- Centre avec filtres et événements -->
+
+    <center>
+        <VBox fx:id="dayFilterContainer" spacing="10">
+            <HBox fx:id="dayFilterBar" spacing="10" alignment="CENTER" styleClass="day-bar"/>
+            <ScrollPane >
+                <FlowPane fx:id="eventsFlowPane"
+                          hgap="20" vgap="20"
+                          prefWrapLength="800"
+                          styleClass="grid-container"/>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+
+
+</BorderPane>

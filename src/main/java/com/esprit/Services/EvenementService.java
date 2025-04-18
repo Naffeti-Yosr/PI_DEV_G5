@@ -18,21 +18,28 @@ public class EvenementService implements IService<Evenement>, IEventService {
 
     public List<Evenement> getAll() {
         List<Evenement> list = new ArrayList<>();
-        try (Connection con = DataSource.getInstance().getConnection()) {
-            String query = "SELECT * FROM evenement";
-            PreparedStatement stmt = con.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
+        String query = "SELECT * FROM Evenements";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Evenement e = new Evenement();
                 e.setId(rs.getInt("id"));
-                e.setTitre(rs.getString("titre"));
+                e.setTitre(rs.getString("name"));
                 e.setDescription(rs.getString("description"));
-                e.setAdresse(rs.getString("adresse"));
-                e.setDate(rs.getTimestamp("date").toLocalDateTime());
+                e.setAdresse(rs.getString("address"));
+                Timestamp ts = rs.getTimestamp("dateTime");
+                if (ts != null) {
+                    e.setDate(ts.toLocalDateTime());
+                }
+                int organizerId = rs.getInt("organizer");
+                User organizer = new User();
+                organizer.setId(organizerId);
+                e.setOrganisateur(organizer);
+
                 list.add(e);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("getAll() error: " + e.getMessage());
         }
         return list;
     }
@@ -41,49 +48,32 @@ public class EvenementService implements IService<Evenement>, IEventService {
     public void add(Evenement evenement) {
         int organizerId = evenement.getOrganisateur().getId();
         if (!userExists(organizerId)) {
-            System.out.println("Organizer with id " + organizerId + " does not exist.");
+            System.out.println("Organizer with id " + organizerId + " does not exist. Evenement not created.");
             return;
         }
 
         String sql = "INSERT INTO Evenements(name, description, dateTime, address, organizer) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String dateTimeStr = evenement.getDate() != null ? evenement.getDate().format(formatter) : null;
-
             ps.setString(1, evenement.getTitre());
             ps.setString(2, evenement.getDescription());
-            ps.setString(3, dateTimeStr);
+            ps.setString(3, evenement.getDate() != null ? evenement.getDate().format(formatter) : null);
             ps.setString(4, evenement.getAdresse());
             ps.setInt(5, organizerId);
 
-            int rows = ps.executeUpdate();
-            if (rows == 0) {
-                throw new SQLException("Creating event failed, no rows affected.");
-            }
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) throw new SQLException("Creating Evenement failed, no rows affected.");
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     evenement.setId(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Creating Evenement failed, no ID obtained.");
                 }
             }
 
         } catch (SQLException e) {
-            System.out.println("Erreur ajout événement : " + e.getMessage());
-        }
-
-        if (evenement.getParticipants() != null && !evenement.getParticipants().isEmpty()) {
-            String joinSql = "INSERT INTO Evenement_participants(Evenement_id, user_id) VALUES (?, ?)";
-            try (PreparedStatement psJoin = connection.prepareStatement(joinSql)) {
-                for (User user : evenement.getParticipants()) {
-                    if (userExists(user.getId())) {
-                        psJoin.setInt(1, evenement.getId());
-                        psJoin.setInt(2, user.getId());
-                        psJoin.executeUpdate();
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println("Erreur insertion participants : " + e.getMessage());
-            }
+            System.out.println("add() error: " + e.getMessage());
         }
     }
 
@@ -95,7 +85,7 @@ public class EvenementService implements IService<Evenement>, IEventService {
                 return rs.next();
             }
         } catch (SQLException e) {
-            System.out.println("Erreur vérification utilisateur : " + e.getMessage());
+            System.out.println("userExists() error: " + e.getMessage());
             return false;
         }
     }
@@ -104,7 +94,7 @@ public class EvenementService implements IService<Evenement>, IEventService {
     public void update(Evenement evenement) {
         int organizerId = evenement.getOrganisateur().getId();
         if (!userExists(organizerId)) {
-            System.out.println("Organizer with id " + organizerId + " does not exist.");
+            System.out.println("Organizer with id " + organizerId + " does not exist. Evenement not updated.");
             return;
         }
 
@@ -119,91 +109,61 @@ public class EvenementService implements IService<Evenement>, IEventService {
             ps.setInt(6, evenement.getId());
 
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erreur modification : " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("update() error: " + ex.getMessage());
         }
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int evenementId) {
         String deleteParticipants = "DELETE FROM Evenement_participants WHERE Evenement_id=?";
         String deleteEvent = "DELETE FROM Evenements WHERE id=?";
+        try (PreparedStatement ps1 = connection.prepareStatement(deleteParticipants);
+             PreparedStatement ps2 = connection.prepareStatement(deleteEvent)) {
 
-        try (PreparedStatement ps1 = connection.prepareStatement(deleteParticipants)) {
-            ps1.setInt(1, id);
+            ps1.setInt(1, evenementId);
             ps1.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erreur suppression participants : " + e.getMessage());
-        }
 
-        try (PreparedStatement ps2 = connection.prepareStatement(deleteEvent)) {
-            ps2.setInt(1, id);
+            ps2.setInt(1, evenementId);
             ps2.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erreur suppression événement : " + e.getMessage());
+
+        } catch (SQLException ex) {
+            System.out.println("delete() error: " + ex.getMessage());
         }
     }
 
     @Override
     public List<Evenement> get() {
-        List<Evenement> list = new ArrayList<>();
-        String sql = "SELECT * FROM Evenements";
-
-        try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-
-            while (rs.next()) {
-                Evenement e = new Evenement();
-                e.setId(rs.getInt("id"));
-                e.setTitre(rs.getString("name"));
-                e.setDescription(rs.getString("description"));
-                Timestamp ts = rs.getTimestamp("dateTime");
-                if (ts != null) {
-                    e.setDate(ts.toLocalDateTime());
-                }
-                e.setAdresse(rs.getString("address"));
-
-                User org = new User();
-                org.setId(rs.getInt("organizer"));
-                e.setOrganisateur(org);
-
-                e.setParticipants(getParticipants(e.getId()));
-                list.add(e);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Erreur chargement événements : " + e.getMessage());
-        }
-
-        return list;
+        return getAll(); // même implémentation que getAll()
     }
 
     @Override
     public Evenement getEvent(int id) {
-        Evenement e = new Evenement();
         String sql = "SELECT * FROM Evenements WHERE id=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    e.setId(rs.getInt("id"));
-                    e.setTitre(rs.getString("name"));
-                    e.setDescription(rs.getString("description"));
+                    Evenement evenement = new Evenement();
+                    evenement.setId(rs.getInt("id"));
+                    evenement.setTitre(rs.getString("name"));
+                    evenement.setDescription(rs.getString("description"));
                     Timestamp ts = rs.getTimestamp("dateTime");
                     if (ts != null) {
-                        e.setDate(ts.toLocalDateTime());
+                        evenement.setDate(ts.toLocalDateTime());
                     }
-                    e.setAdresse(rs.getString("address"));
-                    User org = new User();
-                    org.setId(rs.getInt("organizer"));
-                    e.setOrganisateur(org);
-                    e.setParticipants(getParticipants(id));
+                    evenement.setAdresse(rs.getString("address"));
+                    User organizer = new User();
+                    organizer.setId(rs.getInt("organizer"));
+                    evenement.setOrganisateur(organizer);
+                    evenement.setParticipants(getParticipants(id));
+                    return evenement;
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Erreur récupération événement : " + ex.getMessage());
+            System.out.println("getEvent() error: " + ex.getMessage());
         }
-        return e;
+        return null;
     }
 
     private List<User> getParticipants(int eventId) {
@@ -213,13 +173,14 @@ public class EvenementService implements IService<Evenement>, IEventService {
             ps.setInt(1, eventId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    User user = new User();
-                    user.setId(rs.getInt("id"));
-                    list.add(user);
+                    User u = new User();
+                    u.setId(rs.getInt("id"));
+                    // Ajouter d'autres champs utilisateur si besoin
+                    list.add(u);
                 }
             }
-        } catch (SQLException e) {
-            System.out.println("Erreur participants : " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("getParticipants() error: " + ex.getMessage());
         }
         return list;
     }
@@ -230,8 +191,8 @@ public class EvenementService implements IService<Evenement>, IEventService {
             ps.setInt(1, eventId);
             ps.setInt(2, user.getId());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erreur ajout participant : " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("addParticipant() error: " + ex.getMessage());
         }
     }
 }
