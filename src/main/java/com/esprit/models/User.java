@@ -26,6 +26,9 @@ public class User {
         this.nom = nom;
     }
 
+    public User(int i, String participant, String mail) {
+    }
+
     // Getters & Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

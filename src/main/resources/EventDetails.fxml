@@ -5,20 +5,24 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.esprit.controllers.EventDetailsController"
-      spacing="20" alignment="CENTER"
-      stylesheets="@styles/EventDetails.css"
-      style="-fx-padding: 40;">
+      spacing="20" alignment="TOP_CENTER"
+      stylesheets="/styles/EventDetails.css"
+      style="-fx-padding: 40; -fx-background-color: #F8F8F8;">
 
     <ImageView fx:id="posterImage" fitWidth="220" fitHeight="220"/>
 
-    <Label fx:id="titleLabel" styleClass="title"/>
-    <Label fx:id="dateLabel" styleClass="subtitle"/>
-    <Label fx:id="adresseLabel"/>
-    <Label fx:id="descriptionLabel" wrapText="true" maxWidth="400"/>
+    <Label fx:id="titleLabel" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+
+    <VBox spacing="10" alignment="CENTER">
+        <Label fx:id="dateLabel" />
+        <Label fx:id="adresseLabel" />
+        <Label fx:id="descriptionLabel" wrapText="true" maxWidth="400"/>
+    </VBox>
 
     <HBox spacing="15" alignment="CENTER">
-        <Button fx:id="editButton" text="✏️ Modifier"/>
-        <Button fx:id="deleteButton" text="🗑️ Supprimer"/>
-        <Button fx:id="backButton" text="🔙 Retour"/>
+        <Button fx:id="editButton" text="✏️ Modifier" />
+        <Button fx:id="deleteButton" text="🗑️ Supprimer" />
+        <Button fx:id="backButton" text="🔙 Retour" />
     </HBox>
+
 </VBox>

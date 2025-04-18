@@ -1,24 +1,19 @@
-.form-wrapper {
-    -fx-background-color: #121212;
-    -fx-padding: 40;
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<BorderPane fx:id="mainContainer" xmlns:fx="http://javafx.com/fxml" fx:controller="com.esprit.controllers.AjoutEvent" style="-fx-padding: 30;">
 
-.form-title {
-    -fx-text-fill: white;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-}
+    <center>
+        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 20;">
+            <TextField fx:id="titreField" promptText="Titre de l'événement" />
+            <TextField fx:id="descriptionField" promptText="Description" />
+            <DatePicker fx:id="datePicker" />
+            <TextField fx:id="heureField" promptText="Heure (HH:mm)" />
+            <TextField fx:id="adresseField" promptText="Adresse" />
+            <ComboBox fx:id="organisateurCombo" promptText="Organisateur" />
+            <Button fx:id="submitButton" text="Ajouter l'événement" />
+        </VBox>
+    </center>
 
-.label {
-    -fx-text-fill: white;
-}
+</BorderPane>
 
-.text-field, .combo-box, .date-picker {
-    -fx-background-color: #1e1e1e;
-    -fx-text-fill: white;
-}
-
-.btn-submit {
-    -fx-background-color: #00e676;
-    -fx-text-fill: #121212;
-}

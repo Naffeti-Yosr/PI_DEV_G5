@@ -1,21 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<!-- MainView.fxml -->
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ComboBox?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.esprit.controllers.AjoutEvent"
+            stylesheets="@/styles/AjoutEvent.css">
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.esprit.controllers.AjoutEvent"
-      spacing="15" styleClass="form-root"
-      stylesheets="@styles/AjoutEvent.css"
-      alignment="CENTER">
+    <!-- Left Panel -->
+    <left>
+        <VBox spacing="20" styleClass="left-panel">
+            <!-- Header Text -->
+            <Label styleClass="info-header"
+                   text="As a worldwide distributor of solar supplies we endeavor to provide fast and knowledgeable service, we can get all the materials you need by sea or air." />
 
-    <Label text="Ajouter / Modifier un Événement" styleClass="form-title"/>
+            <!-- “Global Office Map” Button -->
+            <Button styleClass="info-button" text="Global Office Map" />
 
-    <TextField fx:id="titreField" promptText="Titre de l'événement"/>
-    <TextField fx:id="descriptionField" promptText="Description"/>
-    <DatePicker fx:id="datePicker"/>
-    <TextField fx:id="heureField" promptText="Heure (HH:mm)"/>
-    <TextField fx:id="adresseField" promptText="Adresse"/>
-    <ComboBox fx:id="organisateurCombo" promptText="Organisateur"/>
+            <!-- Emergency Line / Location / Hours -->
+            <Label styleClass="info-sub" text="Emergency Line: (002) 01061245741" />
+            <Label styleClass="info-sub" text="Location: Brooklyn, New York, USA" />
+            <Label styleClass="info-sub" text="Mon - Fri: 8:00 am - 7:00 pm" />
 
-    <Button fx:id="submitButton" text="✔️ Enregistrer" styleClass="submit-button"/>
-</VBox>
+            <!-- Contact Us button -->
+            <Button styleClass="contact-us-button" text="Contact Us" />
+        </VBox>
+    </left>
+
+    <!-- Right Panel (the form) -->
+    <center>
+        <VBox spacing="20" alignment="TOP_LEFT" styleClass="form-panel">
+            <!-- Title / Description about the form -->
+            <Label styleClass="form-title"
+                   text="Get In Touch\n\nWe take great pride in everything that we do. Control over products allows us to ensure our customers receive the best quality service." />
+
+            <!-- Actual Form Fields -->
+            <GridPane hgap="10" vgap="10" styleClass="form-grid">
+                <!-- Titre -->
+                <Label text="Titre" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="titreField" promptText="Titre de l’événement"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <!-- Description -->
+                <Label text="Description" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="descriptionField" promptText="Description"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <!-- Date/Time -->
+                <Label text="Date  Time" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="datePicker"
+                            promptText="yyyy-MM-dd"
+                            GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <!-- Heure -->
+                <Label text="Heure" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="heureField" promptText="HH:mm"
+                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <!-- Adresse -->
+                <Label text="Adresse" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <TextField fx:id="adresseField" promptText="Adresse"
+                           GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+
+                <!-- Organizer (User) -->
+                <!-- Organizer (User) -->
+                <Label text="Organisateur" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="organisateurCombo"
+                          promptText="Sélectionner un utilisateur"
+                          GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+
+                <Button fx:id="submitButton"
+                        text="Submit Request"
+                        styleClass="submit-button"
+                        GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+            </GridPane>
+        </VBox>
+    </center>
+
+</BorderPane>

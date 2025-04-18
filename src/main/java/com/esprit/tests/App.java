@@ -21,23 +21,15 @@ public class App extends Application {
         launch(args);
     }
 
-
-
-        @Override
-        public void start(Stage primaryStage) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventsView.fxml"));
-                Parent root = loader.load();
-                Scene scene = new Scene(root, 950, 700);
-                primaryStage.setScene(scene);
-                primaryStage.setTitle("Gestion d'Événements");
-                primaryStage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Energy Management System");
+        // showAjoutEvent();
+        // Appeler la vue des événements
+        showEventsScreen();
+        primaryStage.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/logoPI.jpeg")));
+    }
 
     public void showAjoutEvent(Evenement evenementToEdit) {
         try {
@@ -45,9 +37,10 @@ public class App extends Application {
             Parent root = loader.load();
 
             AjoutEvent controller = loader.getController();
+            controller.setMainApp(this);
             controller.setMode("edit");
             controller.setEvenementToEdit(evenementToEdit);
-            controller.prefillFieldsIfEdit(); // optionnel
+            controller.prefillFieldsIfEdit();
 
             primaryStage.setScene(new Scene(root, 900, 600));
             primaryStage.setTitle("Modifier Événement");

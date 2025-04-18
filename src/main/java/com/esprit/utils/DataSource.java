@@ -1,5 +1,7 @@
 package com.esprit.utils;
 
+import com.esprit.models.User;
+
 import java.sql.*;
 
 public class DataSource {
@@ -24,6 +26,10 @@ public class DataSource {
         if(instance == null)
             instance = new DataSource();
         return instance;
+    }
+
+    public static User getCurrentUser() {
+        return null;
     }
 
     public Connection getConnection() {

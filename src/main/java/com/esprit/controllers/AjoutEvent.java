@@ -4,20 +4,35 @@ import com.esprit.Services.EvenementService;
 import com.esprit.Services.UserService;
 import com.esprit.models.Evenement;
 import com.esprit.models.User;
+import com.esprit.tests.App;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class AjoutEvent {
+
+    private App mainApp;
+    private String mode = "add";
+    private Evenement currentEvenement;
+
+    public void setMainApp(App mainApp) {
+        this.mainApp = mainApp;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    public void setEvenementToEdit(Evenement evenement) {
+        this.currentEvenement = evenement;
+    }
 
     @FXML private TextField titreField;
     @FXML private TextField descriptionField;
@@ -27,57 +42,38 @@ public class AjoutEvent {
     @FXML private ComboBox<User> organisateurCombo;
     @FXML private Button submitButton;
 
-    private String mode = "add";
-    private Evenement currentEvenement;
-    private BorderPane mainContainer;
-
-    public void setMainContainer(BorderPane container) {
-        this.mainContainer = container;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    public void setEvenementToEdit(Evenement evt) {
-        this.currentEvenement = evt;
-    }
-
     @FXML
     public void initialize() {
-        List<User> users = new UserService().getAllUsers();
+        UserService userService = new UserService();
+        List<User> users = userService.getAllUsers();
         organisateurCombo.setItems(FXCollections.observableArrayList(users));
 
         organisateurCombo.setCellFactory(param -> new ListCell<>() {
+            @Override
             protected void updateItem(User user, boolean empty) {
                 super.updateItem(user, empty);
-                setText((empty || user == null) ? null : user.getNom());
+                setText(empty || user == null ? null : user.getNom());
             }
         });
 
         organisateurCombo.setButtonCell(new ListCell<>() {
+            @Override
             protected void updateItem(User user, boolean empty) {
                 super.updateItem(user, empty);
-                setText((empty || user == null) ? null : user.getNom());
+                setText(empty || user == null ? null : user.getNom());
             }
         });
 
-        submitButton.setOnAction(e -> handleSubmit());
-    }
-
-    public void prefillFieldsIfEdit() {
         if ("edit".equals(mode) && currentEvenement != null) {
-            titreField.setText(currentEvenement.getTitre());
-            descriptionField.setText(currentEvenement.getDescription());
-            datePicker.setValue(currentEvenement.getDate().toLocalDate());
-            heureField.setText(currentEvenement.getDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-            adresseField.setText(currentEvenement.getAdresse());
-            organisateurCombo.setValue(currentEvenement.getOrganisateur());
-            submitButton.setText("Modifier l'événement");
+            prefillFieldsIfEdit();
         }
+
+        submitButton.setOnAction(event -> handleSubmit());
     }
 
     private void handleSubmit() {
+        EvenementService evenementService = new EvenementService();
+
         String titre = titreField.getText();
         String description = descriptionField.getText();
         LocalDate date = datePicker.getValue();
@@ -85,7 +81,8 @@ public class AjoutEvent {
         String adresse = adresseField.getText();
         User organisateur = organisateurCombo.getValue();
 
-        if (titre.isEmpty() || description.isEmpty() || date == null || heureStr.isEmpty() || adresse.isEmpty() || organisateur == null) {
+        if (titre.isEmpty() || description.isEmpty() || date == null || heureStr.isEmpty()
+                || adresse.isEmpty() || organisateur == null) {
             showAlert(Alert.AlertType.ERROR, "Champs manquants", "Veuillez remplir tous les champs.");
             return;
         }
@@ -93,44 +90,59 @@ public class AjoutEvent {
         LocalTime heure;
         try {
             heure = LocalTime.parse(heureStr, DateTimeFormatter.ofPattern("HH:mm"));
-        } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Heure invalide", "Veuillez entrer une heure au format HH:mm");
+        } catch (DateTimeParseException e) {
+            showAlert(Alert.AlertType.ERROR, "Format invalide", "Veuillez entrer l'heure au format HH:mm.");
             return;
         }
 
         LocalDateTime dateTime = LocalDateTime.of(date, heure);
-        EvenementService service = new EvenementService();
 
-        if ("edit".equals(mode) && currentEvenement != null) {
+        if (mode.equals("edit") && currentEvenement != null) {
+            // 🔁 Mode modification
             currentEvenement.setTitre(titre);
             currentEvenement.setDescription(description);
             currentEvenement.setDate(dateTime);
             currentEvenement.setAdresse(adresse);
             currentEvenement.setOrganisateur(organisateur);
-            service.update(currentEvenement);
+
+            evenementService.update(currentEvenement);
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Événement modifié avec succès !");
         } else {
-            Evenement evt = new Evenement(0, titre, description, dateTime, adresse, organisateur);
-            service.add(evt);
+            Evenement evenement = new Evenement(0, titre, description, dateTime, adresse, organisateur);
+            evenementService.add(evenement);
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Événement ajouté avec succès !");
         }
 
-        retourVersListe();
+        titreField.clear();
+        descriptionField.clear();
+        datePicker.setValue(null);
+        heureField.clear();
+        adresseField.clear();
+        organisateurCombo.setValue(null);
+        submitButton.setText("Submit Request");
     }
 
-    private void retourVersListe() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventsView.fxml"));
-            Parent listView = loader.load();
-            mainContainer.setCenter(listView);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void prefillFieldsIfEdit() {
+        if (mode.equals("edit") && currentEvenement != null) {
+            titreField.setText(currentEvenement.getTitre());
+            descriptionField.setText(currentEvenement.getDescription());
+            if (currentEvenement.getDate() != null) {
+                datePicker.setValue(currentEvenement.getDate().toLocalDate());
+                heureField.setText(currentEvenement.getDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+            }
+            adresseField.setText(currentEvenement.getAdresse());
+            organisateurCombo.setValue(currentEvenement.getOrganisateur());
+
+            submitButton.setText("Modifier l'événement");
         }
     }
 
-    private void showAlert(Alert.AlertType type, String titre, String message) {
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
-        alert.setTitle(titre);
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(content);
         alert.showAndWait();
     }
-}
+} 

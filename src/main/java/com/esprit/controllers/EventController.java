@@ -2,6 +2,7 @@ package com.esprit.controllers;
 
 import com.esprit.Services.EvenementService;
 import com.esprit.models.Evenement;
+import com.esprit.models.Poster;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,128 +10,90 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class EventController {
 
-    @FXML private BorderPane mainContainer;
-    @FXML private FlowPane eventsFlowPane;
-    @FXML private VBox sidebar;
-    @FXML private HBox dayFilterBar;
+    @FXML private VBox mainContainer;
+    @FXML private VBox searchContainer;
     @FXML private TextField searchField;
-    @FXML private ImageView logoImage;
-    @FXML private Button menuButton;
+    @FXML private FlowPane eventsFlowPane;
 
     private List<Evenement> allEvents;
-    private String activeDay = null;
 
     @FXML
     public void initialize() {
-        // Logo en haut à gauche
-        logoImage.setImage(new Image(getClass().getResource("/logoPI.jpeg").toExternalForm()));
-
-        // Affichage ou masquage de la sidebar
-        menuButton.setOnAction(e -> {
-            boolean visible = !sidebar.isVisible();
-            sidebar.setVisible(visible);
-            sidebar.setManaged(visible);
-        });
-
-        // Charger les événements
         EvenementService service = new EvenementService();
         allEvents = service.get();
+        afficherEvenements(allEvents);
 
-        // Création de la barre des jours
-        String[] jours = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"};
-        for (String jour : jours) {
-            Button btn = new Button(jour);
-            btn.getStyleClass().add("day-button");
-            btn.setOnAction(e -> toggleDayFilter(jour, btn));
-            dayFilterBar.getChildren().add(btn);
-        }
-
-        // Listener de recherche
-        searchField.textProperty().addListener((obs, o, n) -> refreshEvents());
-
-        // Affichage initial
-        refreshEvents();
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> {
+            List<Evenement> filtered = allEvents.stream()
+                    .filter(e -> e.getTitre().toLowerCase().contains(newVal.toLowerCase()))
+                    .toList();
+            afficherEvenements(filtered);
+        });
     }
 
-    private void toggleDayFilter(String jour, Button btn) {
-        if (jour.equals(activeDay)) {
-            activeDay = null;
-            btn.getStyleClass().remove("active");
-        } else {
-            dayFilterBar.getChildren().forEach(node -> node.getStyleClass().remove("active"));
-            activeDay = jour;
-            btn.getStyleClass().add("active");
-        }
-        refreshEvents();
-    }
-
-    private void refreshEvents() {
+    private void afficherEvenements(List<Evenement> events) {
         eventsFlowPane.getChildren().clear();
-        String searchText = searchField.getText().toLowerCase();
-
-        for (Evenement evt : allEvents) {
-            boolean matchJour = (activeDay == null) || evt.getDate().getDayOfWeek().toString().equalsIgnoreCase(activeDay);
-            boolean matchTitre = evt.getTitre().toLowerCase().contains(searchText);
-
-            if (matchJour && matchTitre) {
-                eventsFlowPane.getChildren().add(createCard(evt));
-            }
+        for (Evenement evt : events) {
+            VBox card = creerCarteEvenement(evt);
+            eventsFlowPane.getChildren().add(card);
         }
     }
 
-    private VBox createCard(Evenement evt) {
-        VBox card = new VBox(6);
+    private VBox creerCarteEvenement(Evenement evt) {
+        VBox card = new VBox(10);
         card.getStyleClass().add("card");
-        card.setPrefWidth(200);
+        card.setPrefWidth(220);
 
-        // Image de l'événement
-        ImageView iv = new ImageView();
-        String imagePath = (evt.getPoster() != null && evt.getPoster().getImagePath() != null)
-                ? evt.getPoster().getImagePath()
-                : "/default_event.png";
-
-        try {
-            iv.setImage(new Image(getClass().getResource(imagePath).toExternalForm()));
-        } catch (Exception e) {
-            iv.setImage(new Image(getClass().getResource("/default_event.png").toExternalForm()));
+        // Image
+        String path = "/default_event.png";
+        if (evt.getPoster() != null && evt.getPoster().getImagePath() != null) {
+            path = evt.getPoster().getImagePath();
         }
 
-        iv.setFitWidth(200);
-        iv.setFitHeight(120);
-        iv.setPreserveRatio(true);
+        ImageView imageView = new ImageView(new Image(getClass().getResource(path).toExternalForm()));
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(120);
+        imageView.setPreserveRatio(true);
 
-        // Titre
         Label title = new Label(evt.getTitre());
-        title.getStyleClass().add("title");
+        title.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
-        // Date
-        Label date = new Label("📅 " + evt.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        date.getStyleClass().add("date");
+        Label date = new Label(evt.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        date.setStyle("-fx-text-fill: #888;");
 
-        // Heure
-        Label time = new Label("⏰ " + evt.getDate().format(DateTimeFormatter.ofPattern("HH:mm")));
-        time.getStyleClass().add("time");
+        Label badge = new Label();
+        if (evt.getDate().toLocalDate().isEqual(LocalDate.now())) {
+            badge.setText("🟢 Aujourd'hui");
+            badge.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-padding: 2 6; -fx-background-radius: 5;");
+        }
 
-        card.getChildren().addAll(iv, title, date, time);
+        card.getChildren().addAll(imageView, title, date);
+        if (!badge.getText().isEmpty()) card.getChildren().add(badge);
 
-        // Click → vers détails
         card.setOnMouseClicked(e -> openEventDetails(evt));
-
         return card;
     }
 
     private void openEventDetails(Evenement evt) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventDetails.fxml"));
-            Parent detailView = loader.load();
+            Parent detailsView = loader.load();
+
             EventDetailsController controller = loader.getController();
-            controller.setEvent(evt, mainContainer);
-            mainContainer.setCenter(detailView);
+            controller.setEvent(evt, mainContainer, searchContainer);
+
+            // Masquer la barre de recherche
+            searchContainer.setVisible(false);
+            searchContainer.setManaged(false);
+
+            mainContainer.getChildren().set(1, detailsView); // Remplace la FlowPane
         } catch (Exception e) {
             e.printStackTrace();
         }

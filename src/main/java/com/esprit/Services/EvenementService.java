@@ -6,7 +6,10 @@ import com.esprit.utils.DataSource;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import static java.sql.DriverManager.getConnection;
 
 public class EvenementService implements IService<Evenement> , IEventService{
     private final Connection connection;
@@ -14,6 +17,28 @@ public class EvenementService implements IService<Evenement> , IEventService{
     public EvenementService() {
         connection = DataSource.getInstance().getConnection();
     }
+
+    public List<Evenement> getAll() {
+        List<Evenement> list = new ArrayList<>();
+        try (Connection con = DataSource.getInstance().getConnection()) {            String query = "SELECT * FROM evenement";
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Evenement e = new Evenement();
+                e.setId(rs.getInt("id"));
+                e.setTitre(rs.getString("titre"));
+                e.setDescription(rs.getString("description"));
+                e.setAdresse(rs.getString("adresse"));
+                e.setDate(rs.getTimestamp("date").toLocalDateTime());
+                // Ajouter aussi l’organisateur si besoin
+                list.add(e);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 
     @Override
     public void add(Evenement Evenement) {
@@ -231,4 +256,6 @@ public class EvenementService implements IService<Evenement> , IEventService{
             System.out.println("Error adding participant: " + ex.getMessage());
         }
     }
+
+
 }
