@@ -81,7 +81,7 @@ public class EventDetailsController {
             AjoutEvent controller = loader.getController();
             controller.setMode("edit");
             controller.setEvenementToEdit(evenement);
-            controller.setMainContainer((VBox) mainContainer.getCenter()); // ✅ injecte le vrai conteneur
+            controller.setMainContainer(mainContainer); // ✅ Correct
             controller.prefillFieldsIfEdit();
 
             mainContainer.setCenter(form);

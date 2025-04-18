@@ -40,7 +40,7 @@ public class App extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventsView.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 1000, 700);
+            Scene scene = new Scene(root, 1200, 800);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Liste des Événements");
             primaryStage.show();

@@ -9,7 +9,7 @@
             stylesheets="@/styles/EventsView.css"
             prefWidth="1200" prefHeight="800">
 
-    <!-- Sidebar toggle button (Burger Menu) -->
+    <!-- Barre de recherche -->
     <top>
         <VBox fx:id="searchContainer" spacing="10">
             <HBox spacing="20" alignment="CENTER_LEFT" styleClass="header">
@@ -32,12 +32,16 @@
         </VBox>
     </left>
 
-    <!-- Centre avec filtres et événements -->
-
+    <!-- ✅ CONTENU PRINCIPAL PLACÉ DANS CENTER -->
     <center>
         <VBox fx:id="dayFilterContainer" spacing="10">
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="ajoutEventButton" text="➕ Ajouter Événement" styleClass="add-button"/>
+            </HBox>
+
             <HBox fx:id="dayFilterBar" spacing="10" alignment="CENTER" styleClass="day-bar"/>
-            <ScrollPane >
+
+            <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="scroll">
                 <FlowPane fx:id="eventsFlowPane"
                           hgap="20" vgap="20"
                           prefWrapLength="800"
@@ -45,7 +49,4 @@
             </ScrollPane>
         </VBox>
     </center>
-
-
-
 </BorderPane>

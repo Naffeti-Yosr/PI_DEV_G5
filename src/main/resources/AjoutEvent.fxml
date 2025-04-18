@@ -17,14 +17,16 @@
 
     <center>
         <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;" styleClass="form-container">
+            <Button fx:id="backButton" text="← Retour" styleClass="btn btn-edit-product"/>
+
             <TextField fx:id="titreField" promptText="Titre de l'événement"/>
             <TextField fx:id="descriptionField" promptText="Description"/>
             <DatePicker fx:id="datePicker" promptText="Date"/>
             <TextField fx:id="heureField" promptText="Heure (HH:mm)"/>
             <TextField fx:id="adresseField" promptText="Adresse"/>
             <ComboBox fx:id="organisateurCombo" promptText="Organisateur"/>
-
             <Button fx:id="submitButton" text="Valider" styleClass="btn btn-add-product"/>
         </VBox>
     </center>
+
 </BorderPane>

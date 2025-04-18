@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
@@ -27,10 +28,13 @@ public class AjoutEvent {
     @FXML private TextField adresseField;
     @FXML private ComboBox<User> organisateurCombo;
     @FXML private Button submitButton;
+    @FXML private Button backButton;
+
 
     private String mode = "add";
     private Evenement currentEvenement;
-    private VBox mainContainer;
+    @FXML
+    private BorderPane mainContainer;
 
     public void setMode(String mode) {
         this.mode = mode;
@@ -40,7 +44,7 @@ public class AjoutEvent {
         this.currentEvenement = evenement;
     }
 
-    public void setMainContainer(VBox mainContainer) {
+    public void setMainContainer(BorderPane mainContainer) {
         this.mainContainer = mainContainer;
     }
 
@@ -71,6 +75,8 @@ public class AjoutEvent {
         }
 
         submitButton.setOnAction(event -> handleSubmit());
+        backButton.setOnAction(e -> retourAEventsView());
+
     }
 
     private void handleSubmit() {
@@ -141,13 +147,7 @@ public class AjoutEvent {
     }
 
     private void retourAEventsView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventsView.fxml"));
-            Parent view = loader.load();
-            mainContainer.getChildren().setAll(view);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        com.esprit.tests.App.getInstance().showEventsScreen();
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {

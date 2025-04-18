@@ -25,7 +25,7 @@ public class EventController {
     @FXML private VBox sidebar;
     @FXML private Button burgerButton;
     @FXML private VBox dayFilterContainer;
-
+    @FXML private Button ajoutEventButton;
 
     private List<Evenement> allEvents;
     private String activeDay = null;
@@ -34,24 +34,30 @@ public class EventController {
     public void initialize() {
         logoImage.setImage(new Image(getClass().getResource("/logoPi.jpeg").toExternalForm()));
         EvenementService service = new EvenementService();
-        allEvents = service.get();
+        allEvents = service.get()
+                .stream()
+                .sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate()))
+                .toList();
 
         setupDayFilterBar();
         afficherEvenements(allEvents);
 
-        // Gestion du clic sur le bouton burger
+        // ✅ Bouton Ajouter Événement
+        ajoutEventButton.setOnAction(e -> openAjoutEventForm());
+
+        // ✅ Gestion du burger menu
         burgerButton.setOnAction(e -> toggleSidebar());
 
-        // Clic en dehors de la sidebar pour la masquer
+        // ✅ Clic extérieur pour fermer la sidebar
         mainContainer.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, event -> {
-            // Si la sidebar est visible et que le clic est à l’extérieur de celle-ci
-            if (sidebar.isVisible() && !sidebar.localToScene(sidebar.getBoundsInLocal()).contains(event.getSceneX(), event.getSceneY())) {
+            if (sidebar.isVisible() &&
+                    !sidebar.localToScene(sidebar.getBoundsInLocal()).contains(event.getSceneX(), event.getSceneY())) {
                 sidebar.setVisible(false);
                 sidebar.setManaged(false);
             }
         });
 
-        // Barre de recherche
+        // ✅ Barre de recherche
         searchField.textProperty().addListener((obs, oldVal, newVal) -> {
             List<Evenement> filtered = allEvents.stream()
                     .filter(e -> e.getTitre().toLowerCase().contains(newVal.toLowerCase()))
@@ -60,6 +66,26 @@ public class EventController {
         });
     }
 
+    // ✅ Bien placée hors de initialize()
+    private void openAjoutEventForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutEvent.fxml"));
+            Parent ajoutForm = loader.load();
+
+            AjoutEvent controller = loader.getController();
+            controller.setMode("add"); // mode ajout
+            controller.setMainContainer(mainContainer);
+
+            searchContainer.setVisible(false);
+            searchContainer.setManaged(false);
+            dayFilterContainer.setVisible(false);
+            dayFilterContainer.setManaged(false);
+
+            mainContainer.setCenter(ajoutForm);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     private void toggleSidebar() {
         boolean isVisible = sidebar.isVisible();
@@ -165,7 +191,6 @@ public class EventController {
 
             searchContainer.setVisible(false);
             searchContainer.setManaged(false);
-
             dayFilterContainer.setVisible(false);
             dayFilterContainer.setManaged(false);
 
@@ -174,10 +199,10 @@ public class EventController {
             e.printStackTrace();
         }
     }
+
     public void restaurerVuePrincipale() {
         searchContainer.setVisible(true);
         searchContainer.setManaged(true);
-
         dayFilterContainer.setVisible(true);
         dayFilterContainer.setManaged(true);
     }
@@ -185,5 +210,4 @@ public class EventController {
     public void setMainContainer(BorderPane mainContainer) {
         this.mainContainer = mainContainer;
     }
-
 }
