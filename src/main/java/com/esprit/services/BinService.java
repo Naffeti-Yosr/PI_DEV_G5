@@ -17,7 +17,7 @@ public class BinService implements IService<Bin> {
 
     @Override
     public void add(Bin smartBin) {
-        String req = "INSERT INTO bins(location, typeDechet, niveauRemplissage, statut) VALUES (?, ?, ?, ?)";
+        String req = "INSERT INTO bin(location, typeDechet, niveauRemplissage, statut) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setString(1, smartBin.getLocation());
             pst.setString(2, smartBin.getTypeDechet());
@@ -32,7 +32,7 @@ public class BinService implements IService<Bin> {
 
     @Override
     public void update(Bin smartBin) {
-        String req = "UPDATE bins SET location=?, typeDechet=?, niveauRemplissage=?, statut=? WHERE id=?";
+        String req = "UPDATE bin SET location=?, typeDechet=?, niveauRemplissage=?, statut=? WHERE id=?";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setString(1, smartBin.getLocation());
             pst.setString(2, smartBin.getTypeDechet());
@@ -48,7 +48,7 @@ public class BinService implements IService<Bin> {
 
     @Override
     public void delete(Bin smartBin) {
-        String req = "DELETE FROM bins WHERE id=?";
+        String req = "DELETE FROM bin WHERE id=?";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setInt(1, smartBin.getId());
             pst.executeUpdate();
@@ -61,7 +61,7 @@ public class BinService implements IService<Bin> {
     @Override
     public List<Bin> get() {
         List<Bin> smartBins = new ArrayList<>();
-        String req = "SELECT * FROM bins";
+        String req = "SELECT * FROM bin";
         try (PreparedStatement pst = connection.prepareStatement(req);
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {

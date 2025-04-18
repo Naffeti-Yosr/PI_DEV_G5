@@ -7,7 +7,7 @@ public class Bin {
     private String location;
     private String typeDechet;
     private double niveauRemplissage;
-    private String statut;
+    private String statut;;
 
     public Bin(int id, String location, String typeDechet, double niveauRemplissage, String statut) {
         this.id = id;

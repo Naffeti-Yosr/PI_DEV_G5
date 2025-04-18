@@ -17,7 +17,7 @@ public class TruckService implements IService<Truck> {
 
     @Override
     public void add(Truck truck) {
-        String req = "INSERT INTO trucks(capaciteMax, niveauRemplissageActuel,section , statut) VALUES (?, ?, ?, ?)";
+        String req = "INSERT INTO truck(capaciteMax, niveauRemplissageActuel,section , statut) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setDouble(1, truck.getCapaciteMax());
             pst.setDouble(2, truck.getNiveauRemplissageActuel());
@@ -32,7 +32,7 @@ public class TruckService implements IService<Truck> {
 
     @Override
     public void update(Truck truck) {
-        String req = "UPDATE trucks SET capaciteMax=?, niveauRemplissageActuel=?, section=?, statut=? WHERE id=?";
+        String req = "UPDATE truck SET capaciteMax=?, niveauRemplissageActuel=?, section=?, statut=? WHERE id=?";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setDouble(1, truck.getCapaciteMax());
             pst.setDouble(2, truck.getNiveauRemplissageActuel());
@@ -48,11 +48,11 @@ public class TruckService implements IService<Truck> {
 
     @Override
     public void delete(Truck truck) {
-        String req = "DELETE FROM trucks WHERE id=?";
+        String req = "DELETE FROM truck WHERE id=?";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setInt(1, truck.getId());
             pst.executeUpdate();
-            System.out.println("Truck supprimé !");
+            System.out.println("SmartTruck supprimé !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -61,7 +61,7 @@ public class TruckService implements IService<Truck> {
     @Override
     public List<Truck> get() {
         List<Truck> trucks = new ArrayList<>();
-        String req = "SELECT * FROM trucks";
+        String req = "SELECT * FROM truck";
         try (PreparedStatement pst = connection.prepareStatement(req);
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {

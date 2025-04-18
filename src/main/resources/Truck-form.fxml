@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane fx:id="mainPane" prefHeight="500.0" prefWidth="650.0" styleClass="dashboard-root"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.esprit.controllers.TruckFormController">
+
+   <!-- En-tête avec fond vert et structure identique au dashboard -->
+   <HBox alignment="CENTER" layoutX="150.0" layoutY="20.0" spacing="20" styleClass="header" prefWidth="350.0">
+      <ImageView fitHeight="40.0" fitWidth="40.0" preserveRatio="true">
+         <image>
+            <Image url="@/images/truck-icon.png"/>
+         </image>
+      </ImageView>
+
+      <Label text="Smart Truck System" styleClass="header-title">
+         <font>
+            <Font name="System Bold" size="24.0"/>
+         </font>
+      </Label>
+
+   </HBox>
+
+   <!-- Conteneur du formulaire -->
+   <VBox layoutX="150.0" layoutY="90.0" spacing="15" styleClass="form-container" prefWidth="350.0">
+      <!-- Capacité Max -->
+      <HBox spacing="10" alignment="CENTER_LEFT">
+         <Label text="Capacité Max:" styleClass="form-label"/>
+         <TextField fx:id="TC" styleClass="form-input" promptText="en kg"/>
+      </HBox>
+
+      <!-- Niveau Remplissage -->
+      <HBox spacing="10" alignment="CENTER_LEFT">
+         <Label text="Remplissage:" styleClass="form-label"/>
+         <TextField fx:id="TST" styleClass="form-input" promptText="0-100%"/>
+      </HBox>
+
+      <!-- Section -->
+      <HBox spacing="10" alignment="CENTER_LEFT">
+         <Label text="Section:" styleClass="form-label"/>
+         <TextField fx:id="TR" styleClass="form-input"/>
+      </HBox>
+
+      <!-- Statut -->
+      <HBox spacing="10" alignment="CENTER_LEFT">
+         <Label text="Statut:" styleClass="form-label"/>
+         <TextField fx:id="TS" styleClass="form-input"/>
+      </HBox>
+
+      <!-- Bouton Ajouter -->
+      <Button fx:id="addButton" text="AJOUTER" onAction="#handleAddButton" styleClass="btn-add-product">
+         <HBox.margin>
+            <Insets top="15.0" left="0.0" right="0.0"/>
+         </HBox.margin>
+      </Button>
+   </VBox>
+</AnchorPane>

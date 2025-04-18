@@ -1,0 +1,164 @@
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* === Arrière-plan principal === */
+.dashboard-root {
+    -fx-background-color: #f5fff5;
+    -fx-padding: 20;
+}
+
+/* === En-têtes === */
+.header {
+    -fx-background-color: #2e7d32;
+    -fx-padding: 15;
+    -fx-alignment: center;
+}
+
+.header-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+
+
+/* === Conteneurs de formulaire === */
+.form-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-border-color: #a5d6a7;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10;
+}
+
+/* === Labels === */
+.form-label {
+    -fx-font-weight: bold;
+    -fx-min-width: 100;
+    -fx-text-fill: #2e7d32;
+}
+
+/* === Champs de saisie === */
+.form-input {
+    -fx-background-radius: 5;
+    -fx-border-color: #81c784;
+    -fx-border-radius: 5;
+    -fx-border-width: 1px;
+    -fx-pref-width: 200;
+    -fx-padding: 5;
+}
+
+.form-input:focused {
+    -fx-border-color: #2e7d32;
+    -fx-border-width: 2px;
+}
+
+/* === Boutons === */
+.btn-add-product {
+    -fx-pref-width: 140px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+    -fx-padding: 0 20px;
+    -fx-background-color: #4CAF50;
+}
+
+.btn-add-product:hover {
+    -fx-background-color: #388e3c;
+}
+
+/* === Tableaux === */
+.product-table {
+    -fx-background-color: white;
+    -fx-border-color: #a5d6a7;
+    -fx-border-width: 2px;
+}
+
+.product-table .column-header {
+    -fx-background-color: #2e7d32;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.product-table .table-row-cell {
+    -fx-background-color: white;
+}
+
+.product-table .table-row-cell:odd {
+    -fx-background-color: #f1f8e9;
+}
+
+.product-table .table-row-cell:hover {
+    -fx-background-color: #dcedc8;
+}
+
+.product-table .table-row-cell:selected {
+    -fx-background-color: #c8e6c9;
+}
+
+.product-table .table-cell {
+    -fx-alignment: center;
+    -fx-padding: 8px;
+    -fx-border-color: transparent;
+}
+
+/* === Onglets === */
+.tab-pane {
+    -fx-background-color: transparent;
+    -fx-tab-min-width: 120px;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.custom-tab {
+    -fx-background-color: #e8f5e9;
+    -fx-border-color: #c8e6c9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5 5 0 0;
+}
+
+.custom-tab:selected {
+    -fx-background-color: #c8e6c9;
+    -fx-font-weight: bold;
+}
+
+.tab-content {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-border-color: #c8e6c9;
+    -fx-border-width: 0 1px 1px 1px;
+}
+
+/* === Badges === */
+.recyclable-badge {
+    -fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-padding: 3 10;
+    -fx-background-radius: 15;
+}
+
+/* === Combobox === */
+.category-combo {
+    -fx-pref-width: 200;
+    -fx-background-color: white;
+    -fx-border-color: #81c784;
+}
+
+/* === Barres d'outils === */
+.toolbar, .action-bar {
+    -fx-spacing: 15;
+    -fx-padding: 10 0;
+}

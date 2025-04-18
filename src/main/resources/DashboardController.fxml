@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.esprit.controllers.DashboardController"
+            styleClass="dashboard-root">
+
+    <top>
+        <HBox alignment="CENTER" spacing="20" styleClass="header">
+
+            <Label text="Smart Waste Management Dashboard" styleClass="header-title"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane styleClass="tab-pane">
+            <Tab text="Bins" styleClass="custom-tab">
+                <VBox spacing="15" styleClass="tab-content">
+                    <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="toolbar">
+                        <Button text="Add New Bin" onAction="#goToAddBin" styleClass="btn-add-product"/>
+                    </HBox>
+                    <TableView fx:id="binsTable" styleClass="product-table">
+                        <columns>
+                            <TableColumn text="ID" prefWidth="50" fx:id="idBinColumn" styleClass="table-column"/>
+                            <TableColumn text="Location" prefWidth="150" fx:id="locationColumn" styleClass="table-column"/>
+                            <TableColumn text="Type" prefWidth="100" fx:id="typeColumn" styleClass="table-column"/>
+                            <TableColumn text="Fill Level" prefWidth="80" fx:id="fillColumn" styleClass="table-column"/>
+                            <TableColumn text="Status" prefWidth="100" fx:id="statusColumn" styleClass="table-column"/>
+                            <TableColumn text="Actions" prefWidth="150" fx:id="actionsBinColumn" styleClass="table-column">
+                            </TableColumn>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+            <Tab text="Trucks" styleClass="custom-tab">
+                <VBox spacing="15" styleClass="tab-content">
+                    <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="toolbar">
+                        <Button text="Add New Truck" onAction="#goToAddTruck" styleClass="btn-add-product"/>
+                    </HBox>
+                    <TableView fx:id="trucksTable" styleClass="product-table">
+                        <columns>
+                            <TableColumn text="ID" prefWidth="50" fx:id="idTruckColumn" styleClass="table-column"/>
+                            <TableColumn text="Max Capacity" prefWidth="100" fx:id="capacityColumn" styleClass="table-column"/>
+                            <TableColumn text="Fill Level" prefWidth="80" fx:id="truckFillColumn" styleClass="table-column"/>
+                            <TableColumn text="Section" prefWidth="100" fx:id="sectionColumn" styleClass="table-column"/>
+                            <TableColumn text="Status" prefWidth="100" fx:id="truckStatusColumn" styleClass="table-column"/>
+                            <TableColumn text="Actions" prefWidth="150" fx:id="actionsTruckColumn" styleClass="table-column">
+                            </TableColumn>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+
+</BorderPane>

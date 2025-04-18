@@ -7,16 +7,17 @@ public class Truck {
     private String section;
     private String statut;
 
-    public Truck(double capaciteMax, double niveauRemplissageActuel, String section, String statut) {
+
+
+    public Truck(int id, double capaciteMax, double niveauRemplissageActuel, String section, String statut) {
+        this.id = id;
         this.capaciteMax = capaciteMax;
         this.niveauRemplissageActuel = niveauRemplissageActuel;
         this.section = section;
         this.statut = statut;
     }
 
-
-    public Truck(int id, double capaciteMax, double niveauRemplissageActuel, String section, String statut) {
-        this.id = id;
+    public Truck(double capaciteMax, double niveauRemplissageActuel, String section, String statut) {
         this.capaciteMax = capaciteMax;
         this.niveauRemplissageActuel = niveauRemplissageActuel;
         this.section = section;
