@@ -21,6 +21,11 @@ public class User {
         this.role = role;
     }
 
+    public User(int id, String nom) {
+        this.id = id;
+        this.nom = nom;
+    }
+
     // Getters & Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

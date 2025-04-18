@@ -1,0 +1,62 @@
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f9f9f9;
+}
+
+.header {
+    -fx-padding: 10;
+    -fx-background-color: #ffffff;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0 0 1 0;
+}
+
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.search-bar {
+    -fx-pref-width: 250;
+    -fx-padding: 6;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+.menu-button {
+    -fx-font-size: 18px;
+}
+
+.sidebar {
+    -fx-padding: 10;
+    -fx-background-color: #eeeeee;
+}
+
+.day-bar {
+    -fx-padding: 10;
+}
+
+.event-flow {
+    -fx-padding: 15;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.1), 4, 0.0, 0, 2);
+}
+
+.card .title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #444;
+}
+
+.card .date,
+.card .time {
+    -fx-text-fill: #777;
+}

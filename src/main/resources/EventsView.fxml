@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.esprit.controllers.EventController"
+            stylesheets="@styles/EventsView.css"
+            fx:id="mainContainer">
+
+    <left>
+        <VBox fx:id="sidebar" spacing="10" styleClass="sidebar" visible="false" managed="false">
+            <Button text="🏠 Accueil"/>
+            <Button text="👤 Profil"/>
+            <Button text="📋 Événements"/>
+            <Button text="🖼️ Posters"/>
+        </VBox>
+    </left>
+
+    <top>
+        <HBox spacing="15" styleClass="header">
+            <ImageView fx:id="logoImage" fitWidth="40" fitHeight="40"/>
+            <Label text="Événements" styleClass="title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="searchField" promptText="🔍 Rechercher..." styleClass="search-bar"/>
+            <Button fx:id="menuButton" text="☰" styleClass="menu-button"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <HBox fx:id="dayFilterBar" spacing="10" styleClass="day-bar"/>
+            <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                <FlowPane fx:id="eventsFlowPane" hgap="20" vgap="20" styleClass="event-flow"/>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

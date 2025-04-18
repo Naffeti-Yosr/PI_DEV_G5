@@ -1,5 +1,6 @@
 package com.esprit.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class Evenement {
         this.date = date;
         this.adresse = adresse;
         this.organisateur = organisateur;
+    }
+
+    public Evenement(String titre, String description, LocalDate date, String adresse, String organisateur) {
     }
 
     public String getTitre() {
@@ -91,4 +95,14 @@ public class Evenement {
     public void setParticipants(List<User> participants) {
         this.participants = participants;
     }
+    private Poster poster;
+
+    public Poster getPoster() {
+        return poster;
+    }
+
+    public void setPoster(Poster poster) {
+        this.poster = poster;
+    }
+
 }

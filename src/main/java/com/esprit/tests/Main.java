@@ -60,6 +60,15 @@ public class Main {
                     ", Description: " + e.getDescription());
         }
 
+        Evenement ev = evenementService.getEvent(1);
+        System.out.println("List of events in DB:");
+
+            System.out.println("Event ID: " + ev.getId() + ", Title: " + ev.getTitre() +
+                    ", Description: " + ev.getDescription());
+
+
+
+
         // Update event: Change the description.
         event.setDescription("Updated event description");
         System.out.println("Updating event with ID " + event.getId());
@@ -104,5 +113,20 @@ public class Main {
         System.out.println("Deleting poster with ID " + poster.getId());
         posterService.delete(poster.getId());
         System.out.println("Poster deleted successfully.");
+
+        // 🔸 Étape 1 : Créer un Poster avec un chemin d'image
+        Poster poster1 = new Poster(1, "/images/event1.png");
+
+        // 🔸 Étape 2 : Créer un Evenement et lui associer le poster
+        Evenement evenement = new Evenement();
+        evenement.setPoster(poster1);
+
+        // 🔸 Étape 3 : Tester si getPoster() retourne bien l'objet
+        if (evenement.getPoster() != null) {
+            System.out.println("✅ getPoster() fonctionne !");
+            System.out.println("Image path : " + evenement.getPoster().getImagePath());
+        } else {
+            System.out.println("❌ getPoster() ne retourne rien !");
+        }
     }
     }

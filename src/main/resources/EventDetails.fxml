@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.esprit.controllers.EventDetailsController"
+      spacing="20" alignment="CENTER"
+      stylesheets="@styles/EventDetails.css"
+      style="-fx-padding: 40;">
+
+    <ImageView fx:id="posterImage" fitWidth="220" fitHeight="220"/>
+
+    <Label fx:id="titleLabel" styleClass="title"/>
+    <Label fx:id="dateLabel" styleClass="subtitle"/>
+    <Label fx:id="adresseLabel"/>
+    <Label fx:id="descriptionLabel" wrapText="true" maxWidth="400"/>
+
+    <HBox spacing="15" alignment="CENTER">
+        <Button fx:id="editButton" text="✏️ Modifier"/>
+        <Button fx:id="deleteButton" text="🗑️ Supprimer"/>
+        <Button fx:id="backButton" text="🔙 Retour"/>
+    </HBox>
+</VBox>

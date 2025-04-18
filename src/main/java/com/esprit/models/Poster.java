@@ -78,4 +78,13 @@ public class Poster {
     public void setCreatedById(int createdById) {
         this.createdById = createdById;
     }
+
+    public Poster(int id, String imagePath) {
+        this.id = id;
+        this.imageUrl = imagePath;
+    }
+
+    public String getImagePath() {
+        return imageUrl;
+    }
 }

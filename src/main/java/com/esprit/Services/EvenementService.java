@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EvenementService implements IService<Evenement> {
+public class EvenementService implements IService<Evenement> , IEventService{
     private final Connection connection;
 
     public EvenementService() {
@@ -171,6 +171,35 @@ public class EvenementService implements IService<Evenement> {
             System.out.println("Error retrieving Evenements: " + ex.getMessage());
         }
         return Evenements;
+    }
+
+    @Override
+    public Evenement getEvent(int id){
+        Evenement evenement = new Evenement();
+        String sql = "SELECT * FROM Evenements WHERE id=?";
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            evenement.setId(rs.getInt("id"));
+            evenement.setTitre(rs.getString("name"));
+            evenement.setDescription(rs.getString("description"));
+                Timestamp ts = rs.getTimestamp("dateTime");
+                if (ts != null) {
+                    evenement.setDate(ts.toLocalDateTime());
+                }
+            evenement.setAdresse(rs.getString("address"));
+                // Retrieve the organizer id and create a User object.
+                int organizerId = rs.getInt("organizer");
+                User organizer = new User();
+                organizer.setId(organizerId);
+            evenement.setOrganisateur(organizer);
+            evenement.setParticipants(getParticipants(evenement.getId()));
+
+
+        } catch (SQLException ex) {
+            System.out.println("Error retrieving Evenements: " + ex.getMessage());
+        }
+        return evenement;
     }
 
     private List<User> getParticipants(int EvenementId) {

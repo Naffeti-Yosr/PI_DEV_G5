@@ -1,0 +1,24 @@
+.form-wrapper {
+    -fx-background-color: #121212;
+    -fx-padding: 40;
+}
+
+.form-title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.text-field, .combo-box, .date-picker {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: white;
+}
+
+.btn-submit {
+    -fx-background-color: #00e676;
+    -fx-text-fill: #121212;
+}
