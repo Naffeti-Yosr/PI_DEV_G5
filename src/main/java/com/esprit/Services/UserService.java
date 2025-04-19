@@ -1,28 +1,28 @@
 package com.esprit.Services;
 
-import com.esprit.models.Users;
+import com.esprit.models.User;
 import com.esprit.utils.DataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersService {
+public class UserService {
 
     private final Connection connection;
 
-    public UsersService() {
+    public UserService() {
         this.connection = DataSource.getInstance().getConnection();
     }
 
-    public List<Users> recuperer() {
-        List<Users> users = new ArrayList<>();
-        String query = "SELECT * FROM Users";
+    public List<User> recuperer() {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM User";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                Users user = new Users(
+                User user = new User(
                         resultSet.getInt("id"),
                         resultSet.getString("nom"),
                         resultSet.getString("prenom"),

@@ -1,8 +1,8 @@
 package com.esprit.controllers;
 
 import com.esprit.models.Commande;
-import com.esprit.models.Users;
-import com.esprit.Services.UsersService;
+import com.esprit.models.User;
+import com.esprit.Services.UserService;
 import com.esprit.Services.CommandeService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -23,18 +23,18 @@ public class OrderPreviewController {
     @FXML private Label clientLabel;
 
     private Commande order;
-    private final UsersService usersService = new UsersService();
+    private final UserService userService = new UserService();
     private final CommandeService commandeService = new CommandeService();
-    private final Map<Integer, Users> userMap = new HashMap<>();
+    private final Map<Integer, User> userMap = new HashMap<>();
 
     @FXML
     public void initialize() {
   statusCombo.getItems().setAll("Pending", "Processing", "Completed", "Cancelled");
 
-  List<Users> users = usersService.recuperer();
+  List<User> users = userService.recuperer();
         if (users != null) {
             userMap.putAll(users.stream()
-                .collect(Collectors.toMap(Users::getId, u -> u)));
+                .collect(Collectors.toMap(User::getId, u -> u)));
         }
     }
 
@@ -58,7 +58,7 @@ public class OrderPreviewController {
             statusCombo.setValue("Pending");
         }
 
-        Users client = userMap.get(order.getClientId());
+        User client = userMap.get(order.getClientId());
         if (client != null) {
             clientLabel.setText(client.getPrenom() + " " + client.getNom());
         } else {

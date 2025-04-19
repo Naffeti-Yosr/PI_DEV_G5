@@ -1,9 +1,9 @@
 package com.esprit.controllers;
 
 import com.esprit.models.Commande;
-import com.esprit.models.Users;
+import com.esprit.models.User;
 import com.esprit.Services.CommandeService;
-import com.esprit.Services.UsersService;
+import com.esprit.Services.UserService;
 import com.esprit.utils.DataSource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ public class OrderDashboardController extends BaseController<Commande> {
     @FXML private ComboBox<String> statusCombo;
 
     private final CommandeService commandeService = new CommandeService();
-    private final UsersService usersService = new UsersService();
+    private final UserService userService = new UserService();
     private Connection connection;
 
     private Map<String, Integer> clientMap = new HashMap<>();
@@ -104,8 +103,8 @@ public class OrderDashboardController extends BaseController<Commande> {
         clientCombo.getItems().clear();
         clientCombo.getItems().add("All Clients");
 
-        List<Users> clients = usersService.recuperer();
-        for (Users client : clients) {
+        List<User> clients = userService.recuperer();
+        for (User client : clients) {
             String fullName = client.getPrenom() + " " + client.getNom();
             clientMap.put(fullName, client.getId());
             clientCombo.getItems().add(fullName);
