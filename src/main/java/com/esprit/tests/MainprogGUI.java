@@ -1,6 +1,7 @@
 package com.esprit.tests;
 
 import com.esprit.controllers.AddUserController;
+import com.esprit.controllers.AdminDashboardController;
 import com.esprit.controllers.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,10 @@ import java.io.IOException;
 public class MainprogGUI extends Application {
 
     private Stage primaryStage;
-    private com.esprit.controllers.AdminDashboardController adminDashboardController;
+    private AdminDashboardController adminDashboardController;
+
+    private static final int WIDTH = 900;
+    private static final int HEIGHT = 600;
 
     public static void main(String[] args) {
         launch(args);
@@ -28,32 +32,48 @@ public class MainprogGUI extends Application {
     }
 
     public void showLoginScene() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/login_page.fxml"));
-            Parent root = loader.load();
-
-            LoginController controller = loader.getController();
+        loadScene("/login_page.fxml", WIDTH, HEIGHT, (LoginController controller) -> {
             controller.setMainApp(this);
-
-            primaryStage.setScene(new Scene(root, 900, 600));
-            primaryStage.show();
-        } catch (IOException e) {
-            showError("Could not load login screen", e);
-        }
+        });
     }
 
     public void showRegisterScene() {
+        loadScene("/AddUser.fxml", WIDTH, HEIGHT, (AddUserController controller) -> {
+            controller.setMainApp(this);
+        });
+    }
+
+    public void showAdminDashboardScene() {
+        loadScene("/admin_dashboard.fxml", WIDTH, HEIGHT, (AdminDashboardController controller) -> {
+            adminDashboardController = controller;
+            controller.setMainApp(this);
+        });
+    }
+
+    public void showManageAddUserScene() {
+        loadScene("/manage_adduser.fxml", WIDTH, HEIGHT, (AdminDashboardController controller) -> {
+            controller.setMainApp(this);
+        });
+    }
+
+    public void showManageUserDashboardScene() {
+        loadScene("/manage_user_dashboard.fxml", WIDTH, HEIGHT, (AdminDashboardController controller) -> {
+            controller.setMainApp(this);
+        });
+    }
+
+    private <T> void loadScene(String fxmlPath, int width, int height, SceneControllerConsumer<T> controllerSetup) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddUser.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            AddUserController controller = loader.getController();
-            controller.setMainApp(this);
+            T controller = loader.getController();
+            controllerSetup.accept(controller);
 
-            primaryStage.setScene(new Scene(root, 900, 600));
+            primaryStage.setScene(new Scene(root, width, height));
             primaryStage.show();
         } catch (IOException e) {
-            showError("Could not load registration screen", e);
+            showError("Could not load " + fxmlPath, e);
         }
     }
 
@@ -67,61 +87,12 @@ public class MainprogGUI extends Application {
         alert.showAndWait();
     }
 
-    public void showAdminDashboardScene() {
-        try {
-            java.net.URL resource = getClass().getResource("/admin_dashboard.fxml");
-            System.out.println("Loading admin_dashboard.fxml from: " + resource);
-            FXMLLoader loader = new FXMLLoader(resource);
-            Parent root = loader.load();
-
-            // Set mainApp in controller
-            adminDashboardController = loader.getController();
-            adminDashboardController.setMainApp(this);
-
-            primaryStage.setScene(new Scene(root, 900, 600));
-            primaryStage.show();
-        } catch (Exception e) {
-            showError("Could not load admin dashboard screen", e);
-        }
-    }
-
-    public void showManageAddUserScene() {
-        try {
-            java.net.URL resource = getClass().getResource("/manage_adduser.fxml");
-            System.out.println("Loading manage_adduser.fxml from: " + resource);
-            FXMLLoader loader = new FXMLLoader(resource);
-            Parent root = loader.load();
-
-            // Set mainApp in controller
-            com.esprit.controllers.AdminDashboardController controller = loader.getController();
-            controller.setMainApp(this);
-
-            primaryStage.setScene(new Scene(root, 900, 600));
-            primaryStage.show();
-        } catch (Exception e) {
-            showError("Could not load manage add user screen", e);
-        }
-    }
-
-    public void showManageUserDashboardScene() {
-        try {
-            java.net.URL resource = getClass().getResource("/manaeg_user_dashboard.fxml");
-            System.out.println("Loading manaeg_user_dashboard.fxml from: " + resource);
-            FXMLLoader loader = new FXMLLoader(resource);
-            Parent root = loader.load();
-
-            // Set mainApp in controller
-            com.esprit.controllers.AdminDashboardController controller = loader.getController();
-            controller.setMainApp(this);
-
-            primaryStage.setScene(new Scene(root, 900, 600));
-            primaryStage.show();
-        } catch (Exception e) {
-            showError("Could not load manage user dashboard screen", e);
-        }
-    }
-
-    public com.esprit.controllers.AdminDashboardController getAdminDashboardController() {
+    public AdminDashboardController getAdminDashboardController() {
         return adminDashboardController;
+    }
+
+    @FunctionalInterface
+    interface SceneControllerConsumer<T> {
+        void accept(T controller);
     }
 }
