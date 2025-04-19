@@ -5,6 +5,9 @@ import java.util.Date;
 public class Client extends User {
     private String address;
     private String phoneNumber;
+    private String companyName;
+    private String companyAddress;
+    private String companyPhoneNumber;
 
     public Client(int id, String nom, String prenom, Date birth_date, String email, String password, String role, String address, String phoneNumber) {
         super(id, nom, prenom, birth_date, email, password, role);

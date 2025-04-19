@@ -22,16 +22,16 @@ public class UserService implements IService<User> {
 
         try (PreparedStatement pst = connection.prepareStatement(req);
              ResultSet rs = pst.executeQuery()) {
-            
+
             while (rs.next()) {
                 users.add(new User(
-                    rs.getInt("id"),
-                    rs.getString("nom"),
-                    rs.getString("prenom"),
-                    rs.getDate("birth_date"),
-                    rs.getString("email"),
-                    rs.getString("password"),
-                    rs.getString("role")
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("prenom"),
+                        rs.getDate("birth_date"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("role")
                 ));
             }
         } catch (SQLException e) {
@@ -59,13 +59,13 @@ public class UserService implements IService<User> {
                     String storedHash = rs.getString("password");
                     if (BCrypt.checkpw(password, storedHash)) {
                         return new User(
-                            rs.getInt("id"),
-                            rs.getString("nom"),
-                            rs.getString("prenom"),
-                            rs.getDate("birth_date"),
-                            rs.getString("email"),
-                            storedHash,
-                            rs.getString("role")
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getDate("birth_date"),
+                                rs.getString("email"),
+                                storedHash,
+                                rs.getString("role")
                         );
                     }
                 }

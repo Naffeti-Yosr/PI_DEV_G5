@@ -7,22 +7,29 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.sql.Date;
+import java.time.ZoneId;
 
 public class AddUserController {
 
     private MainprogGUI mainApp;
 
-    @FXML private TextField tfNom;
-    @FXML private TextField tfPrenom;
-    @FXML private DatePicker dpBirthDate;
-    @FXML private TextField tfEmail;
-    @FXML private PasswordField tfPassword;
-    @FXML private ComboBox<String> cbRole;
+    @FXML
+    TextField tfNom;
+    @FXML
+    TextField tfPrenom;
+    @FXML
+    DatePicker dpBirthDate;
+    @FXML
+    TextField tfEmail;
+    @FXML
+    PasswordField tfPassword;
+    @FXML
+    ComboBox<String> cbRole;
 
     @FXML
     public void initialize() {
-        cbRole.getItems().addAll("admin", "user");
+        cbRole.getItems().clear();
+        cbRole.getItems().addAll("admin", "user", "BlogerAdmin", "EventPlaner", "ProductOwner", "truck driver");
     }
 
     @FXML
@@ -40,12 +47,6 @@ public class AddUserController {
 
         try {
             User user = new User(
-                    tfNom.getText(),
-                    tfPrenom.getText(),
-                    Date.valueOf(dpBirthDate.getValue()),
-                    tfEmail.getText(),
-                    tfPassword.getText(),
-                    cbRole.getValue()
             );
 
             userService.add(user);
@@ -81,6 +82,20 @@ public class AddUserController {
         tfEmail.clear();
         tfPassword.clear();
         cbRole.setValue(null);
+    }
+    public void setEditMode(User user) {
+        if (user != null) {
+            tfNom.setText(user.getNom());
+            tfPrenom.setText(user.getPrenom());
+            if (user.getBirth_date() != null) {
+                dpBirthDate.setValue(user.getBirth_date().toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate());
+            }
+            tfEmail.setText(user.getEmail());
+            tfPassword.setText(user.getPassword());
+            cbRole.setValue(user.getRole());
+        }
     }
 
     public void setMainApp(MainprogGUI mainApp) {

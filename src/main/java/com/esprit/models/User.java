@@ -23,7 +23,7 @@ public class User {
         this.role = role;
     }
 
-    public User(String nom, String prenom, Date birth_date, String email, String password, String role) {
+    public User() {
         this.nom = nom;
         this.prenom = prenom;
         this.birth_date = birth_date;
