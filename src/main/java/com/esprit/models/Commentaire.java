@@ -1,61 +1,34 @@
 package com.esprit.models;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Commentaire {
     private int id;
-    private String content;
-    private Date date;
-    private User auteur;
-    private Blog blog; // Reference to the blog this comment belongs to
+    private String contenu;
+    private LocalDateTime dateCommentaire;
+    private int auteurId;
+    private int blogId;
 
-
-    public Commentaire(int id, String content, Date date, User auteur, Blog blog) {
+    // Constructors
+    public Commentaire() {}
+    
+    public Commentaire(int id, String contenu, LocalDateTime dateCommentaire, int auteurId, int blogId) {
         this.id = id;
-        this.content = content;
-        this.date = date;
-        this.auteur = auteur;
-        this.blog = blog;
+        this.contenu = contenu;
+        this.dateCommentaire = dateCommentaire;
+        this.auteurId = auteurId;
+        this.blogId = blogId;
     }
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public User getAuteur() {
-        return auteur;
-    }
-
-    public void setAuteur(User auteur) {
-        this.auteur = auteur;
-    }
-
-    public Blog getBlog() {
-        return blog;
-    }
-
-    public void setBlog(Blog blog) {
-        this.blog = blog;
-    }
+    // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getContenu() { return contenu; }
+    public void setContenu(String contenu) { this.contenu = contenu; }
+    public LocalDateTime getDateCommentaire() { return dateCommentaire; }
+    public void setDateCommentaire(LocalDateTime dateCommentaire) { this.dateCommentaire = dateCommentaire; }
+    public int getAuteurId() { return auteurId; }
+    public void setAuteurId(int auteurId) { this.auteurId = auteurId; }
+    public int getBlogId() { return blogId; }
+    public void setBlogId(int blogId) { this.blogId = blogId; }
 }

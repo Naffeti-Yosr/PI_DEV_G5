@@ -1,0 +1,128 @@
+/* Root and Background */
+.dashboard-root {
+    -fx-padding: 20;
+    -fx-background-color: #f5fff5;
+    -fx-spacing: 15;
+}
+
+.form-root {
+    -fx-padding: 20;
+    -fx-background-color: #f5fff5;
+    -fx-spacing: 15;
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* Header Styles */
+.header {
+    -fx-padding: 10 20;
+    -fx-alignment: center-left;
+}
+
+.header-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00695c;
+}
+
+/* Table Styles */
+.blog-table {
+    -fx-background-color: white;
+    -fx-border-color: #a5d6a7;
+    -fx-border-width: 2px;
+}
+
+.blog-table .column-header {
+    -fx-background-color: #2e7d32;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.blog-table .table-row-cell {
+    -fx-background-color: white;
+}
+
+.blog-table .table-row-cell:odd {
+    -fx-background-color: #f1f8e9;
+}
+
+.blog-table .table-row-cell:hover {
+    -fx-background-color: #dcedc8;
+}
+
+.blog-table .table-row-cell:selected {
+    -fx-background-color: #c8e6c9;
+}
+
+.blog-table .table-cell {
+    -fx-alignment: center;
+    -fx-padding: 8px;
+    -fx-border-color: transparent;
+}
+
+/* Buttons */
+.btn-add-product, .btn-edit-product, .btn-delete-product, .btn-publish-blog, .btn-view-comments {
+    -fx-pref-width: 140px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+    -fx-padding: 0 20px;
+}
+
+.btn-add-product {
+    -fx-background-color: #4CAF50;
+}
+
+.btn-edit-product {
+    -fx-background-color: #2196F3;
+}
+
+.btn-delete-product {
+    -fx-background-color: #f44336;
+}
+
+.btn-publish-blog {
+    -fx-background-color: #388E3C;
+}
+
+.btn-view-comments {
+    -fx-background-color: #00796B;
+}
+
+/* Form Buttons */
+.btn-choose-image {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8 15;
+    -fx-background-radius: 10;
+}
+
+.btn-save {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+    -fx-background-radius: 20;
+}
+
+.btn-cancel {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+    -fx-background-radius: 20;
+}
+
+/* Layout Spacing */
+.toolbar, .action-bar {
+    -fx-spacing: 15;
+    -fx-padding: 10 0;
+}

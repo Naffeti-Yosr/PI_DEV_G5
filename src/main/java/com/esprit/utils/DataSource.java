@@ -1,13 +1,17 @@
 package com.esprit.utils;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataSource {
 
     private Connection connection;
     private static DataSource instance;
 
-    private final String URL = "jdbc:mysql://localhost:3306/espritt";
+    private final String URL = "jdbc:mysql://127.0.0.1:3306/hi";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
 
@@ -27,6 +31,11 @@ public class DataSource {
     }
 
     public Connection getConnection() {
+        if (connection == null) {
+            getInstance();
+        }
         return connection;
     }
+
+    
 }

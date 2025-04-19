@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.esprit.controllers.CommentDashboardController"
+      spacing="15"
+      styleClass="dashboard-root"
+      stylesheets="@/styles/blog-dashboard.css"
+      prefWidth="800"
+      prefHeight="600">
+
+    <Label fx:id="blogTitleLabel" styleClass="header-title"/>
+    
+    <TableView fx:id="commentTable" styleClass="blog-table">
+    <columns>
+        <TableColumn fx:id="authorColumn" text="Author" prefWidth="150"/>
+        <TableColumn fx:id="commentColumn" text="Comment" prefWidth="400"/>
+        <TableColumn fx:id="dateColumn" text="Date" prefWidth="200"/>
+    </columns>
+</TableView>
+    
+    <HBox spacing="15" styleClass="toolbar">
+        <TextArea fx:id="commentField" promptText="Add your comment..." prefWidth="500" prefHeight="80"/>
+        <Button text="Add Comment" onAction="#handleAddComment" styleClass="btn-add-comment"/>
+    </HBox>
+    
+    <HBox spacing="15" styleClass="action-bar">
+        <Button text="Refresh" onAction="#handleRefresh" styleClass="btn-refresh"/>
+        <Button text="Delete Selected" onAction="#handleDelete" styleClass="btn-delete-comment"/>
+    </HBox>
+</VBox>

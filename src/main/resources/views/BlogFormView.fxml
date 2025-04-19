@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.esprit.controllers.BlogFormController"
+      spacing="15"
+      styleClass="form-root"
+      stylesheets="@../styles/blog-dashboard.css"
+      prefWidth="600"
+      prefHeight="700">
+
+    <Label text="Blog Post Form" styleClass="header-title"/>
+    
+    <GridPane hgap="10" vgap="10">
+        <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="titleField" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+        
+        <Label text="Summary:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="summaryField" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+        
+        <Label text="Content:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextArea fx:id="contentArea" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="2" 
+                  prefRowCount="10" wrapText="true"/>
+        
+        <Label text="Status:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="statusCombo" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.columnSpan="2">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="draft"/>
+                    <String fx:value="published"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+        
+        <Label text="Image:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="2">
+            <Button text="Choose Image" onAction="#handleChooseImage" styleClass="btn-choose-image"/>
+            <Label fx:id="imageNameLabel" text="No image selected"/>
+        </HBox>
+        
+        <ImageView fx:id="imagePreview" fitWidth="200" fitHeight="150" preserveRatio="true" 
+                   GridPane.rowIndex="5" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+    </GridPane>
+    
+    <HBox spacing="15" alignment="CENTER_RIGHT">
+        <Button text="Save" onAction="#handleSave" styleClass="btn-save"/>
+        <Button text="Cancel" onAction="#handleCancel" styleClass="btn-cancel"/>
+    </HBox>
+</VBox>
