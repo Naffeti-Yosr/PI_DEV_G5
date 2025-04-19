@@ -9,12 +9,11 @@
             stylesheets="@/styles/EventsView.css"
             prefWidth="1200" prefHeight="800">
 
-    <!-- Barre de recherche -->
     <top>
         <VBox fx:id="searchContainer" spacing="10">
             <HBox spacing="20" alignment="CENTER_LEFT" styleClass="header">
                 <Button fx:id="burgerButton" text="≡" styleClass="burger-button"/>
-                <ImageView fx:id="logoImage" fitHeight="50" fitWidth="50" preserveRatio="true"/>
+                <ImageView fx:id="logoImage" fitHeight="70" fitWidth="70" preserveRatio="true"/>
                 <Label text="📅 Liste des Événements" styleClass="header-title"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <TextField fx:id="searchField" promptText="🔍 Rechercher un événement..." maxWidth="300" styleClass="search-bar"/>
@@ -22,7 +21,6 @@
         </VBox>
     </top>
 
-    <!-- Sidebar -->
     <left>
         <VBox fx:id="sidebar" spacing="15" styleClass="sidebar" visible="false" managed="false">
             <Button text="👤 Profil" styleClass="menu-button"/>
@@ -32,7 +30,6 @@
         </VBox>
     </left>
 
-    <!-- ✅ CONTENU PRINCIPAL PLACÉ DANS CENTER -->
     <center>
         <VBox fx:id="dayFilterContainer" spacing="10">
             <HBox alignment="CENTER_RIGHT">

@@ -34,10 +34,10 @@ public class EventDetailsController {
     private Button backButton;
     private BorderPane mainContainer;
     @FXML
-    private VBox searchContainer; // ajoute si nécessaire
+    private VBox searchContainer;
 
     @FXML
-    private VBox dayFilterContainer;// ✅ Bon type
+    private VBox dayFilterContainer;
 
 
     private Evenement evenement;
@@ -49,13 +49,11 @@ public class EventDetailsController {
         this.searchContainer = searchContainer;
         this.dayFilterContainer = dayFilterContainer;
 
-        // Remplissage des détails de l’événement
         titleLabel.setText(evt.getTitre());
         dateLabel.setText("📅 " + evt.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         adresseLabel.setText("📍 " + evt.getAdresse());
         descriptionLabel.setText("📝 " + evt.getDescription());
 
-        // Chargement de l'image
         String path = "/default_event.png";
         if (evt.getPoster() != null && evt.getPoster().getImagePath() != null) {
             path = evt.getPoster().getImagePath();
@@ -67,7 +65,6 @@ public class EventDetailsController {
             posterImage.setImage(new Image(getClass().getResource("/default_event.png").toExternalForm()));
         }
 
-        // Actions des boutons
         editButton.setOnAction(e -> handleEdit());
         deleteButton.setOnAction(e -> handleDelete());
         backButton.setOnAction(e -> handleBack());
@@ -81,12 +78,12 @@ public class EventDetailsController {
             AjoutEvent controller = loader.getController();
             controller.setMode("edit");
             controller.setEvenementToEdit(evenement);
-            controller.setMainContainer(mainContainer); // ✅ Correct
+            controller.setMainContainer(mainContainer);
             controller.prefillFieldsIfEdit();
 
             mainContainer.setCenter(form);
 
-            mainContainer.setCenter(form); // ✅ CORRECT ICI
+            mainContainer.setCenter(form);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -104,23 +101,30 @@ public class EventDetailsController {
                 handleBack();
             }
         });
+        if (eventController != null) {
+            eventController.reloadEvents(); // Mise à jour après suppression
+        }
+
     }
 
     private void handleBack() {
         try {
-            // Réactiver les barres supérieures
             searchContainer.setVisible(true);
             searchContainer.setManaged(true);
             dayFilterContainer.setVisible(true);
             dayFilterContainer.setManaged(true);
 
-            // Réafficher la vue principale sans recharger FXML
             mainContainer.setCenter(dayFilterContainer);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private EventController eventController;
+
+    public void setEventController(EventController controller) {
+        this.eventController = controller;
+    }
 
 
 

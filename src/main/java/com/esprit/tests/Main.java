@@ -32,7 +32,6 @@ public class Main {
         participant.setRole("ROLE_PARTICIPANT");
         participant.setBirthDate(LocalDateTime.now().minusYears(25));
 
-        // --- Prepare an Evenement ---
         Evenement event = new Evenement();
         event.setTitre("Sample Event");
         event.setDescription("This is a test event");
@@ -40,19 +39,15 @@ public class Main {
         event.setAdresse("123 Main Street, City");
         event.setOrganisateur(organizer);
 
-        // Add participants to the event.
         List<User> participants = new ArrayList<>();
         participants.add(participant);
         event.setParticipants(participants);
 
-        // --- Test EvenementService ---
         EvenementService evenementService = new EvenementService();
 
-        // Add the event.
         System.out.println("Adding event...");
         evenementService.add(event);
 
-        // Retrieve and print events.
         List<Evenement> events = evenementService.get();
         System.out.println("List of events in DB:");
         for (Evenement e : events) {
@@ -69,34 +64,27 @@ public class Main {
 
 
 
-        // Update event: Change the description.
         event.setDescription("Updated event description");
         System.out.println("Updating event with ID " + event.getId());
         evenementService.update(event);
 
-        // Uncomment the following line if you want to test deletion.
         // evenementService.delete(event.getId());
         // System.out.println("Deleted event with ID " + event.getId());
 
-        // --- Test PosterService ---
-        // Because PosterService is abstract, we create an anonymous subclass for testing.
         PosterService posterService = new PosterService() {
-            // No additional implementation is necessary since all methods are already implemented.
         };
 
-        // Create and add a Poster.
         Poster poster = new Poster();
         poster.setTitre("Event Poster");
         poster.setDescription("Poster description");
         poster.setImageUrl("http://example.com/image.jpg");
         poster.setCreatedAt(LocalDateTime.now());
-        poster.setEvenementId(event.getId());  // Associate poster with the newly created event.
+        poster.setEvenementId(event.getId());
         poster.setCreatedById(organizer.getId());
 
         System.out.println("Adding poster...");
         posterService.add(poster);
 
-        // Retrieve and print posters.
         List<Poster> posters = posterService.get();
         System.out.println("List of posters in DB:");
         for (Poster p : posters) {
@@ -104,24 +92,19 @@ public class Main {
                     ", Image URL: " + p.getImageUrl());
         }
 
-        // Update the poster.
         poster.setDescription("Updated poster description");
         System.out.println("Updating poster with ID " + poster.getId());
         posterService.update(poster);
 
-        // Delete the poster.
         System.out.println("Deleting poster with ID " + poster.getId());
         posterService.delete(poster.getId());
         System.out.println("Poster deleted successfully.");
 
-        // 🔸 Étape 1 : Créer un Poster avec un chemin d'image
         Poster poster1 = new Poster(1, "/images/event1.png");
 
-        // 🔸 Étape 2 : Créer un Evenement et lui associer le poster
         Evenement evenement = new Evenement();
         evenement.setPoster(poster1);
 
-        // 🔸 Étape 3 : Tester si getPoster() retourne bien l'objet
         if (evenement.getPoster() != null) {
             System.out.println("✅ getPoster() fonctionne !");
             System.out.println("Image path : " + evenement.getPoster().getImagePath());

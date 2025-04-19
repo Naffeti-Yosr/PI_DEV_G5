@@ -30,11 +30,11 @@ public class AjoutEvent {
     @FXML private Button submitButton;
     @FXML private Button backButton;
 
-
     private String mode = "add";
     private Evenement currentEvenement;
-    @FXML
-    private BorderPane mainContainer;
+    @FXML private BorderPane mainContainer;
+
+    private EventController eventController;
 
     public void setMode(String mode) {
         this.mode = mode;
@@ -46,6 +46,10 @@ public class AjoutEvent {
 
     public void setMainContainer(BorderPane mainContainer) {
         this.mainContainer = mainContainer;
+    }
+
+    public void setEventController(EventController eventController) {
+        this.eventController = eventController;
     }
 
     @FXML
@@ -76,7 +80,6 @@ public class AjoutEvent {
 
         submitButton.setOnAction(event -> handleSubmit());
         backButton.setOnAction(e -> retourAEventsView());
-
     }
 
     private void handleSubmit() {
@@ -95,6 +98,7 @@ public class AjoutEvent {
             return;
         }
 
+        // 🔁 Vérification format de l’heure
         LocalTime heure;
         try {
             heure = LocalTime.parse(heureStr, DateTimeFormatter.ofPattern("HH:mm"));
@@ -103,7 +107,14 @@ public class AjoutEvent {
             return;
         }
 
+        // 🔁 Création du LocalDateTime à partir des champs date et heure
         LocalDateTime dateTime = LocalDateTime.of(date, heure);
+
+        // ✅ Vérifier que la date n’est pas dans le passé
+        if (dateTime.isBefore(LocalDateTime.now())) {
+            showAlert(Alert.AlertType.ERROR, "Date invalide", "La date et l'heure de l'événement sont déjà passées.");
+            return;
+        }
 
         if ("edit".equals(mode) && currentEvenement != null) {
             currentEvenement.setTitre(titre);
@@ -113,23 +124,20 @@ public class AjoutEvent {
             currentEvenement.setOrganisateur(organisateur);
 
             evenementService.update(currentEvenement);
-            // ✅ attendre que l’utilisateur clique sur OK
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText(null);
-            alert.setContentText("Événement modifié avec succès !");
-            alert.showAndWait().ifPresent(btn -> retourAEventsView());
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Événement modifié avec succès !");
         } else {
             Evenement evenement = new Evenement(0, titre, description, dateTime, adresse, organisateur);
             evenementService.add(evenement);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText(null);
-            alert.setContentText("Événement ajouté avec succès !");
-            alert.showAndWait().ifPresent(btn -> retourAEventsView());
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Événement ajouté avec succès !");
         }
+
+        if (eventController != null) {
+            eventController.reloadEvents();
+        }
+
         com.esprit.tests.App.getInstance().showEventsScreen();
     }
+
 
     public void prefillFieldsIfEdit() {
         if (currentEvenement != null) {
@@ -141,13 +149,23 @@ public class AjoutEvent {
             }
             adresseField.setText(currentEvenement.getAdresse());
             organisateurCombo.setValue(currentEvenement.getOrganisateur());
-
             submitButton.setText("Modifier l'événement");
         }
     }
 
     private void retourAEventsView() {
-        com.esprit.tests.App.getInstance().showEventsScreen();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventsView.fxml"));
+            Parent view = loader.load();
+
+            EventController controller = loader.getController();
+            controller.setMainContainer(mainContainer);
+            controller.reloadEvents();
+
+            mainContainer.setCenter(view);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {

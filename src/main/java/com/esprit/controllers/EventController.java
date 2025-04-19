@@ -26,8 +26,8 @@ public class EventController {
     @FXML private Button burgerButton;
     @FXML private VBox dayFilterContainer;
     @FXML private Button ajoutEventButton;
-
     private List<Evenement> allEvents;
+
     private String activeDay = null;
 
     @FXML
@@ -42,13 +42,10 @@ public class EventController {
         setupDayFilterBar();
         afficherEvenements(allEvents);
 
-        // ✅ Bouton Ajouter Événement
         ajoutEventButton.setOnAction(e -> openAjoutEventForm());
 
-        // ✅ Gestion du burger menu
         burgerButton.setOnAction(e -> toggleSidebar());
 
-        // ✅ Clic extérieur pour fermer la sidebar
         mainContainer.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, event -> {
             if (sidebar.isVisible() &&
                     !sidebar.localToScene(sidebar.getBoundsInLocal()).contains(event.getSceneX(), event.getSceneY())) {
@@ -57,7 +54,6 @@ public class EventController {
             }
         });
 
-        // ✅ Barre de recherche
         searchField.textProperty().addListener((obs, oldVal, newVal) -> {
             List<Evenement> filtered = allEvents.stream()
                     .filter(e -> e.getTitre().toLowerCase().contains(newVal.toLowerCase()))
@@ -66,15 +62,15 @@ public class EventController {
         });
     }
 
-    // ✅ Bien placée hors de initialize()
     private void openAjoutEventForm() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutEvent.fxml"));
             Parent ajoutForm = loader.load();
 
             AjoutEvent controller = loader.getController();
-            controller.setMode("add"); // mode ajout
+            controller.setMode("add");
             controller.setMainContainer(mainContainer);
+            controller.setEventController(this);
 
             searchContainer.setVisible(false);
             searchContainer.setManaged(false);
@@ -151,7 +147,7 @@ public class EventController {
             path = evt.getPoster().getImagePath();
         }
 
-        ImageView imageView = new ImageView(new Image(getClass().getResource(path).toExternalForm()));
+        ImageView imageView = new ImageView(new Image(EventController.class.getResource(path).toExternalForm()));
         imageView.setFitWidth(200);
         imageView.setFitHeight(120);
         imageView.setPreserveRatio(true);
@@ -183,11 +179,12 @@ public class EventController {
 
     private void openEventDetails(Evenement evt) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventDetails.fxml"));
+            FXMLLoader loader = new FXMLLoader(EventController.class.getResource("/EventDetails.fxml"));
             Parent detailsView = loader.load();
 
             EventDetailsController controller = loader.getController();
             controller.setEvent(evt, mainContainer, searchContainer, dayFilterContainer);
+            controller.setEventController(this);
 
             searchContainer.setVisible(false);
             searchContainer.setManaged(false);
@@ -198,6 +195,7 @@ public class EventController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void restaurerVuePrincipale() {
@@ -210,4 +208,14 @@ public class EventController {
     public void setMainContainer(BorderPane mainContainer) {
         this.mainContainer = mainContainer;
     }
+
+    public void reloadEvents() {
+        EvenementService service = new EvenementService();
+        allEvents = service.get().stream()
+                .sorted((e1, e2) -> e1.getDate().compareTo(e2.getDate()))
+                .toList();
+        afficherEvenements(allEvents);
+    }
+
+
 }
