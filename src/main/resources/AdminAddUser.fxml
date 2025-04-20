@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane prefHeight="600" prefWidth="900" stylesheets="@styles/admin_dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.esprit.controllers.AdminDashboardController">
+<BorderPane prefHeight="600" prefWidth="900" stylesheets="@styles/admin_dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.esprit.controllers.AdminAddUserController">
 
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="60" spacing="10" styleClass="header" BorderPane.alignment="CENTER">

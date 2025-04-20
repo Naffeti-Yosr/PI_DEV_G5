@@ -1,8 +1,6 @@
 package com.esprit.tests;
 
-import com.esprit.controllers.AddUserController;
-import com.esprit.controllers.AdminDashboardController;
-import com.esprit.controllers.LoginController;
+import com.esprit.controllers.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +11,28 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainprogGUI extends Application {
+    private <T> void loadScene(String fxmlPath, int width, int height, SceneControllerConsumer<T> controllerSetup) {
+        try {
+            java.net.URL fxmlUrl = getClass().getResource(fxmlPath);
+            if (fxmlUrl == null) {
+                // Try without leading slash
+                fxmlUrl = getClass().getResource(fxmlPath.startsWith("/") ? fxmlPath.substring(1) : fxmlPath);
+            }
+            if (fxmlUrl == null) {
+                throw new IOException("FXML resource not found: " + fxmlPath);
+            }
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
+            Parent root = loader.load();
+
+            T controller = loader.getController();
+            controllerSetup.accept(controller);
+
+            primaryStage.setScene(new Scene(root, width, height));
+            primaryStage.show();
+        } catch (IOException e) {
+            showError("Could not load " + fxmlPath, e);
+        }
+    }
 
     private Stage primaryStage;
     private AdminDashboardController adminDashboardController;
@@ -27,7 +47,7 @@ public class MainprogGUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Energy Management System");
+        this.primaryStage.setTitle("Solaris Desktop");
         showLoginScene();
     }
 
@@ -38,7 +58,7 @@ public class MainprogGUI extends Application {
     }
 
     public void showRegisterScene() {
-        loadScene("/AddUser.fxml", WIDTH, HEIGHT, (AddUserController controller) -> {
+        loadScene("/Registration_Page.fxml", WIDTH, HEIGHT, (RegistrationController controller) -> {
             controller.setMainApp(this);
         });
     }
@@ -51,30 +71,15 @@ public class MainprogGUI extends Application {
     }
 
     public void showManageAddUserScene() {
-        loadScene("/manage_adduser.fxml", WIDTH, HEIGHT, (AdminDashboardController controller) -> {
+        loadScene("/AdminAddUser.fxml", WIDTH, HEIGHT, (AdminAddUserController controller) -> {
             controller.setMainApp(this);
         });
     }
 
     public void showManageUserDashboardScene() {
-        loadScene("/manage_user_dashboard.fxml", WIDTH, HEIGHT, (AdminDashboardController controller) -> {
+        loadScene("/manage_user_dashboard.fxml", WIDTH, HEIGHT, (ManageUserDashboardController controller) -> {
             controller.setMainApp(this);
         });
-    }
-
-    private <T> void loadScene(String fxmlPath, int width, int height, SceneControllerConsumer<T> controllerSetup) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-            T controller = loader.getController();
-            controllerSetup.accept(controller);
-
-            primaryStage.setScene(new Scene(root, width, height));
-            primaryStage.show();
-        } catch (IOException e) {
-            showError("Could not load " + fxmlPath, e);
-        }
     }
 
     private void showError(String message, Exception e) {

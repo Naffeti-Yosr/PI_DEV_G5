@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 
 import java.time.ZoneId;
 
-public class AddUserController {
+public class RegistrationController {
 
     private MainprogGUI mainApp;
 
@@ -46,7 +46,15 @@ public class AddUserController {
         }
 
         try {
+            java.util.Date birthDate = java.util.Date.from(dpBirthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             User user = new User(
+                    0,
+                    tfNom.getText(),
+                    tfPrenom.getText(),
+                    birthDate,
+                    tfEmail.getText(),
+                    tfPassword.getText(),
+                    cbRole.getValue()
             );
 
             userService.add(user);

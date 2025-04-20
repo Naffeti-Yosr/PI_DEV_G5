@@ -9,43 +9,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.esprit.controllers.AdminDashboardController" prefWidth="900" prefHeight="600" stylesheets="@styles/admin_dashboard.css">
+<BorderPane prefHeight="600" prefWidth="900" stylesheets="@styles/admin_dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.esprit.controllers.ManageUserDashboardController">
 
     <top>
-        <HBox styleClass="header" prefHeight="60" spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
-            <Label fx:id="lblUsername" text="User Name" styleClass="header-username" />
+        <HBox alignment="CENTER_LEFT" prefHeight="60" spacing="10" styleClass="header" BorderPane.alignment="CENTER">
+            <Label fx:id="lblUsername" styleClass="header-username" text="User Name" />
         </HBox>
     </top>
 
     <left>
-        <VBox spacing="20" prefWidth="200" styleClass="sidebar" BorderPane.alignment="CENTER" >
-            <Button fx:id="btnDashboard" text="Dashboard" styleClass="sidebar-button" />
-            <Button fx:id="btnManageUsers" text="Manage Users" styleClass="sidebar-button" />
-            <Button fx:id="btnReports" text="Reports" styleClass="sidebar-button" />
-            <Button fx:id="btnSettings" text="Settings" styleClass="sidebar-button" />
-            <Button fx:id="btnLogout" text="Logout" styleClass="sidebar-button" onAction="#handleLogout" />
+        <VBox prefWidth="200" spacing="20" styleClass="sidebar" BorderPane.alignment="CENTER">
+            <Button fx:id="btnDashboard" styleClass="sidebar-button" text="Dashboard" />
+            <Button fx:id="btnManageUsers" styleClass="sidebar-button" text="Manage Users" />
+            <Button fx:id="btnReports" styleClass="sidebar-button" text="Reports" />
+            <Button fx:id="btnSettings" styleClass="sidebar-button" text="Settings" />
+            <Button fx:id="btnLogout" onAction="#handleLogout" styleClass="sidebar-button" text="Logout" />
         </VBox>
     </left>
 
     <center>
         <AnchorPane styleClass="main-content" BorderPane.alignment="CENTER">
-            <VBox spacing="10" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0"
-                  AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+            <VBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
 
                 <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
-                        <TableColumn fx:id="colNom" text="Nom" prefWidth="150"/>
-                        <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="150"/>
-                        <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
-                        <TableColumn fx:id="colRole" text="Rôle" prefWidth="130"/>
+                        <TableColumn fx:id="colNom" prefWidth="150" text="Nom" />
+                        <TableColumn fx:id="colPrenom" prefWidth="150" text="Prénom" />
+                        <TableColumn fx:id="colEmail" prefWidth="200" text="Email" />
+                        <TableColumn fx:id="colRole" prefWidth="130" text="Rôle" />
                     </columns>
                 </TableView>
 
                 <HBox spacing="10">
-                    <Button fx:id="btnAddUserManageDashboard" text="Ajouter" prefWidth="100"/>
-                    <Button fx:id="btnModifyUser" text="Modifier" prefWidth="100"/>
-                    <Button fx:id="btnDeleteUser" text="Supprimer" prefWidth="100"/>
+                    <Button fx:id="btnAddUserManageDashboard" prefWidth="100" text="Ajouter" />
+                    <Button fx:id="btnModifyUser" prefWidth="100" text="Modifier" />
+                    <Button fx:id="btnDeleteUser" prefWidth="100" text="Supprimer" />
                 </HBox>
             </VBox>
         </AnchorPane>

@@ -5,7 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import java.net.URL?>
 
-<AnchorPane prefHeight="600" prefWidth="900" styleClass="root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.controllers.AddUserController">
+<AnchorPane prefHeight="600" prefWidth="900" styleClass="root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esprit.controllers.RegistrationController">
     <stylesheets>
         <URL value="@styles/energy.css"/>
     </stylesheets>
