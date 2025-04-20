@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600" prefWidth="900" stylesheets="@styles/admin_dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.esprit.controllers.ManageUserDashboardController">
+<BorderPane prefHeight="600" prefWidth="900" stylesheets="@styles/admin_dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1"
+            fx:controller="com.esprit.controllers.ManageUserDashboardController">
 
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="60" spacing="10" styleClass="header" BorderPane.alignment="CENTER">

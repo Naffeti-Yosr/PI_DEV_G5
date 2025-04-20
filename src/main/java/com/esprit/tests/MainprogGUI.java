@@ -1,6 +1,7 @@
 package com.esprit.tests;
 
 import com.esprit.controllers.*;
+import com.esprit.models.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -79,6 +80,13 @@ public class MainprogGUI extends Application {
     public void showManageUserDashboardScene() {
         loadScene("/manage_user_dashboard.fxml", WIDTH, HEIGHT, (ManageUserDashboardController controller) -> {
             controller.setMainApp(this);
+        });
+    }
+
+    public void showAdminModifyUserScene(User user) {
+        loadScene("/AdminModifyUser.fxml", WIDTH, HEIGHT, (AdminModifyController controller) -> {
+            controller.setMainApp(this);
+            controller.setUser(user);
         });
     }
 

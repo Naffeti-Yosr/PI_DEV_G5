@@ -226,30 +226,7 @@ public class ManageUserDashboardController {
         User selectedUser = userTable.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Registration_Page.fxml"));
-                Parent root = loader.load();
-
-                RegistrationController controller = loader.getController();
-                controller.setMainApp(mainApp);
-
-                controller.tfNom.setText(selectedUser.getNom());
-                controller.tfPrenom.setText(selectedUser.getPrenom());
-                if (selectedUser.getBirth_date() != null) {
-                    controller.dpBirthDate.setValue(selectedUser.getBirth_date().toInstant()
-                        .atZone(java.time.ZoneId.systemDefault())
-                        .toLocalDate());
-                }
-                controller.tfEmail.setText(selectedUser.getEmail());
-                controller.tfPassword.setText("");
-                controller.cbRole.setValue(selectedUser.getRole());
-
-                Stage stage = new Stage();
-                stage.setTitle("Modify User");
-                stage.setScene(new Scene(root));
-                stage.show();
-
-                stage.setOnHiding(event -> loadUsers());
-
+                mainApp.showAdminModifyUserScene(selectedUser);
             } catch (Exception e) {
                 e.printStackTrace();
             }

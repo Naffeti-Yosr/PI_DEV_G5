@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600" prefWidth="900" stylesheets="@styles/admin_dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1"
+            fx:controller="com.esprit.controllers.AdminModifyController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="60" spacing="10" styleClass="header" BorderPane.alignment="CENTER">
+            <Label fx:id="lblUsername" styleClass="header-username" text="User Name" />
+        </HBox>
+    </top>
+
+    <left>
+        <VBox prefWidth="200" spacing="20" styleClass="sidebar" BorderPane.alignment="CENTER">
+            <Button fx:id="btnDashboard" styleClass="sidebar-button" text="Dashboard" />
+            <Button fx:id="btnManageUsers" styleClass="sidebar-button" text="Manage Users" />
+            <Button fx:id="btnReports" styleClass="sidebar-button" text="Reports" />
+            <Button fx:id="btnSettings" styleClass="sidebar-button" text="Settings" />
+            <Button fx:id="btnLogout" styleClass="sidebar-button" text="Logout" />
+        </VBox>
+    </left>
+
+    <center>
+        <AnchorPane styleClass="main-content" BorderPane.alignment="CENTER">
+            <VBox spacing="20" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+
+                <GridPane vgap="20" hgap="20">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- Nom -->
+                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label styleClass="input-label" text="Nom"/>
+                        <TextField fx:id="tfNom" styleClass="modern-input" promptText="Votre nom"/>
+                    </VBox>
+
+                    <!-- Prénom -->
+                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label styleClass="input-label" text="Prénom"/>
+                        <TextField fx:id="tfPrenom" styleClass="modern-input" promptText="Votre prénom"/>
+                    </VBox>
+
+                    <!-- Email -->
+                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label styleClass="input-label" text="Email"/>
+                        <TextField fx:id="tfEmail" styleClass="modern-input" promptText="exemple@email.com"/>
+                    </VBox>
+
+                    <!-- Date de naissance -->
+                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label styleClass="input-label" text="Date de naissance"/>
+                        <DatePicker fx:id="dpBirthDate" styleClass="modern-input"/>
+                    </VBox>
+
+                    <!-- Mot de passe -->
+                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label styleClass="input-label" text="Mot de passe"/>
+                        <PasswordField fx:id="tfPassword" styleClass="modern-input" promptText="Votre mot de passe"/>
+                    </VBox>
+
+                    <!-- Rôle -->
+                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label styleClass="input-label" text="Rôle"/>
+                        <ComboBox fx:id="cbRole" styleClass="modern-input" promptText="Sélectionnez un rôle" maxWidth="Infinity"/>
+                    </VBox>
+                </GridPane>
+
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button fx:id="btnCancel" text="Annuler" prefWidth="100" onAction="#handleCancel"/>
+                    <Button fx:id="btnSave" text="Enregistrer" prefWidth="100" onAction="#handleSave"/>
+                </HBox>
+
+            </VBox>
+        </AnchorPane>
+    </center>
+
+</BorderPane>
