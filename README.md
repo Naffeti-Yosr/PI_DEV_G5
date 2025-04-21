@@ -36,7 +36,7 @@
 
 ---
 
-## 🛠️ Technologies Utilisées
+## 🛠️ Technologies/outils Utilisées
 
 | Technologie           | Description                            |
 |------------------------|-----------------------------------------|
