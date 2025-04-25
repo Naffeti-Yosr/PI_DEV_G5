@@ -15,24 +15,32 @@
       styleClass="preview-root"
       stylesheets="@/styles/product-dashboard.css">
 
-    <Label text="Order Preview" styleClass="preview-title"/>
+   <Label text="Order Preview" styleClass="preview-title"/>
 
-    <GridPane hgap="10" vgap="10" alignment="TOP_LEFT">
-        <Label text="Order ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <Label fx:id="idLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+<GridPane hgap="10" vgap="10" alignment="TOP_LEFT">
+    <Label text="Order ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <Label fx:id="idLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-        <Label text="Date:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <Label fx:id="dateLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <Label text="Date:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <Label fx:id="dateLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-        <Label text="Status:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <ComboBox fx:id="statusCombo" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    <Label text="Status:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="statusCombo" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-        <Label text="Client:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-        <Label fx:id="clientLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-    </GridPane>
+    <Label text="Client:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <Label fx:id="clientLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+</GridPane>
 
-    <HBox spacing="15" alignment="CENTER_RIGHT">
-        <Button text="Save" onAction="#handleSave" styleClass="btn-save"/>
-        <Button text="Close" onAction="#handleClose" styleClass="btn-close"/>
-    </HBox>
+<TableView fx:id="itemsTable" prefHeight="200" prefWidth="600">
+    <columns>
+        <TableColumn fx:id="productNameColumn" text="Product Name" prefWidth="250"/>
+        <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100"/>
+        <TableColumn fx:id="totalColumn" text="Total" prefWidth="150"/>
+    </columns>
+</TableView>
+
+<HBox spacing="15" alignment="CENTER_RIGHT">
+    <Button text="Save" onAction="#handleSave" styleClass="btn-save"/>
+    <Button text="Close" onAction="#handleClose" styleClass="btn-close"/>
+</HBox>
 </VBox>

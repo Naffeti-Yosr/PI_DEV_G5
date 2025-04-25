@@ -5,7 +5,7 @@ import com.esprit.models.Categorie;
 import com.esprit.Services.ProduitService;
 import com.esprit.Services.CategorieService;
 import com.esprit.utils.DataSource;
-import com.esprit.utils.ImageUtils;
+import com.esprit.utils.UIUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -13,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -21,7 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
@@ -42,7 +40,7 @@ public class ProductDashboardController extends BaseController<Produit> {
     @FXML private Button previewButton;
     @FXML private ComboBox<String> categoryCombo;
     
-    private final Map<String, Integer> categoryMap = new HashMap<>();
+    private Map<String, Integer> categoryMap = new HashMap<>();
     private final ProduitService produitService = new ProduitService();
     private Connection connection;
 
@@ -57,31 +55,28 @@ public class ProductDashboardController extends BaseController<Produit> {
                 setupSelectionListener();
                 loadCategories();
             } else {
-                showAlert("Database Error", "Failed to establish database connection");
+                UIUtils.showAlert("Database Error", null, "Failed to establish database connection", "ERROR");
             }
         } catch (SQLException e) {
-            showAlert("Database Error", "Failed to connect to database: " + e.getMessage());
+            UIUtils.showAlert("Database Error", null, "Failed to connect to database: " + e.getMessage(), "ERROR");
         }
     }
 
-    protected ObservableList<Produit> loadData() {
-        return FXCollections.observableArrayList(produitService.recuperer());
-    }
 
     private void setupTableColumns() {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        nameColumn.setSortable(true); // Enable sorting
+        nameColumn.setSortable(true);
 
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        descriptionColumn.setSortable(true); // Enable sorting
+        descriptionColumn.setSortable(true);
 
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("prix"));
-        priceColumn.setSortable(true); // Enable sorting
+        priceColumn.setSortable(true);
 
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("quantiteStock"));
-        stockColumn.setSortable(true); // Enable sorting
+        stockColumn.setSortable(true);
 
-categoryColumn.setCellValueFactory(cellData -> {
+        categoryColumn.setCellValueFactory(cellData -> {
             int categoryId = cellData.getValue().getCategorieId();
             String categoryName = produitService.getCategoryNameById(categoryId);
             return new javafx.beans.property.SimpleStringProperty(categoryName);
@@ -89,12 +84,11 @@ categoryColumn.setCellValueFactory(cellData -> {
         categoryColumn.setSortable(true);
 
         recyclableColumn.setCellValueFactory(new PropertyValueFactory<>("recyclable"));
-        recyclableColumn.setSortable(true); // Enable sorting
+        recyclableColumn.setSortable(true);
 
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
-        imageColumn.setSortable(true); // Enable sorting
+        imageColumn.setSortable(true);
 
-        // Set dynamic column widths as percentages of the table width
         productTable.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double tableWidth = newWidth.doubleValue();
             nameColumn.setPrefWidth(tableWidth * 0.14);         
@@ -106,55 +100,66 @@ categoryColumn.setCellValueFactory(cellData -> {
             imageColumn.setPrefWidth(tableWidth * 0.20);        
         });
         
-       recyclableColumn.setCellFactory(column -> new TableCell<Produit, Boolean>() {
-    private final Label badge = new Label();
-    {
-        badge.setAlignment(Pos.CENTER);
-        badge.setContentDisplay(ContentDisplay.CENTER);
-        badge.setPadding(new Insets(3, 10, 3, 10));
-    }
-    
-    @Override
-    protected void updateItem(Boolean recyclable, boolean empty) {
-        super.updateItem(recyclable, empty);
-        if (empty || recyclable == null) {
-            setGraphic(null);
-        } else {
-            if (recyclable) {
-                badge.setText("ECO FRIENDLY ♻");
-                badge.getStyleClass().setAll("recyclable-badge");
-            } else {
-                badge.setText("NOT ECO");
-                badge.getStyleClass().setAll("non-recyclable-badge");
+        recyclableColumn.setCellFactory(column -> new TableCell<Produit, Boolean>() {
+            private final Label badge = new Label();
+            {
+                badge.setAlignment(Pos.CENTER);
+                badge.setContentDisplay(ContentDisplay.CENTER);
+                badge.setPadding(new Insets(3, 10, 3, 10));
             }
-            setGraphic(badge);
-        }
-    }
-});
+            
+            @Override
+            protected void updateItem(Boolean recyclable, boolean empty) {
+                super.updateItem(recyclable, empty);
+                if (empty || recyclable == null) {
+                    setGraphic(null);
+                } else {
+                    if (recyclable) {
+                        badge.setText("ECO FRIENDLY ♻");
+                        badge.getStyleClass().setAll("recyclable-badge");
+                    } else {
+                        badge.setText("NOT ECO");
+                        badge.getStyleClass().setAll("non-recyclable-badge");
+                    }
+                    setGraphic(badge);
+                }
+            }
+        });
         
-imageColumn.setCellFactory(column -> new TableCell<Produit, String>() {
-    private ImageView imageView;
-    
-    {
-        imageView = ImageUtils.createImageView("", 80, 60);
-        imageView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(46,125,50,0.2), 5, 0, 0, 1);");
-    }
-    
-    @Override
-    protected void updateItem(String imagePath, boolean empty) {
-        super.updateItem(imagePath, empty);
-        if (empty || imagePath == null || imagePath.isEmpty()) {
-            setGraphic(null);
-        } else {
-            imageView.setImage(null);
-            imageView.setImage(ImageUtils.loadImage(imagePath));
-            setGraphic(new StackPane(imageView));
-        }
-    }
-});
+        imageColumn.setCellFactory(column -> new TableCell<Produit, String>() {
+            private ImageView imageView;
+            
+            {
+                imageView = new ImageView();
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(60);
+                imageView.setPreserveRatio(true);
+                imageView.setSmooth(true);
+                imageView.setCache(true);
+                imageView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(46,125,50,0.2), 5, 0, 0, 1);");
+            }
+            
+            @Override
+            protected void updateItem(String imagePath, boolean empty) {
+                super.updateItem(imagePath, empty);
+                if (empty || imagePath == null || imagePath.isEmpty()) {
+                    setGraphic(null);
+                } else {
+                    String imageFileName = imagePath.trim();
+                    java.io.File imgFile = new java.io.File("src/main/resources/images/products/" + imageFileName);
+                    if (imgFile.exists() && imgFile.isFile()) {
+                        imageView.setImage(null);
+                        imageView.setImage(new Image("file:src/main/resources/images/products/" + imageFileName));
+                    } else {
+                        imageView.setImage(new Image("file:src/main/resources/images/default_renewable.png"));
+                    }
+                    setGraphic(new StackPane(imageView));
+                }
+            }
+        });
     }
 
-    private void loadProductData() {
+    public void loadProductData() {
         productTable.getItems().setAll(produitService.recuperer());
     }
 
@@ -166,7 +171,7 @@ imageColumn.setCellFactory(column -> new TableCell<Produit, String>() {
             });
     }
 
-private void loadCategories() {
+    private void loadCategories() {
         categoryMap.clear();
         categoryCombo.getItems().clear();
         categoryCombo.getItems().add("All Categories");
@@ -194,59 +199,55 @@ private void loadCategories() {
             });
 
         } catch (Exception e) {
-            showAlert("Error", "Failed to load categories: " + e.getMessage());
+            UIUtils.showAlert("Error", null, "Failed to load categories: " + e.getMessage(), "ERROR");
         }
     }
 
-@FXML
-private void handleAdd() {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ProductFormView.fxml"));
-        Parent root = loader.load();
-        
-        ProductFormController controller = loader.getController();
-        controller.setCategories(categoryMap);
-        controller.setMode(ProductFormController.Mode.ADD);
-        
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Add New Product");
-        stage.showAndWait();
-        
-        if (controller.isSaved()) {
-            loadProductData();
-            showAlert("Success", "Product added successfully!");
+    @FXML
+    private void handleAdd() {
+        try {
+            Stage stage = (Stage) productTable.getScene().getWindow();
+            ProductFormController controller = loadViewAndSwitchScene(stage, "/views/ProductFormView.fxml");
+            controller.setCategories(categoryMap);
+            controller.setMode(ProductFormController.Mode.ADD);
+            controller.setDashboardController(this);
+        } catch (Exception e) {
+            UIUtils.showAlert("Error", null, "Failed to open form: " + e.getMessage(), "ERROR");
         }
-    } catch (Exception e) {
-        showAlert("Error", "Failed to open form: " + e.getMessage());
     }
-}
 
     @FXML
     private void handleUpdate() {
         Produit selected = productTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ProductFormView.fxml"));
-                Parent root = loader.load();
-                
-                ProductFormController controller = loader.getController();
+                Stage stage = (Stage) productTable.getScene().getWindow();
+                ProductFormController controller = loadViewAndSwitchScene(stage, "/views/ProductFormView.fxml");
                 controller.setCategories(categoryMap);
                 controller.setMode(ProductFormController.Mode.EDIT);
                 controller.setProduct(selected);
-                
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Edit Product");
-                stage.showAndWait();
-                
-                if (controller.isSaved()) {
-                    loadProductData();
-                }
+                controller.setDashboardController(this);
             } catch (Exception e) {
-                showAlert("Error", "Failed to open form: " + e.getMessage());
+                UIUtils.showAlert("Error", null, "Failed to open form: " + e.getMessage(), "ERROR");
             }
         }
+    }
+
+    public void showDashboardView(Stage stage) {
+        try {
+            switchScene(stage, "/views/ProductDashboardView.fxml");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ProductDashboardView.fxml"));
+            Parent root = loader.load();
+            ProductDashboardController controller = loader.getController();
+            controller.setCategoryMap(this.categoryMap);
+            controller.loadProductData();
+        } catch (Exception e) {
+            UIUtils.showAlert("Error", null, "Failed to load dashboard view: " + e.getMessage(), "ERROR");
+        }
+    }
+
+    public void setCategoryMap(Map<String, Integer> categoryMap) {
+        this.categoryMap = categoryMap;
     }
 
     @FXML
@@ -274,20 +275,20 @@ private void handleAdd() {
         
         result.ifPresent(name -> {
             if (!name.isEmpty()) {
-            if (!categoryMap.containsKey(name)) {
-                try {
-                    CategorieService categorieService = new CategorieService();
-                    Categorie newCategory = new Categorie(0, name, "");
-                    categorieService.ajouter(newCategory);
-                    
-                    categoryMap.put(name, newCategory.getId());
-                    categoryCombo.getItems().add(name);
-                    categoryCombo.getSelectionModel().select(name);
-                } catch (Exception e) {
-                    showAlert("Error", "Failed to add category: " + e.getMessage());
-                }
+                if (!categoryMap.containsKey(name)) {
+                    try {
+                        CategorieService categorieService = new CategorieService();
+                        Categorie newCategory = new Categorie(0, name, "");
+                        categorieService.ajouter(newCategory);
+                        
+                        categoryMap.put(name, newCategory.getId());
+                        categoryCombo.getItems().add(name);
+                        categoryCombo.getSelectionModel().select(name);
+                    } catch (Exception e) {
+                        UIUtils.showAlert("Error", null, "Failed to add category: " + e.getMessage(), "ERROR");
+                    }
                 } else {
-                    showAlert("Warning", "Category already exists");
+                    UIUtils.showAlert("Warning", null, "Category already exists", "WARNING");
                 }
             }
         });
@@ -313,11 +314,11 @@ private void handleAdd() {
                     categorieService.supprimer(categoryToDelete);
                     loadCategories();
                 } catch (Exception e) {
-                    showAlert("Error", "Failed to delete category: " + e.getMessage());
+                    UIUtils.showAlert("Error", null, "Failed to delete category: " + e.getMessage(), "ERROR");
                 }
             }
         } else {
-            showAlert("Warning", "Please select a valid category to delete.");
+            UIUtils.showAlert("Warning", null, "Please select a valid category to delete.", "WARNING");
         }
     }
     @FXML
@@ -336,19 +337,13 @@ private void handleAdd() {
                 stage.setTitle("Product Preview");
                 stage.showAndWait();
 
-                // Refresh product table after preview window closes
                 loadProductData();
             } catch (Exception e) {
-                showAlert("Error", "Failed to open preview: " + e.getMessage());
+            UIUtils.showAlert("Error", null, "Failed to open preview: " + e.getMessage(), "ERROR");
             }
         } else {
-            showAlert("Warning", "Please select a product to preview.");
+            UIUtils.showAlert("Warning", null, "Please select a product to preview.", "WARNING");
         }
     }
 
-    public void refreshProduct(Produit updatedProduct) {
-        // Implement refreshItem logic here or remove this method if not needed
-        // For now, just reload the product data
-        loadProductData();
-    }
 }

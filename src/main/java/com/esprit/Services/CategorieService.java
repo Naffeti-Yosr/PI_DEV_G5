@@ -29,7 +29,7 @@ public class CategorieService implements IService<Categorie> {
                 categorie.setId(rs.getInt(1));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public class CategorieService implements IService<Categorie> {
             stmt.setInt(3, categorie.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class CategorieService implements IService<Categorie> {
             stmt.setInt(1, categorie.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public class CategorieService implements IService<Categorie> {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return categories;
     }

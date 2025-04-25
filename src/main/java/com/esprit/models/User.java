@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 
 public class User {
     private int id;
-    private String nom; // Last Name
-    private String prenom; // First Name
-    private LocalDateTime birthDate; // Birth Date
-    private String email; // Email Address
-    private String password; // Password
-    private String role; // Role (e.g., admin, client, employee)
+    private String nom;
+    private String prenom;
+    private LocalDateTime birthDate;
+    private String email;
+    private String password;
+    private String role;
 
     // Constructor
     public User(int id, String nom, String prenom, LocalDateTime birthDate, String email, String password, String role) {
@@ -20,6 +20,9 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public User() {
     }
 
     // Getters and Setters

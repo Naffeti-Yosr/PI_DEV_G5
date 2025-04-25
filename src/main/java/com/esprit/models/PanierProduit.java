@@ -2,19 +2,17 @@ package com.esprit.models;
 
 public class PanierProduit {
     private int id;
-    private Produit produit; // Associated product
-    private int quantite; // Quantity of the product
-    private double sousTotal; // Subtotal for this product in the cart
+    private Produit produit;
+    private int quantite;
+    private double sousTotal;
 
-    // Constructor
     public PanierProduit(int id, Produit produit, int quantite) {
         this.id = id;
         this.produit = produit;
         this.quantite = quantite;
-        calculateSousTotal(); // Automatically calculate subtotal on creation
+        calculateSousTotal();
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -29,7 +27,7 @@ public class PanierProduit {
 
     public void setProduit(Produit produit) {
         this.produit = produit;
-        calculateSousTotal(); // Recalculate subtotal when product changes
+        calculateSousTotal();
     }
 
     public int getQuantite() {
@@ -38,17 +36,16 @@ public class PanierProduit {
 
     public void setQuantite(int quantite) {
         this.quantite = quantite;
-        calculateSousTotal(); // Recalculate subtotal when quantity changes
+        calculateSousTotal();
     }
 
     public double getSousTotal() {
         return sousTotal;
     }
 
-    // Calculate the subtotal (quantite * produit.prix)
     private void calculateSousTotal() {
         if (produit != null) {
-            this.sousTotal = quantite * produit.getPrix();
+            this.sousTotal = this.quantite * produit.getPrix();
         }
     }
 

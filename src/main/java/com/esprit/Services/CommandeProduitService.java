@@ -19,10 +19,12 @@ public class CommandeProduitService implements IService<CommandeProduit> {
 
     @Override
     public void ajouter(CommandeProduit commandeProduit) {
-        String query = "INSERT INTO commande_produit (commande_id, produit_id) VALUES (?, ?)";
+        String query = "INSERT INTO commande_produit (commande_id, produit_id, quantite, sousTotal) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setInt(1, commandeProduit.getCommandeId());
             pst.setInt(2, commandeProduit.getProduitId());
+            pst.setInt(3, commandeProduit.getQuantite());
+            pst.setDouble(4, commandeProduit.getSousTotal());
             pst.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -31,7 +33,16 @@ public class CommandeProduitService implements IService<CommandeProduit> {
 
     @Override
     public void modifier(CommandeProduit commandeProduit) {
-
+        String query = "UPDATE commande_produit SET quantite = ?, sousTotal = ? WHERE commande_id = ? AND produit_id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, commandeProduit.getQuantite());
+            pst.setDouble(2, commandeProduit.getSousTotal());
+            pst.setInt(3, commandeProduit.getCommandeId());
+            pst.setInt(4, commandeProduit.getProduitId());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
@@ -55,8 +66,11 @@ public class CommandeProduitService implements IService<CommandeProduit> {
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 CommandeProduit cp = new CommandeProduit(
+                        rs.getInt("id"),
                         rs.getInt("commande_id"),
-                        rs.getInt("produit_id")
+                        rs.getInt("produit_id"),
+                        rs.getInt("quantite"),
+                        rs.getDouble("sousTotal")
                 );
                 commandeProduits.add(cp);
             }
@@ -74,8 +88,11 @@ public class CommandeProduitService implements IService<CommandeProduit> {
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
                     return new CommandeProduit(
+                            rs.getInt("id"),
                             rs.getInt("commande_id"),
-                            rs.getInt("produit_id")
+                            rs.getInt("produit_id"),
+                            rs.getInt("quantite"),
+                            rs.getDouble("sousTotal")
                     );
                 }
             }
@@ -83,5 +100,28 @@ public class CommandeProduitService implements IService<CommandeProduit> {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public List<CommandeProduit> getOrderItemsByCommandeId(int commandeId) {
+        List<CommandeProduit> items = new ArrayList<>();
+        String query = "SELECT * FROM commande_produit WHERE commande_id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, commandeId);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    CommandeProduit cp = new CommandeProduit(
+                            rs.getInt("id"),
+                            rs.getInt("commande_id"),
+                            rs.getInt("produit_id"),
+                            rs.getInt("quantite"),
+                            rs.getDouble("sousTotal")
+                    );
+                    items.add(cp);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching order items: " + e.getMessage());
+        }
+        return items;
     }
 }

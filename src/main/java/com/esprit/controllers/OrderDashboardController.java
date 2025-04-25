@@ -1,27 +1,29 @@
 package com.esprit.controllers;
 
 import com.esprit.models.Commande;
-import com.esprit.models.User;
 import com.esprit.Services.CommandeService;
 import com.esprit.Services.UserService;
 import com.esprit.utils.DataSource;
+import com.esprit.utils.UIUtils;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.Stage;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class OrderDashboardController extends BaseController<Commande> {
 
+    // FXML injections unchanged
     @FXML private TableView<Commande> orderTable;
     @FXML private TableColumn<Commande, Integer> idColumn;
     @FXML private TableColumn<Commande, String> dateColumn;
@@ -36,7 +38,7 @@ public class OrderDashboardController extends BaseController<Commande> {
     private Connection connection;
 
     private Map<String, Integer> clientMap = new HashMap<>();
-    private ObservableList<Commande> allOrders = FXCollections.observableArrayList();
+    private List<Commande> allOrders = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,30 +53,19 @@ public class OrderDashboardController extends BaseController<Commande> {
                 loadStatuses();
                 setupFilters();
             } else {
-                showAlert("Database Error", "Failed to establish database connection");
+                UIUtils.showAlert("Database Error", null, "Failed to establish database connection", "ERROR");
             }
         } catch (SQLException e) {
-            showAlert("Database Error", "Failed to connect to database: " + e.getMessage());
+            UIUtils.showAlert("Database Error", null, "Failed to connect to database: " + e.getMessage(), "ERROR");
         }
     }
 
-    @Override
-    protected ObservableList<Commande> loadData() {
-        allOrders.setAll(commandeService.recuperer());
-        return allOrders;
-    }
+
 
     private void setupTableColumns() {
-        idColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        orderTable.getColumns().remove(idColumn);
 
-        dateColumn.setCellValueFactory(cellData -> {
-            java.util.Date date = cellData.getValue().getDate();
-            String formattedDate = date != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(date) : "";
-            return new javafx.beans.property.SimpleStringProperty(formattedDate);
-        });
-
-        statusColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getStatut()));
-
+        // Client column - minimal property usage
         clientColumn.setCellValueFactory(cellData -> {
             int clientId = cellData.getValue().getClientId();
             String clientName = clientMap.entrySet().stream()
@@ -82,19 +73,50 @@ public class OrderDashboardController extends BaseController<Commande> {
                     .map(Map.Entry::getKey)
                     .findFirst()
                     .orElse("Unknown");
-            return new javafx.beans.property.SimpleStringProperty(clientName);
+            return new SimpleStringProperty(clientName);
         });
+
+        // Date column - minimal property usage
+        dateColumn.setCellValueFactory(cellData -> {
+            Date date = cellData.getValue().getDate();
+            String formattedDate = (date != null) 
+                ? new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date) 
+                : "";
+            return new SimpleStringProperty(formattedDate);
+        });
+
+        // Status column (requires property for editing)
+        statusColumn.setCellValueFactory(cellData -> 
+            new SimpleStringProperty(cellData.getValue().getStatut()));
+        
+        statusColumn.setCellFactory(column -> new ComboBoxTableCell<>("Pending", "Processing", "Completed", "Cancelled"));
+        
+        statusColumn.setOnEditCommit(event -> {
+            Commande order = event.getRowValue();
+            String newStatus = event.getNewValue();
+
+            if (UIUtils.showConfirmation("Confirm Status Change", "Change status to: " + newStatus)) {
+                order.setStatut(newStatus);
+                commandeService.modifier(order);
+                loadOrderData(); // Refresh data
+            } else {
+                orderTable.refresh(); // Revert visual change
+            }
+        });
+
+        orderTable.setEditable(true);
     }
 
     private void loadOrderData() {
-        allOrders.setAll(commandeService.recuperer());
-        orderTable.setItems(allOrders);
+        allOrders = commandeService.recuperer();
+        orderTable.setItems(FXCollections.observableArrayList(allOrders));
     }
 
+    // ... (rest of the methods remain unchanged)
     private void setupSelectionListener() {
         orderTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
-                      previewButton.setDisable(newSelection == null);
+                    previewButton.setDisable(newSelection == null);
                 });
     }
 
@@ -103,12 +125,11 @@ public class OrderDashboardController extends BaseController<Commande> {
         clientCombo.getItems().clear();
         clientCombo.getItems().add("All Clients");
 
-        List<User> clients = userService.recuperer();
-        for (User client : clients) {
+        userService.recuperer().forEach(client -> {
             String fullName = client.getPrenom() + " " + client.getNom();
             clientMap.put(fullName, client.getId());
             clientCombo.getItems().add(fullName);
-        }
+        });
         clientCombo.getSelectionModel().selectFirst();
     }
 
@@ -118,67 +139,52 @@ public class OrderDashboardController extends BaseController<Commande> {
         statusCombo.getSelectionModel().selectFirst();
     }
 
-    private void setupFilters() {
-        clientCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> applyFilters());
-        statusCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> applyFilters());
-    }
-
     private void applyFilters() {
         String selectedClient = clientCombo.getValue();
         String selectedStatus = statusCombo.getValue();
 
         List<Commande> filtered = allOrders.stream()
-                .filter(order -> {
-                    boolean clientMatches = selectedClient == null || selectedClient.equals("All Clients") ||
-                            (clientMap.getOrDefault(selectedClient, -1) == order.getClientId());
-                    boolean statusMatches = selectedStatus == null || selectedStatus.equals("All Statuses") ||
-                            selectedStatus.equalsIgnoreCase(order.getStatut());
-                    return clientMatches && statusMatches;
-                })
+                .filter(order -> 
+                    (selectedClient == null || selectedClient.equals("All Clients") || 
+                     clientMap.getOrDefault(selectedClient, -1) == order.getClientId()) &&
+                    (selectedStatus == null || selectedStatus.equals("All Statuses") || 
+                     selectedStatus.equalsIgnoreCase(order.getStatut()))
+                )
                 .collect(Collectors.toList());
 
         orderTable.setItems(FXCollections.observableArrayList(filtered));
     }
 
-    @FXML
-    private void handleDelete() {
-        Commande selected = orderTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-            confirm.setTitle("Confirm Delete");
-            confirm.setHeaderText("Delete order ID: " + selected.getId());
-            confirm.setContentText("Are you sure?");
-
-            if (confirm.showAndWait().get() == ButtonType.OK) {
-                commandeService.supprimer(selected);
-                loadOrderData();
-            }
-        }
+    private void setupFilters() {
+        clientCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+        statusCombo.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
     }
 
     @FXML
     private void handlePreview() {
         Commande selected = orderTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/OrderPreviewView.fxml"));
-                Parent root = loader.load();
+        if (selected == null) {
+            UIUtils.showAlert("Warning", null, "Please select an order to preview.", "WARNING");
+            return;
+        }
 
-                OrderPreviewController controller = loader.getController();
-                controller.setOrder(selected);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/OrderPreviewView.fxml"));
+            Parent root = loader.load();
 
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Order Preview");
-                stage.showAndWait();
+            OrderPreviewController controller = loader.getController();
+            controller.setOrder(selected);
 
-                // Refresh order table after preview window closes
-                loadOrderData();
-            } catch (Exception e) {
-                showAlert("Error", "Failed to open preview: " + e.getMessage());
-            }
-        } else {
-            showAlert("Warning", "Please select an order to preview.");
+            // Load preview in the same stage
+            Stage stage = (Stage) orderTable.getScene().getWindow();
+            stage.getScene().setRoot(root);
+            stage.setTitle("Order Preview");
+
+            // Optionally, you can add a back button handler in OrderPreviewController to reload the dashboard view
+
+            loadOrderData(); // Refresh after preview
+        } catch (Exception e) {
+            UIUtils.showAlert("Error", null, "Failed to open preview: " + e.getMessage(), "ERROR");
         }
     }
 }

@@ -4,11 +4,10 @@ import java.util.List;
 
 public class Panier {
     private int id;
-    private int utilisateurId; // ID of the user owning the cart
-    private double total; // Total sum of all products in the cart
-    private List<PanierProduit> produits; // List of products in the cart
+    private int utilisateurId;
+    private double total;
+    private List<PanierProduit> produits;
 
-    // Constructor
     public Panier(int id, int utilisateurId, double total, List<PanierProduit> produits) {
         this.id = id;
         this.utilisateurId = utilisateurId;
@@ -16,7 +15,6 @@ public class Panier {
         this.produits = produits;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -47,10 +45,9 @@ public class Panier {
 
     public void setProduits(List<PanierProduit> produits) {
         this.produits = produits;
-        calculateTotal(); // Automatically update total when products are set
+        calculateTotal();
     }
 
-    // Calculate the total sum of the cart
     public void calculateTotal() {
         this.total = produits.stream().mapToDouble(PanierProduit::getSousTotal).sum();
     }

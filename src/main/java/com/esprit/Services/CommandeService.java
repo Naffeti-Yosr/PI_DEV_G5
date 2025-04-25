@@ -17,11 +17,12 @@ public class CommandeService implements IService<Commande> {
 
     @Override
     public void ajouter(Commande commande) {
-        String query = "INSERT INTO Commande (dateCommande, statut, clientId) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Commande (dateCommande, statut, total, clientId) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setDate(1, new Date(commande.getDate().getTime()));
             preparedStatement.setString(2, commande.getStatut());
-            preparedStatement.setInt(3, commande.getClientId());
+            preparedStatement.setDouble(3, 0.0); // initial total 0
+            preparedStatement.setInt(4, commande.getClientId());
 
             preparedStatement.executeUpdate();
 
@@ -32,6 +33,25 @@ public class CommandeService implements IService<Commande> {
             }
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
+        }
+    }
+
+    public void updateTotalForCommande(int commandeId) {
+        String sumQuery = "SELECT SUM(sousTotal) AS totalSum FROM commande_produit WHERE commande_id = ?";
+        String updateQuery = "UPDATE Commande SET total = ? WHERE id = ?";
+        try (PreparedStatement sumStmt = connection.prepareStatement(sumQuery);
+             PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+            sumStmt.setInt(1, commandeId);
+            try (ResultSet rs = sumStmt.executeQuery()) {
+                if (rs.next()) {
+                    double totalSum = rs.getDouble("totalSum");
+                    updateStmt.setDouble(1, totalSum);
+                    updateStmt.setInt(2, commandeId);
+                    updateStmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la mise à jour du total de la commande : " + e.getMessage());
         }
     }
 

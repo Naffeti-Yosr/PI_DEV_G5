@@ -3,10 +3,10 @@ package com.esprit.controllers;
 import com.esprit.models.Produit;
 import com.esprit.Services.ProduitService;
 import com.esprit.utils.ImageUtils;
+import com.esprit.utils.UIUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.io.File;
@@ -32,11 +32,12 @@ public class ProductFormController {
     private Map<String, Integer> categoryMap = new HashMap<>();
     private File imageFile;
 
-  
+    private ProductDashboardController dashboardController;
 
-    public javafx.collections.ObservableList<Produit> loadData() {
-        return javafx.collections.FXCollections.observableArrayList();
+    public void setDashboardController(ProductDashboardController dashboardController) {
+        this.dashboardController = dashboardController;
     }
+
 
     public void setProduct(Produit produit) {
         this.produit = produit;
@@ -54,10 +55,10 @@ public class ProductFormController {
             });
 
             if (produit.getImage() != null && !produit.getImage().isEmpty()) {
-                // Check if image file exists, else load default image
-                java.io.File imgFile = new java.io.File("src/main/resources/images/products/" + produit.getImage());
+                String imageFileName = produit.getImage().trim();
+                java.io.File imgFile = new java.io.File("src/main/resources/images/products/" + imageFileName);
                 if (imgFile.exists() && imgFile.isFile()) {
-                    productImage.setImage(ImageUtils.loadImage(produit.getImage()));
+                    productImage.setImage(ImageUtils.loadImage(imageFileName));
                 } else {
                     productImage.setImage(ImageUtils.loadImage("default_renewable.png"));
                 }
@@ -78,54 +79,111 @@ public class ProductFormController {
         categoryCombo.getItems().addAll(categories.keySet());
     }
 
-    public boolean isSaved() {
-        return saved;
-    }
+
 
     @FXML
     private void handleSave() {
-            produit.setNom(nameField.getText());
-            produit.setDescription(descriptionField.getText());
-            produit.setPrix(Double.parseDouble(priceField.getText()));
-            produit.setQuantiteStock(Integer.parseInt(stockField.getText()));
-            produit.setRecyclable(recyclableCheck.isSelected());
-            
-            String selectedCategory = categoryCombo.getValue();
-            if (selectedCategory != null && !selectedCategory.isEmpty()) {
-                produit.setCategorieId(categoryMap.get(selectedCategory));
-            }
+        // Input validation
+        String name = nameField.getText();
+        String description = descriptionField.getText();
+        String priceText = priceField.getText();
+        String stockText = stockField.getText();
+        String selectedCategory = categoryCombo.getValue();
 
-            ProduitService produitService = new ProduitService();
+        if (name == null || name.trim().isEmpty()) {
+            UIUtils.showAlert("Validation Error", null, "Name is required.", "ERROR");
+            return;
+        }
+        if (description == null || description.trim().isEmpty()) {
+            UIUtils.showAlert("Validation Error", null, "Description is required.", "ERROR");
+            return;
+        }
+        if (priceText == null || priceText.trim().isEmpty()) {
+            UIUtils.showAlert("Validation Error", null, "Price is required.", "ERROR");
+            return;
+        }
+        double price;
+        try {
+            price = Double.parseDouble(priceText);
+            if (price < 0) {
+                UIUtils.showAlert("Validation Error", null, "Price cannot be negative.", "ERROR");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            UIUtils.showAlert("Validation Error", null, "Price must be a valid number.", "ERROR");
+            return;
+        }
+        if (stockText == null || stockText.trim().isEmpty()) {
+            UIUtils.showAlert("Validation Error", null, "Stock quantity is required.", "ERROR");
+            return;
+        }
+        int stock;
+        try {
+            stock = Integer.parseInt(stockText);
+            if (stock < 0) {
+                UIUtils.showAlert("Validation Error", null, "Stock quantity cannot be negative.", "ERROR");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            UIUtils.showAlert("Validation Error", null, "Stock quantity must be a valid integer.", "ERROR");
+            return;
+        }
+        if (selectedCategory == null || selectedCategory.trim().isEmpty()) {
+            UIUtils.showAlert("Validation Error", null, "Category must be selected.", "ERROR");
+            return;
+        }
+        if (!categoryMap.containsKey(selectedCategory)) {
+            UIUtils.showAlert("Validation Error", null, "Selected category is invalid.", "ERROR");
+            return;
+        }
 
-            if (imageFile != null) {
-                if (produit.getImage() != null && !produit.getImage().isEmpty() && !produit.getImage().equals("default_renewable.png")) {
-                    ImageUtils.deleteProductImage(produit.getImage());
-                }
-                String imagePath = ImageUtils.saveProductImage(imageFile, produit.getNom());
-                produit.setImage(imagePath);
-            }
+        // Set product fields after validation
+        produit.setNom(name);
+        produit.setDescription(description);
+        produit.setPrix(price);
+        produit.setQuantiteStock(stock);
+        produit.setRecyclable(recyclableCheck.isSelected());
+        produit.setCategorieId(categoryMap.get(selectedCategory));
 
-            if (mode == Mode.ADD) {
-                produitService.ajouter(produit);
-            } else {
-                produitService.modifier(produit);
+        ProduitService produitService = new ProduitService();
+
+        if (imageFile != null) {
+            if (produit.getImage() != null && !produit.getImage().isEmpty() && !produit.getImage().equals("default_renewable.png")) {
+                ImageUtils.deleteProductImage(produit.getImage());
             }
-            
-            saved = true;
-            
-            Stage stage = (Stage) nameField.getScene().getWindow();
-            if (stage.getOwner() != null) {
-                ProductDashboardController dashboard = 
-                    (ProductDashboardController) stage.getOwner().getUserData();
-                dashboard.refreshProduct(produit);
-            }
-            
-            closeForm();
+            String imagePath = ImageUtils.saveProductImage(imageFile, produit.getNom());
+            produit.setImage(imagePath);
+        }
+
+        if (mode == Mode.ADD) {
+            produitService.ajouter(produit);
+        } else {
+            produitService.modifier(produit);
+        }
+
+        saved = true;
+
+        if (dashboardController != null) {
+            dashboardController.loadProductData();
+        }
+
+        backToDashboard();
     }
 
     @FXML
-    private void handleCancel() {
-        closeForm();
+    private void handleBack() {
+        backToDashboard();
+    }
+
+    private void backToDashboard() {
+        try {
+            if (dashboardController != null) {
+                javafx.stage.Stage stage = (javafx.stage.Stage) productImage.getScene().getWindow();
+                dashboardController.showDashboardView(stage);
+            }
+        } catch (Exception e) {
+            UIUtils.showAlert("Navigation Error", null, "Failed to return to dashboard: " + e.getMessage(), "ERROR");
+        }
     }
 
     @FXML
@@ -144,26 +202,18 @@ public class ProductFormController {
 
     @FXML
     private void handleDeleteImage() {
+        if (produit != null && produit.getImage() != null && !produit.getImage().isEmpty() && !"default_renewable.png".equals(produit.getImage())) {
+            ImageUtils.deleteProductImage(produit.getImage());
+        }
         imageFile = null;
         productImage.setImage(ImageUtils.loadImage("default_renewable.png"));
         if (produit != null) {
             produit.setImage("default_renewable.png");
             ProduitService produitService = new ProduitService();
             produitService.modifier(produit);
-            // Refresh product image in dashboard after deletion
-            Stage stage = (Stage) nameField.getScene().getWindow();
-            if (stage.getOwner() != null) {
-                ProductDashboardController dashboard = 
-                    (ProductDashboardController) stage.getOwner().getUserData();
-                if (dashboard != null) {
-                    dashboard.refreshProduct(produit);
-                }
+            if (dashboardController != null) {
+                dashboardController.loadProductData();
             }
         }
-    }
-
-    private void closeForm() {
-        Stage stage = (Stage) nameField.getScene().getWindow();
-        stage.close();
     }
 }

@@ -32,10 +32,13 @@ public class ImageUtils {
                 return getDefaultImage();
             }
 
-            if (new File(imagePath).exists()) {
-                return new Image(new File(imagePath).toURI().toString());
+            // Try loading from file system first
+            File file = new File("src/main/resources/images/products/" + imagePath);
+            if (file.exists()) {
+                return new Image(file.toURI().toString());
             }
 
+            // Fallback to resource stream
             String resourcePath = imagePath.startsWith("/") ? imagePath : "/images/products/" + imagePath;
             InputStream stream = ImageUtils.class.getResourceAsStream(resourcePath);
             
@@ -48,6 +51,7 @@ public class ImageUtils {
             return getDefaultImage();
         }
     }
+
     
     private static Image getDefaultImage() {
         try {
@@ -77,8 +81,8 @@ public class ImageUtils {
                 originalName.substring(originalName.lastIndexOf(".")) : ".jpg";
             
             String cleanName = productName.replaceAll("[^a-zA-Z0-9]", "_").toLowerCase();
-            String uniqueId = java.util.UUID.randomUUID().toString();
-            String fileName = cleanName + "_" + uniqueId + extension;
+            String timestamp = String.valueOf(System.currentTimeMillis());
+            String fileName = cleanName + "_" + timestamp + extension;
             String destPath = resourcesPath + fileName;
             
             Files.copy(imageFile.toPath(), Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);
@@ -101,4 +105,5 @@ public class ImageUtils {
         }
         return false;
     }
+
 }

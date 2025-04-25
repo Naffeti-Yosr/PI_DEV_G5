@@ -2,18 +2,21 @@ package com.esprit.utils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.Optional;
 
 public class UIUtils {
 
-    public static void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    public static void showAlert(String title, String header, String message, String alertTypeStr) {
+        Alert.AlertType alertType;
+        try {
+            alertType = Alert.AlertType.valueOf(alertTypeStr.toUpperCase());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            alertType = Alert.AlertType.INFORMATION; // default
+        }
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
-        alert.setHeaderText(null);
+        alert.setHeaderText(header);
         alert.setContentText(message);
         alert.showAndWait();
     }
@@ -27,7 +30,4 @@ public class UIUtils {
         return result.isPresent() && result.get() == ButtonType.OK;
     }
 
-    public static <T> void setupTableColumn(TableColumn<T, ?> column, String propertyName) {
-        column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-    }
 }

@@ -12,33 +12,32 @@
       styleClass="dashboard-root"
       stylesheets="@/styles/product-dashboard.css">
 
-    <!-- Header -->
-    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header">
-     <ImageView fitWidth="80" fitHeight="80">
-                    <Image url="@/images/logo.png"/>
-                </ImageView>
-        <Label text="Solaris Orders Dashboard" styleClass="header-title"/>
-    </HBox>
+   <!-- Header -->
+<!-- Header -->
+<HBox alignment="CENTER_LEFT" spacing="10" styleClass="header">
+    <ImageView fitWidth="80" fitHeight="80">
+        <Image url="images/logo.png"/>
+    </ImageView>
+    <Label text="Solaris Orders Dashboard" styleClass="header-title"/>
+</HBox>
 
-    <!-- Filter Toolbar -->
-    <HBox spacing="15" styleClass="toolbar">
-        <ComboBox fx:id="clientCombo" promptText="Select Client" styleClass="client-combo"/>
-        <ComboBox fx:id="statusCombo" promptText="Select Status" styleClass="status-combo"/>
-    </HBox>
+<!-- Filter Toolbar -->
+<HBox spacing="15" styleClass="toolbar">
+    <ComboBox fx:id="clientCombo" promptText="Select Client" styleClass="client-combo"/>
+    <ComboBox fx:id="statusCombo" promptText="Select Status" styleClass="status-combo"/>
+</HBox>
 
-    <!-- Orders Table -->
-    <TableView fx:id="orderTable" styleClass="order-table" >
-        <columns>
-            <TableColumn fx:id="idColumn" text="Order ID" prefWidth="100" sortable="true" reorderable="false"/>
+<!-- Orders Table -->
+<TableView fx:id="orderTable" styleClass="order-table" editable="true">
+    <columns>
+        <TableColumn fx:id="clientColumn" text="Client" prefWidth="200" sortable="true" reorderable="false"/>
             <TableColumn fx:id="dateColumn" text="Date" prefWidth="150" sortable="true" reorderable="false"/>
-            <TableColumn fx:id="statusColumn" text="Status" prefWidth="150" sortable="true" reorderable="false"/>
-            <TableColumn fx:id="clientColumn" text="Client" prefWidth="200" sortable="true" reorderable="false"/>
-        </columns>
-    </TableView>
+        <TableColumn fx:id="statusColumn" text="Status" prefWidth="150" sortable="true" reorderable="false"/>
+    </columns>
+</TableView>
 
-    <!-- Action Buttons -->
-    <HBox spacing="15" styleClass="action-bar">
-  <Button text="Preview Order" onAction="#handlePreview" styleClass="btn-prev-order" disable="true" fx:id="previewButton"/>
-        <Button text="Delete Order" onAction="#handleDelete" styleClass="btn-delete-order"/>
-    </HBox>
+<!-- Action Buttons -->
+<HBox spacing="15" styleClass="action-bar">
+    <Button text="Preview Order" onAction="#handlePreview" styleClass="btn-prev-order" disable="true" fx:id="previewButton"/>
+</HBox>
 </VBox>
