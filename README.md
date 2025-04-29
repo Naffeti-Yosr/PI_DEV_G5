@@ -1,6 +1,6 @@
 <h1 align="center"> Solaris – Application de Gestion des Énergies Renouvelables</h1>
 <p align="center">
-  <img src="./src/main/resources/images/logo.jpg" alt="Logo Solaris" width="200"/>
+  <img src="./src/main/resources/logo/logo.jpg" alt="Logo Solaris" width="200"/>
 </p>
 
 

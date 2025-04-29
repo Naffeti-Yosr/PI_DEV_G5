@@ -8,87 +8,264 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
 
 import java.io.IOException;
 
 public class MainprogGUI extends Application {
-    private <T> void loadScene(String fxmlPath, int width, int height, SceneControllerConsumer<T> controllerSetup) {
-        try {
-            java.net.URL fxmlUrl = getClass().getResource(fxmlPath);
-            if (fxmlUrl == null) {
-                // Try without leading slash
-                fxmlUrl = getClass().getResource(fxmlPath.startsWith("/") ? fxmlPath.substring(1) : fxmlPath);
-            }
-            if (fxmlUrl == null) {
-                throw new IOException("FXML resource not found: " + fxmlPath);
-            }
-            FXMLLoader loader = new FXMLLoader(fxmlUrl);
-            Parent root = loader.load();
-
-            T controller = loader.getController();
-            controllerSetup.accept(controller);
-
-            primaryStage.setScene(new Scene(root, width, height));
-            primaryStage.show();
-        } catch (IOException e) {
-            showError("Could not load " + fxmlPath, e);
-        }
-    }
-
     private Stage primaryStage;
     private AdminDashboardController adminDashboardController;
-
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 600;
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 800;
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Solaris Desktop");
+
+        try {
+            System.out.println("Initializing database and test data...");
+            System.out.println("Database initialization complete.");
+        } catch (Exception e) {
+            System.err.println("Error initializing database:");
+            e.printStackTrace();
+            showError("Database Error", e);
+        }
+
         showLoginScene();
     }
 
+    private <T> void loadModal(String fxmlPath, String title, Class<T> controllerClass, ControllerInitializer<T> initializer) {
+        try {
+            System.out.println("Loading FXML from path: " + fxmlPath);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainprogGUI.class.getResource(fxmlPath));
+            
+            if (loader.getLocation() == null) {
+                throw new IOException("Cannot find FXML file: " + fxmlPath);
+            }
+            
+            System.out.println("FXML URL: " + loader.getLocation());
+            
+            Parent root = loader.load();
+            System.out.println("FXML loaded successfully");
+
+            Stage modalStage = new Stage();
+            modalStage.setTitle(title);
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(primaryStage);
+
+            T controller = controllerClass.cast(loader.getController());
+            System.out.println("Controller loaded: " + controller.getClass().getSimpleName());
+            initializer.initialize(controller);
+
+            Scene scene = new Scene(root);
+            
+            // Print available stylesheets
+            System.out.println("Available stylesheets:");
+            for (String stylesheet : scene.getStylesheets()) {
+                System.out.println("- " + stylesheet);
+            }
+            
+            // Add stylesheets programmatically as a backup
+            String[] stylesheets = {
+                "/styles/common.css",
+                "/styles/admin_dashboard_fixed.css",
+                "/styles/dashboard_cards.css"
+            };
+            
+            for (String stylesheet : stylesheets) {
+                String cssUrl = MainprogGUI.class.getResource(stylesheet).toExternalForm();
+                if (!scene.getStylesheets().contains(cssUrl)) {
+                    System.out.println("Adding stylesheet: " + cssUrl);
+                    scene.getStylesheets().add(cssUrl);
+                }
+            }
+
+            modalStage.setScene(scene);
+            modalStage.showAndWait();
+        } catch (IOException e) {
+            System.err.println("Error loading FXML: " + fxmlPath);
+            e.printStackTrace();
+            showError("Could not load " + fxmlPath, e);
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            showError("Error loading scene", e);
+        }
+    }
+
+    private <T> void loadScene(String fxmlPath, Class<T> controllerClass, ControllerInitializer<T> initializer) {
+        try {
+            System.out.println("Loading FXML from path: " + fxmlPath);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainprogGUI.class.getResource(fxmlPath));
+            
+            if (loader.getLocation() == null) {
+                throw new IOException("Cannot find FXML file: " + fxmlPath);
+            }
+            
+            // Print the actual URL being used
+            System.out.println("FXML URL: " + loader.getLocation());
+            
+            Parent root = loader.load();
+            System.out.println("FXML loaded successfully");
+
+            T controller = controllerClass.cast(loader.getController());
+            System.out.println("Controller loaded: " + controller.getClass().getSimpleName());
+            initializer.initialize(controller);
+
+            Scene scene = new Scene(root, WIDTH, HEIGHT);
+            
+            // Print available stylesheets
+            System.out.println("Available stylesheets:");
+            for (String stylesheet : scene.getStylesheets()) {
+                System.out.println("- " + stylesheet);
+            }
+            
+            // Add stylesheets programmatically as a backup
+            String[] stylesheets = {
+                "/styles/common.css",
+                "/styles/admin_dashboard_fixed.css",
+                "/styles/dashboard_cards.css"
+            };
+            
+            for (String stylesheet : stylesheets) {
+                String cssUrl = MainprogGUI.class.getResource(stylesheet).toExternalForm();
+                if (!scene.getStylesheets().contains(cssUrl)) {
+                    System.out.println("Adding stylesheet: " + cssUrl);
+                    scene.getStylesheets().add(cssUrl);
+                }
+            }
+
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            System.err.println("Error loading FXML: " + fxmlPath);
+            e.printStackTrace();
+            showError("Could not load " + fxmlPath, e);
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            showError("Error loading scene", e);
+        }
+    }
+
     public void showLoginScene() {
-        loadScene("/login_page.fxml", WIDTH, HEIGHT, (LoginController controller) -> {
-            controller.setMainApp(this);
-        });
+        loadScene("/login_page.fxml", LoginController.class, 
+            controller -> controller.setMainApp(this));
     }
 
     public void showRegisterScene() {
-        loadScene("/Registration_Page.fxml", WIDTH, HEIGHT, (RegistrationController controller) -> {
-            controller.setMainApp(this);
-        });
+        loadScene("/Registration_Page.fxml", RegistrationController.class,
+            controller -> controller.setMainApp(this));
     }
 
     public void showAdminDashboardScene() {
-        loadScene("/admin_dashboard.fxml", WIDTH, HEIGHT, (AdminDashboardController controller) -> {
-            adminDashboardController = controller;
-            controller.setMainApp(this);
-        });
-    }
-
-    public void showManageAddUserScene() {
-        loadScene("/AdminAddUser.fxml", WIDTH, HEIGHT, (AdminAddUserController controller) -> {
-            controller.setMainApp(this);
-        });
+        loadScene("/admin_dashboard.fxml", AdminDashboardController.class,
+            controller -> {
+                adminDashboardController = controller;
+                controller.setMainApp(this);
+                controller.setUsername(System.getProperty("currentUser"));
+                controller.refreshDashboard();
+            });
     }
 
     public void showManageUserDashboardScene() {
-        loadScene("/manage_user_dashboard.fxml", WIDTH, HEIGHT, (ManageUserDashboardController controller) -> {
-            controller.setMainApp(this);
-        });
+        loadScene("/manage_user_dashboard.fxml", ManageUserDashboardController.class,
+            controller -> controller.setMainApp(this));
     }
 
     public void showAdminModifyUserScene(User user) {
-        loadScene("/AdminModifyUser.fxml", WIDTH, HEIGHT, (AdminModifyController controller) -> {
-            controller.setMainApp(this);
-            controller.setUser(user);
-        });
+        System.out.println("Showing Modify User Scene for user: " + user.getNom());
+        loadModal("/AdminModifyUser.fxml", "Modify User", AdminModifyController.class,
+            controller -> {
+                controller.setMainApp(this);
+                controller.setUser(user);
+            });
     }
+
+    public void loadSceneInPrimaryStage(String fxmlFile, String title) {
+        try {
+            System.out.println("Loading " + fxmlFile + " in primary stage...");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainprogGUI.class.getResource("/" + fxmlFile));
+            
+            if (loader.getLocation() == null) {
+                throw new IOException("Cannot find FXML file: " + fxmlFile);
+            }
+            
+            System.out.println("FXML URL: " + loader.getLocation());
+            
+            Parent root = loader.load();
+            System.out.println("FXML loaded successfully");
+
+            Object controller = loader.getController();
+            if (controller instanceof AdminAddUserController) {
+                ((AdminAddUserController) controller).setMainApp(this);
+            } else if (controller instanceof ManageUserDashboardController) {
+                ((ManageUserDashboardController) controller).setMainApp(this);
+            } else if (controller instanceof ReportsController) {
+                ((ReportsController) controller).setMainApp(this);
+            } else if (controller instanceof UpdatePasswordController) {
+                ((UpdatePasswordController) controller).setMainApp(this);
+            } else if (controller instanceof ForgetPasswordController) {
+                ((ForgetPasswordController) controller).setMainApp(this);
+            } else if (controller instanceof AdminModifyController) {
+                ((AdminModifyController) controller).setMainApp(this);
+            } else if (controller instanceof AdminDashboardController) {
+                ((AdminDashboardController) controller).setMainApp(this);
+            } else if (controller instanceof AdminAddUserController) {
+                ((AdminAddUserController) controller).setMainApp(this);
+            } else if (controller instanceof RegistrationController) {
+                ((RegistrationController) controller).setMainApp(this);
+            } else if (controller instanceof LoginController) {
+                ((LoginController) controller).setMainApp(this);
+            }
+
+            Scene scene = new Scene(root, WIDTH, HEIGHT);
+            
+            // Print available stylesheets
+            System.out.println("Available stylesheets:");
+            for (String stylesheet : scene.getStylesheets()) {
+                System.out.println("- " + stylesheet);
+            }
+            
+            // Add stylesheets programmatically as a backup
+            String[] stylesheets = {
+                "/styles/common.css",
+                "/styles/admin_dashboard_fixed.css",
+                "/styles/dashboard_cards.css"
+            };
+            
+            for (String stylesheet : stylesheets) {
+                String cssUrl = MainprogGUI.class.getResource(stylesheet).toExternalForm();
+                if (!scene.getStylesheets().contains(cssUrl)) {
+                    System.out.println("Adding stylesheet: " + cssUrl);
+                    scene.getStylesheets().add(cssUrl);
+                }
+            }
+
+            primaryStage.setTitle(title);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            System.err.println("Error loading FXML: " + fxmlFile);
+            e.printStackTrace();
+            showError("Could not load " + fxmlFile, e);
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            showError("Error loading scene", e);
+        }
+    }
+
+    public void showAdminAddUserScene() {
+        System.out.println("Loading Add User Scene in primary stage");
+        loadSceneInPrimaryStage("AdminAddUser.fxml", "Add User");
+    }
+
+
 
     private void showError(String message, Exception e) {
         System.err.println(message);
@@ -99,13 +276,30 @@ public class MainprogGUI extends Application {
         alert.setContentText(e.getMessage());
         alert.showAndWait();
     }
-
-    public AdminDashboardController getAdminDashboardController() {
-        return adminDashboardController;
+    public void showForgetPasswordScene() {
+        loadScene("/ForgetPassword.fxml", ForgetPasswordController.class,
+                controller -> controller.setMainApp(this));
+    }
+    public void showReportsScene() {
+        loadScene("/Reports.fxml", ReportsController.class,
+                controller -> controller.setMainApp(this));
     }
 
+    public void showUpdatePasswordScene(String email) {
+        loadScene("/UpdatePassword.fxml", com.esprit.controllers.UpdatePasswordController.class,
+            controller -> {
+                controller.setMainApp(this);
+                controller.setUserEmail(email);
+            });
+    }
+
+
     @FunctionalInterface
-    interface SceneControllerConsumer<T> {
-        void accept(T controller);
+    interface ControllerInitializer<T> {
+        void initialize(T controller);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

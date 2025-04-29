@@ -1,34 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.esprit.controllers.AdminDashboardController" prefWidth="900" prefHeight="600" stylesheets="@styles/admin_dashboard.css">
+<BorderPane prefHeight="800" prefWidth="1200" stylesheets="styles/common.css,styles/admin_dashboard_fixed.css,styles/dashboard_cards.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="com.esprit.controllers.AdminDashboardController">
 
     <top>
-        <HBox styleClass="header" prefHeight="60" spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
-            <Label fx:id="lblUsername" text="User Name" styleClass="header-username" />
-        </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="70" spacing="20" styleClass="header">
+                <padding>
+                    <Insets left="30" right="30" />
+                </padding>
+                <Label styleClass="header-title" text="Admin Dashboard" />
+                <HBox alignment="CENTER_RIGHT" spacing="15" HBox.hgrow="ALWAYS">
+                    <Label fx:id="lblUsername" styleClass="header-username" />
+                    <StackPane>
+                        <Button fx:id="btnNotificationBell" styleClass="notification-bell" onAction="#handleNotificationBellClick" text="🔔" />
+                        <Label fx:id="lblNotificationCount" styleClass="notification-count" text="0" StackPane.alignment="TOP_RIGHT" />
+                    </StackPane>
+                </HBox>
+            </HBox>
     </top>
 
     <left>
-        <VBox spacing="20" prefWidth="200" styleClass="sidebar" BorderPane.alignment="CENTER" >
-            <Button fx:id="btnDashboard" text="Dashboard" styleClass="sidebar-button" />
-            <Button fx:id="btnManageUsers" text="Manage Users" styleClass="sidebar-button" />
-            <Button fx:id="btnReports" text="Reports" styleClass="sidebar-button" />
-            <Button fx:id="btnSettings" text="Settings" styleClass="sidebar-button" />
-            <Button fx:id="btnLogout" text="Logout" styleClass="sidebar-button" onAction="#handleLogout" />
+        <VBox styleClass="sidebar">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            
+            <Label styleClass="sidebar-title" text="Menu">
+                <VBox.margin>
+                    <Insets bottom="20" />
+                </VBox.margin>
+            </Label>
+            
+            <Button fx:id="btnDashboard" onAction="#handleDashboard" styleClass="sidebar-button" text="🏠 Dashboard">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnManageUsers" onAction="#handleManageUsers" styleClass="sidebar-button, selected" text="👥 Manage Users">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnProducts" onAction="#handleProducts" styleClass="sidebar-button" text="📦 Products">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnEvents" onAction="#handleEvents" styleClass="sidebar-button" text="🎉 Events">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnBlog" onAction="#handleBlog" styleClass="sidebar-button" text="📝 Blog">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnReports" onAction="#handleReports" styleClass="sidebar-button" text="📊 Reports">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnSettings" onAction="#handleSettings" styleClass="sidebar-button" text="⚙️ Settings">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
+            
+            <Region VBox.vgrow="ALWAYS" />
+            
+            <Button fx:id="btnLogout" onAction="#handleLogout" styleClass="sidebar-button" text="🚪 Logout" />
         </VBox>
     </left>
 
     <center>
-        <AnchorPane styleClass="main-content" BorderPane.alignment="CENTER">
-            <!-- Main dashboard content goes here -->
-        </AnchorPane>
+        <ScrollPane fitToWidth="true" styleClass="main-content-scroll">
+            <VBox spacing="30" styleClass="main-content">
+                <padding>
+                    <Insets bottom="30" left="40" right="40" top="30" />
+                </padding>
+
+                <!-- Dashboard Header -->
+                <HBox spacing="20">
+                    <VBox styleClass="dashboard-card, total-users-card" HBox.hgrow="ALWAYS">
+                        <Label styleClass="card-title" text="Total Users" />
+                        <Label fx:id="lblTotalUsers" styleClass="card-value" text="0" />
+                        <Label styleClass="card-subtitle" text="Registered users" />
+                    </VBox>
+                    
+                    <VBox styleClass="dashboard-card, active-users-card" HBox.hgrow="ALWAYS">
+                        <Label styleClass="card-title" text="Active Users" />
+                        <Label fx:id="lblActiveUsers" styleClass="card-value" text="0" />
+                        <Label styleClass="card-subtitle" text="Confirmed users" />
+                    </VBox>
+                    
+                    <VBox styleClass="dashboard-card, new-users-card" HBox.hgrow="ALWAYS">
+                        <Label styleClass="card-title" text="New Users" />
+                        <Label fx:id="lblNewUsers" styleClass="card-value" text="0" />
+                        <Label styleClass="card-subtitle" text="Recently added" />
+                    </VBox>
+
+                    <VBox styleClass="dashboard-card, banned-users-card" HBox.hgrow="ALWAYS">
+                        <Label styleClass="card-title" text="Banned Users" />
+                        <Label fx:id="lblBannedUsers" styleClass="card-value" text="0" />
+                        <Label styleClass="card-subtitle" />
+                    </VBox>
+                </HBox>
+
+                <!-- Main Content Area -->
+                <VBox styleClass="content-section" VBox.vgrow="ALWAYS">
+                    <Label styleClass="section-title" text="Quick Actions" />
+                    <HBox spacing="15" styleClass="quick-actions">
+                        <Button onAction="#handleAddUser" styleClass="action-button, add-button" text="Add User" />
+                        <Button styleClass="action-button" text="Generate Report" />
+                        <Button styleClass="action-button" text="System Settings" />
+                    </HBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
     </center>
 
 </BorderPane>

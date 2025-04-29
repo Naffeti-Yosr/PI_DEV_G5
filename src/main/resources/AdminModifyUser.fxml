@@ -2,80 +2,185 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
 
-<BorderPane prefHeight="600" prefWidth="900" stylesheets="@styles/admin_dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1"
+<BorderPane prefHeight="800" prefWidth="1200" 
+            stylesheets="@styles/common.css,@styles/admin_dashboard.css" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            xmlns="http://javafx.com/javafx/17.0.6" 
             fx:controller="com.esprit.controllers.AdminModifyController">
 
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="60" spacing="10" styleClass="header" BorderPane.alignment="CENTER">
-            <Label fx:id="lblUsername" styleClass="header-username" text="User Name" />
+        <HBox styleClass="header" prefHeight="70" spacing="20" alignment="CENTER_LEFT">
+            <padding>
+                <Insets left="30" right="30"/>
+            </padding>
+            <Label styleClass="header-title" text="✏️ Modify User"/>
+            <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT" spacing="15">
+                <Label fx:id="lblUsername" styleClass="header-username"/>
+            </HBox>
         </HBox>
     </top>
 
     <left>
-        <VBox prefWidth="200" spacing="20" styleClass="sidebar" BorderPane.alignment="CENTER">
-            <Button fx:id="btnDashboard" styleClass="sidebar-button" text="Dashboard" />
-            <Button fx:id="btnManageUsers" styleClass="sidebar-button" text="Manage Users" />
-            <Button fx:id="btnReports" styleClass="sidebar-button" text="Reports" />
-            <Button fx:id="btnSettings" styleClass="sidebar-button" text="Settings" />
-            <Button fx:id="btnLogout" styleClass="sidebar-button" text="Logout" />
+        <VBox styleClass="sidebar">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            
+            <Label styleClass="sidebar-title" text="Menu">
+                <VBox.margin>
+                    <Insets bottom="20"/>
+                </VBox.margin>
+            </Label>
+            
+            <Button fx:id="btnDashboard" text="🏠 Dashboard" styleClass="sidebar-button" onAction="#handleDashboard">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnManageUsers" text="👥 Manage Users" styleClass="sidebar-button, selected" onAction="#handleManageUsers">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnProducts" text="📦 Products" styleClass="sidebar-button" onAction="#handleProducts">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnEvents" text="🎉 Events" styleClass="sidebar-button" onAction="#handleEvents">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnBlog" text="📝 Blog" styleClass="sidebar-button" onAction="#handleBlog">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnReports" text="📊 Reports" styleClass="sidebar-button" onAction="#handleReports">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Button>
+            
+            <Button fx:id="btnSettings" text="⚙️ Settings" styleClass="sidebar-button" onAction="#handleSettings">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Button>
+            
+            <Region VBox.vgrow="ALWAYS"/>
+            
+            <Button fx:id="btnLogout" text="🚪 Logout" styleClass="sidebar-button" onAction="#handleLogout"/>
         </VBox>
     </left>
 
     <center>
-        <AnchorPane styleClass="main-content" BorderPane.alignment="CENTER">
-            <VBox spacing="20" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+        <ScrollPane fitToWidth="true" styleClass="main-content-scroll">
+            <VBox styleClass="main-content" spacing="30">
+                <padding>
+                    <Insets top="30" right="40" bottom="30" left="40"/>
+                </padding>
 
-                <GridPane vgap="20" hgap="20">
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="50"/>
-                        <ColumnConstraints percentWidth="50"/>
-                    </columnConstraints>
+                <!-- Form Title -->
+                <VBox spacing="10">
+                    <Label styleClass="section-title" text="User Information"/>
+                    <Label styleClass="section-subtitle" text="Update user information"/>
+                </VBox>
 
-                    <!-- Nom -->
-                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label styleClass="input-label" text="Nom"/>
-                        <TextField fx:id="tfNom" styleClass="modern-input" promptText="Votre nom"/>
-                    </VBox>
+                <!-- Form Content -->
+                <VBox styleClass="card" spacing="25">
+                    <padding>
+                        <Insets top="30" right="30" bottom="30" left="30"/>
+                    </padding>
 
-                    <!-- Prénom -->
-                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label styleClass="input-label" text="Prénom"/>
-                        <TextField fx:id="tfPrenom" styleClass="modern-input" promptText="Votre prénom"/>
-                    </VBox>
+                    <GridPane vgap="20" hgap="30">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
 
-                    <!-- Email -->
-                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label styleClass="input-label" text="Email"/>
-                        <TextField fx:id="tfEmail" styleClass="modern-input" promptText="exemple@email.com"/>
-                    </VBox>
+                        <!-- Nom -->
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label styleClass="form-label" text="Nom"/>
+                            <TextField fx:id="tfNom" styleClass="modern-field" promptText="Enter name"/>
+                            <Label fx:id="lblNomError" styleClass="error-label" visible="false"/>
+                        </VBox>
 
-                    <!-- Date de naissance -->
-                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label styleClass="input-label" text="Date de naissance"/>
-                        <DatePicker fx:id="dpBirthDate" styleClass="modern-input"/>
-                    </VBox>
+                        <!-- Prénom -->
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label styleClass="form-label" text="Prénom"/>
+                            <TextField fx:id="tfPrenom" styleClass="modern-field" promptText="Enter first name"/>
+                            <Label fx:id="lblPrenomError" styleClass="error-label" visible="false"/>
+                        </VBox>
 
-                    <!-- Mot de passe -->
-                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Label styleClass="input-label" text="Mot de passe"/>
-                        <PasswordField fx:id="tfPassword" styleClass="modern-input" promptText="Votre mot de passe"/>
-                    </VBox>
+                        <!-- Email -->
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label styleClass="form-label" text="Email"/>
+                            <TextField fx:id="tfEmail" styleClass="modern-field" promptText="example@email.com"/>
+                            <Label fx:id="lblEmailError" styleClass="error-label" visible="false"/>
+                        </VBox>
 
-                    <!-- Rôle -->
-                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label styleClass="input-label" text="Rôle"/>
-                        <ComboBox fx:id="cbRole" styleClass="modern-input" promptText="Sélectionnez un rôle" maxWidth="Infinity"/>
-                    </VBox>
-                </GridPane>
+                        <!-- Password -->
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label styleClass="form-label" text="Password"/>
+                            <PasswordField fx:id="tfPassword" styleClass="modern-field" promptText="Enter new password to change"/>
+                            <Label fx:id="lblPasswordError" styleClass="error-label" visible="false"/>
+                        </VBox>
 
-                <HBox spacing="10" alignment="CENTER_RIGHT">
-                    <Button fx:id="btnCancel" text="Annuler" prefWidth="100" onAction="#handleCancel"/>
-                    <Button fx:id="btnSave" text="Enregistrer" prefWidth="100" onAction="#handleSave"/>
-                </HBox>
+                        <!-- Role -->
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <Label styleClass="form-label" text="Role"/>
+                            <ComboBox fx:id="cbRole" styleClass="modern-field" promptText="Select role" maxWidth="Infinity"/>
+                            <Label fx:id="lblRoleError" styleClass="error-label" visible="false"/>
+                        </VBox>
 
+                        <!-- Status -->
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <Label styleClass="form-label" text="Status"/>
+                            <ComboBox fx:id="cbStatus" styleClass="modern-field" promptText="Select status" maxWidth="Infinity"/>
+                            <Label fx:id="lblStatusError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Birth Date -->
+                        <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                            <Label styleClass="form-label" text="Birth Date"/>
+                            <DatePicker fx:id="dpBirthDate" styleClass="modern-field"/>
+                            <Label fx:id="lblBirthDateError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Address -->
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <Label styleClass="form-label" text="Address"/>
+                            <TextField fx:id="tfAddress" styleClass="modern-field" promptText="Enter address"/>
+                            <Label fx:id="lblAddressError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Phone Number -->
+                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                            <Label styleClass="form-label" text="Phone Number"/>
+                            <TextField fx:id="tfPhoneNumber" styleClass="modern-field" promptText="Enter phone number"/>
+                            <Label fx:id="lblPhoneError" styleClass="error-label" visible="false"/>
+                        </VBox>
+                    </GridPane>
+
+                    <!-- Action Buttons -->
+                    <HBox spacing="15" alignment="CENTER_RIGHT">
+                        <Button fx:id="btnCancel" text="Cancel" styleClass="button-secondary"/>
+                        <Button fx:id="btnSave" text="Save" styleClass="button-primary"/>
+                    </HBox>
+                </VBox>
             </VBox>
-        </AnchorPane>
+        </ScrollPane>
     </center>
 
 </BorderPane>
+

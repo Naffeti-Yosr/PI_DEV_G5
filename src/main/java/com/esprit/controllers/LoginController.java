@@ -12,6 +12,19 @@ import javafx.event.ActionEvent;
 public class LoginController {
     private MainprogGUI mainApp;
 
+    @FXML
+    void handleForgetPassword(ActionEvent event) {
+        System.out.println("handleForgetPassword called");
+        if (mainApp != null) {
+            System.out.println("mainApp is not null, navigating to ForgetPasswordScene");
+            mainApp.showForgetPasswordScene();
+        } else {
+            System.out.println("mainApp is null in handleForgetPassword");
+            showAlert("Error", "Application reference missing");
+        }
+    }
+
+
     @FXML private TextField tfEmail;
     @FXML private PasswordField tfPassword;
 
@@ -26,17 +39,19 @@ public class LoginController {
             return;
         }
 
-        UserService userService = new UserService();
+        UserService userService = new UserService() {
+            @Override
+            public void add(User user) {
+
+            }
+        };
         try {
             User user = userService.authenticate(tfEmail.getText(), tfPassword.getText());
             if (user != null) {
                 System.out.println("Login successful!");
                 if (mainApp != null) {
+                    System.setProperty("currentUser", user.getEmail());
                     mainApp.showAdminDashboardScene();
-                    com.esprit.controllers.AdminDashboardController controller = mainApp.getAdminDashboardController();
-                    if (controller != null) {
-                        controller.setUsername(user.getEmail());
-                    }
                 }
             } else {
                 showAlert("Error", "Invalid email or password");

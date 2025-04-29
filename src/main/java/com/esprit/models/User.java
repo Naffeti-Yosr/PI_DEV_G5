@@ -1,7 +1,5 @@
 package com.esprit.models;
 
-
-
 import java.util.Date;
 
 public class User {
@@ -10,26 +8,54 @@ public class User {
     private String prenom;
     private Date birth_date;
     private String email;
+    private String address;
+    private String phoneNumber;
     private String password;
-    private String role;
+    private UserRole role;
+    private UserStatus status;
 
-   public User(int id, String nom, String prenom, Date birth_date, String email, String password, String role) {
+    public User() {
+        this.status = UserStatus.NON_CONFIRMED; // Default status for new users
+    }
+
+    // Constructor without role (for user registration)
+    public User(String nom, String prenom, Date birth_date, String email, String address, String phoneNumber, String password) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.birth_date = birth_date;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.status = UserStatus.NON_CONFIRMED;
+    }
+
+    // Full constructor (for admin use)
+    public User(int id, String nom, String prenom, Date birth_date, String email, String address, String phoneNumber, String password, UserRole role, UserStatus status) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.birth_date = birth_date;
         this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
         this.password = password;
         this.role = role;
+        this.status = status != null ? status : UserStatus.NON_CONFIRMED;
     }
 
-    public User() {
+    // Constructor with role but without status (will use default NON_CONFIRMED status)
+    public User(int id, String nom, String prenom, Date birthDate, String email, String address, String phoneNumber, String password, UserRole role) {
+        this.id = id;
         this.nom = nom;
         this.prenom = prenom;
-        this.birth_date = birth_date;
+        this.birth_date = birthDate;
         this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
         this.password = password;
         this.role = role;
+        this.status = UserStatus.NON_CONFIRMED;
     }
 
     public int getId() {return id;}
@@ -52,26 +78,45 @@ public class User {
 
     public void setEmail(String email) {this.email = email;}
 
+    public String getAddress() {return address;}
+
+    public void setAddress(String address) {this.address = address;}
+
+    public String getPhoneNumber() {return phoneNumber;}
+
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+
     public String getPassword() {return password;}
 
     public void setPassword(String password) {this.password = password;}
 
-    public String getRole() {return role;}
 
-    public void setRole(String role) {this.role = role;}
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public UserStatus getStatus() {return status;}
+
+    public void setStatus(UserStatus status) {
+        this.status = status != null ? status : UserStatus.NON_CONFIRMED;
+    }
+
+    public void setStatusFromString(String statusStr) {
+        try {
+            this.status = UserStatus.fromString(statusStr);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid status value: " + statusStr + ". Setting to NON_CONFIRMED.");
+            this.status = UserStatus.NON_CONFIRMED;
+        }
+    }
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", birth_date=" + birth_date +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                '}';
+        return String.format("User{id=%d, nom='%s', prenom='%s', email='%s', role='%s', status='%s'}",
+                id, nom, prenom, email, role != null ? role.getValue() : "null", status != null ? status.getValue() : "null");
     }
 }
-
-
-
