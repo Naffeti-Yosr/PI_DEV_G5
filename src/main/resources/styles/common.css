@@ -1,0 +1,208 @@
+/* Base Colors */
+* {
+    /* Primary Colors */
+    -primary: #27ae60;
+    -primary-light: #2ecc71;
+    -primary-dark: #219a52;
+    
+    /* Secondary Colors */
+    -secondary: #3498db;
+    -secondary-light: #5dade2;
+    -secondary-dark: #2980b9;
+    
+    /* Background Colors */
+    -background-light: #f5f6fa;
+    -background-dark: #2c3e50;
+    
+    /* Text Colors */
+    -text-dark: #2c3e50;
+    -text-light: #ecf0f1;
+    -text-muted: #95a5a6;
+    
+    /* Status Colors */
+    -success: #27ae60;
+    -warning: #f1c40f;
+    -error: #e74c3c;
+}
+
+/* Base Styles */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: -background-light;
+}
+
+/* Button Base */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+}
+
+/* Text Field Base */
+.text-field, .password-field {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8 12;
+    -fx-border-color: #dcdde1;
+    -fx-border-width: 1;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: -primary;
+    -fx-effect: dropshadow(gaussian, rgba(46,204,113,0.2), 5, 0, 0, 0);
+}
+
+/* Label Base */
+.label {
+    -fx-text-fill: -text-dark;
+}
+
+/* Error Label */
+.error-label {
+    -fx-text-fill: -error;
+    -fx-font-size: 12px;
+    -fx-padding: 2 0 0 0;
+}
+
+/* Form Label */
+.form-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-dark;
+}
+
+/* ComboBox Base */
+.combo-box {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 4 8;
+    -fx-border-color: #dcdde1;
+    -fx-border-width: 1;
+    -fx-background-color: white;
+}
+
+.combo-box:focused {
+    -fx-border-color: -primary;
+    -fx-effect: dropshadow(gaussian, rgba(46,204,113,0.2), 5, 0, 0, 0);
+}
+
+/* DatePicker Base */
+.date-picker {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #dcdde1;
+    -fx-border-width: 1;
+}
+
+.date-picker:focused {
+    -fx-border-color: -primary;
+    -fx-effect: dropshadow(gaussian, rgba(46,204,113,0.2), 5, 0, 0, 0);
+}
+
+/* Button Styles */
+.button-primary {
+    -fx-background-color: -primary;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button-primary:hover {
+    -fx-background-color: -primary-dark;
+}
+
+.button-secondary {
+    -fx-background-color: #ecf0f1;
+    -fx-text-fill: -text-dark;
+}
+
+.button-secondary:hover {
+    -fx-background-color: #bdc3c7;
+}
+
+/* Card Base */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 20;
+}
+
+/* Section Base */
+.section {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 20;
+}
+
+/* Header Base */
+.header-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.sub-header {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Tooltip */
+.tooltip {
+    -fx-background-color: -background-dark;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5 10;
+}
+
+/* Modern Field */
+.modern-field {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #dcdde1;
+    -fx-border-width: 1;
+    -fx-padding: 8 12;
+}
+
+.modern-field:focused {
+    -fx-border-color: -primary;
+    -fx-effect: dropshadow(gaussian, rgba(46,204,113,0.2), 5, 0, 0, 0);
+}
+
+/* Sidebar */
+.sidebar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 20;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -text-dark;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-background-radius: 5;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-min-width: 200;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #f8f9fa;
+}
+
+.sidebar-button.selected {
+    -fx-background-color: -primary;
+    -fx-text-fill: white;
+}
+
+/* Header */
+.header {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.header-username {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-dark;
+}

@@ -1,0 +1,118 @@
+/* Main Layout */
+.root {
+    -fx-background-color: #f5f6fa;
+}
+
+/* Content Area */
+.main-content {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+/* Header */
+.header {
+    -fx-background-color: #27ae60;
+    -fx-padding: 15 30;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.header-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Search Box */
+.search-field {
+    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255,255,255,0.7);
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 8 15;
+    -fx-min-width: 300;
+}
+
+.search-field:focused {
+    -fx-background-color: rgba(255,255,255,0.3);
+}
+
+/* Table Container */
+.table-container {
+    -fx-background-color: white;
+    -fx-padding: 0;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 0);
+}
+
+/* Action Buttons */
+.action-button {
+    -fx-background-radius: 3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15;
+    -fx-min-width: 80;
+}
+
+.add-button {
+    -fx-background-color: #27ae60;
+}
+
+.add-button:hover {
+    -fx-background-color: #2ecc71;
+}
+
+.edit-button {
+    -fx-background-color: #3498db;
+}
+
+.edit-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.delete-button {
+    -fx-background-color: #e74c3c;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* Sidebar */
+.sidebar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-min-width: 250;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2c3e50;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-min-width: 200;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #f8f9fa;
+}
+
+.sidebar-button.selected {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+}
+
+/* Placeholder Text */
+.placeholder-text {
+    -fx-text-fill: #95a5a6;
+    -fx-font-size: 14px;
+}

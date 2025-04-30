@@ -1,0 +1,237 @@
+/* Admin Dashboard Fixed Styles */
+
+/* Fixed Layout Styles */
+.root {
+    -fx-background-color: white;
+}
+
+/* Fixed Sidebar */
+.sidebar {
+    -fx-pref-width: 250;
+    -fx-min-width: 250;
+    -fx-max-width: 250;
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+/* Fixed Main Content Area */
+.main-content {
+    -fx-background-color: white;
+    -fx-padding: 30;
+    -fx-spacing: 20;
+}
+
+/* Fixed Header */
+.header {
+    -fx-background-color: #27ae60;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 15 30;
+}
+
+.header-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.header-username {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+/* Notification Styles */
+.notification-bell {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 5;
+    -fx-border-width: 0;
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-min-width: 35px;
+    -fx-min-height: 35px;
+}
+
+.notification-bell:hover {
+    -fx-text-fill: #ffcc00;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.notification-count {
+    -fx-background-color: #ff3b3b;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 5;
+    -fx-background-radius: 8;
+    -fx-min-width: 16px;
+    -fx-min-height: 16px;
+    -fx-alignment: center;
+    -fx-translate-x: 8;
+    -fx-translate-y: -8;
+}
+
+/* Fixed Table Styles */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-min-height: 400;
+    -fx-pref-height: 600;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #27ae60;
+    -fx-background-radius: 8 8 0 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0 0 5 0;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 45;
+    -fx-border-width: 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+}
+
+.table-view .table-cell {
+    -fx-padding: 10;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2c3e50;
+    -fx-alignment: center-left;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: #f0f0f0;
+    -fx-padding: 5;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e8f5e9;
+    -fx-text-background-color: #2c3e50;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #f1f8e9;
+}
+
+/* Fixed Action Buttons */
+.action-button {
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+
+.add-button {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+}
+
+.add-button:hover {
+    -fx-background-color: #2ecc71;
+}
+
+.edit-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+}
+
+.edit-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.delete-button {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* Fixed Search Box */
+.search-box {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #E0E0E0;
+    -fx-padding: 8 15;
+    -fx-pref-width: 300;
+}
+
+.search-box:focused {
+    -fx-border-color: #27ae60;
+    -fx-effect: dropshadow(three-pass-box, rgba(46,204,113,0.2), 10, 0, 0, 0);
+}
+
+/* Fixed Section Title */
+.section-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Sidebar Styles */
+.sidebar-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2c3e50;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-min-width: 200;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #f8f9fa;
+}
+
+.sidebar-button.selected {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+}
+
+/* Dashboard Cards */
+.banned-users-card {
+    -fx-background-color: #fff0f0;
+    -fx-border-width: 0 0 4 0;
+    -fx-border-style: solid;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(204,0,0,0.2), 10, 0.3, 0, 2);
+}
+
+.banned-users-card .card-value,
+.banned-users-card .card-subtitle {
+    -fx-text-fill: #cc0000;
+    -fx-font-weight: bold;
+}

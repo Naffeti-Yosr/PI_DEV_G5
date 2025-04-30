@@ -194,7 +194,24 @@ public class AdminDashboardController {
 
     public void setUsername(String email) {
         if (lblUsername != null) {
-            lblUsername.setText("Welcome, " + email);
+            if (userService == null) {
+                userService = new UserService() {
+                    @Override
+                    public void add(User user) {
+                    }
+                };
+            }
+            
+            try {
+                User user = userService.getUserByEmail(email);
+                if (user != null && user.getNom() != null && user.getPrenom() != null) {
+                    lblUsername.setText(user.getPrenom() + " " + user.getNom());
+                } else {
+                    lblUsername.setText("User");
+                }
+            } catch (Exception e) {
+                lblUsername.setText("User");
+            }
         }
     }
 

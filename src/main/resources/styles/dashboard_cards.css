@@ -1,0 +1,79 @@
+/* Dashboard Cards Styling */
+.dashboard-card {
+    -fx-background-color: white;
+    -fx-padding: 25;
+    -fx-spacing: 15;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-min-width: 250;
+    -fx-min-height: 180;
+    -fx-alignment: CENTER;
+    -fx-border-radius: 20;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 4 0;
+}
+
+.dashboard-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 0);
+    -fx-translate-y: -2;
+    -fx-cursor: hand;
+    -fx-background-color: derive(white, -2%);
+}
+
+.card-title {
+    -fx-font-size: 18px;
+    -fx-text-fill: -text-dark;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 5 0;
+}
+
+.card-value {
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-padding: 15 0;
+    -fx-font-family: "System Bold";
+}
+
+.card-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: derive(-text-light, 20%);
+    -fx-font-style: italic;
+}
+
+/* Card specific colors */
+.total-users-card {
+    -fx-border-color: transparent transparent -primary transparent;
+}
+.total-users-card .card-value {
+    -fx-text-fill: -primary;
+}
+.total-users-card:hover {
+    -fx-border-color: transparent transparent derive(-primary, -10%) transparent;
+}
+
+.active-users-card {
+    -fx-border-color: transparent transparent #2ecc71 transparent;
+}
+.active-users-card .card-value {
+    -fx-text-fill: #2ecc71;
+}
+.active-users-card:hover {
+    -fx-border-color: transparent transparent derive(#2ecc71, -10%) transparent;
+}
+
+.new-users-card {
+    -fx-border-color: transparent transparent #3498db transparent;
+}
+.new-users-card .card-value {
+    -fx-text-fill: #3498db;
+}
+.new-users-card:hover {
+    -fx-border-color: transparent transparent derive(#3498db, -10%) transparent;
+}
+
+/* Stats container */
+.stats-container {
+    -fx-spacing: 25;
+    -fx-padding: 25;
+    -fx-background-color: transparent;
+}

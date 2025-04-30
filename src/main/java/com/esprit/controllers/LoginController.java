@@ -3,14 +3,42 @@ package com.esprit.controllers;
 import com.esprit.models.User;
 import com.esprit.services.UserService;
 import com.esprit.tests.MainprogGUI;
+import com.esprit.utils.RememberMeUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 
 public class LoginController {
     private MainprogGUI mainApp;
+
+    @FXML
+    private TextField tfEmail;
+
+    @FXML
+    private PasswordField tfPassword;
+
+    @FXML
+    private CheckBox cbRememberMe;
+
+    public void setMainApp(MainprogGUI mainApp) {
+        this.mainApp = mainApp;
+        loadRememberedUser();
+    }
+
+    private void loadRememberedUser() {
+        String savedEmail = RememberMeUtil.getSavedEmail();
+        String savedPassword = RememberMeUtil.getSavedPassword();
+        if (savedEmail != null) {
+            tfEmail.setText(savedEmail);
+            cbRememberMe.setSelected(true);
+        }
+        if (savedPassword != null) {
+            tfPassword.setText(savedPassword);
+        }
+    }
 
     @FXML
     void handleForgetPassword(ActionEvent event) {
@@ -22,14 +50,6 @@ public class LoginController {
             System.out.println("mainApp is null in handleForgetPassword");
             showAlert("Error", "Application reference missing");
         }
-    }
-
-
-    @FXML private TextField tfEmail;
-    @FXML private PasswordField tfPassword;
-
-    public void setMainApp(MainprogGUI mainApp) {
-        this.mainApp = mainApp;
     }
 
     @FXML
@@ -51,6 +71,12 @@ public class LoginController {
                 System.out.println("Login successful!");
                 if (mainApp != null) {
                     System.setProperty("currentUser", user.getEmail());
+                    if (cbRememberMe.isSelected()) {
+                        RememberMeUtil.saveEmail(user.getEmail());
+                        RememberMeUtil.savePassword(tfPassword.getText());
+                    } else {
+                        RememberMeUtil.clearAll();
+                    }
                     mainApp.showAdminDashboardScene();
                 }
             } else {

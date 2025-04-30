@@ -1,0 +1,194 @@
+/* Registration Page Specific Styles */
+@import "common.css";
+
+/* Root Container */
+.root {
+    -fx-background-color: -fx-background-light;
+}
+
+/* Welcome Panel Styles */
+.welcome-panel {
+    -fx-background-color: linear-gradient(to bottom right, #27ae60, #219a52); /* Explicit green gradient */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 0);
+}
+
+.app-title {
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.welcome-text {
+    -fx-font-size: 24px;
+    -fx-fill: white;
+    -fx-opacity: 0.9;
+}
+
+.slogan-text {
+    -fx-font-size: 18px;
+    -fx-fill: white;
+    -fx-opacity: 0.8;
+}
+
+.back-button {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 12 24;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-border-color: white;
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #27ae60; /* green */
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.4), 10, 0, 0, 0);
+}
+
+/* Registration Form Panel */
+.register-panel {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.form-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-fill: -fx-text-dark;
+}
+
+/* Form Fields */
+.modern-input {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5px;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 5px;
+    -fx-padding: 12 15;
+    -fx-font-size: 14px;
+}
+
+.modern-input:focused {
+    -fx-border-color: #27ae60; /* green */
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(46,204,113,0.2), 10, 0, 0, 0);
+}
+
+.modern-input:hover {
+    -fx-border-color: #2ecc71; /* lighter green */
+}
+
+/* ComboBox Styling */
+.combo-box {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5px;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 5px;
+    -fx-padding: 5;
+}
+
+.combo-box:hover {
+    -fx-border-color: #2ecc71; /* lighter green */
+}
+
+.combo-box:focused {
+    -fx-border-color: #27ae60; /* green */
+    -fx-background-color: white;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 8 12;
+}
+
+/* Date Picker Styling */
+.date-picker {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5px;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 5px;
+}
+
+.date-picker:hover {
+    -fx-border-color: #2ecc71; /* lighter green */
+}
+
+.date-picker:focused {
+    -fx-border-color: #27ae60; /* green */
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #27ae60; /* green */
+    -fx-background-radius: 0 5 5 0;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: #219a52; /* darker green */
+}
+
+/* Submit Button */
+.register-submit-button {
+    -fx-background-color: #27ae60; /* green */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 15 30;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.register-submit-button:hover {
+    -fx-background-color: #219a52; /* darker green */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 0);
+    -fx-translate-y: -1px;
+}
+
+.register-submit-button:pressed {
+    -fx-background-color: derive(#219a52, -10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 0);
+    -fx-translate-y: 1px;
+}
+
+/* Footer Text */
+.footer-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #95A5A6;
+}
+
+.version-text {
+    -fx-font-size: 11px;
+    -fx-text-fill: #BDC3C7;
+}
+
+/* Validation Styles */
+.error-field {
+    -fx-border-color: -fx-error !important;
+}
+
+.error-text {
+    -fx-fill: -fx-error;
+    -fx-font-size: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    .welcome-panel {
+        -fx-pref-width: 300px;
+    }
+    
+    .app-title {
+        -fx-font-size: 32px;
+    }
+    
+    .welcome-text {
+        -fx-font-size: 20px;
+    }
+    
+    .slogan-text {
+        -fx-font-size: 16px;
+    }
+}
