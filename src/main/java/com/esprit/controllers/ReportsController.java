@@ -35,6 +35,8 @@ public class ReportsController {
     @FXML private Button btnConfirmUser;
 
     private ObservableList<User> nonConfirmedUsers = FXCollections.observableArrayList();
+    @FXML
+    private Button btnClaims;
 
     @FXML
     public void initialize() {
@@ -236,7 +238,9 @@ public class ReportsController {
         btnReports.getStyleClass().remove("selected");
         btnSettings.getStyleClass().remove("selected");
 
-        activeButton.getStyleClass().add("selected");
+        if (activeButton != null) {
+            activeButton.getStyleClass().add("selected");
+        }
     }
 
     private void showNotImplementedAlert(String featureName) {
@@ -245,5 +249,14 @@ public class ReportsController {
         alert.setHeaderText(null);
         alert.setContentText(featureName + " feature is not implemented yet.");
         alert.showAndWait();
+    }
+
+    public void handleClaims(ActionEvent actionEvent) {
+        styleActiveButton(btnClaims);
+        if (mainApp != null) {
+            mainApp.showClaimsScene();
+        } else {
+            System.err.println("Error: mainApp is null in handleClaims");
+        }
     }
 }

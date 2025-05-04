@@ -468,5 +468,8 @@ public class AdminModifyController {
             lblUsername.setText("Welcome, " + email);
         }
     }
+
+    public void handleClaims(ActionEvent actionEvent) {
+    }
 }
 

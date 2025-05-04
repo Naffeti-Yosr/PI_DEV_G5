@@ -44,6 +44,11 @@
             <Button fx:id="btnEvents" onAction="#handleEvents" styleClass="sidebar-button" text="🎉 Events" />
             <Button fx:id="btnBlog" onAction="#handleBlog" styleClass="sidebar-button" text="📝 Blog" />
             <Button fx:id="btnReports" onAction="#handleReports" styleClass="sidebar-button, selected" text="📊 Reports" />
+            <Button fx:id="btnClaims" onAction="#handleClaims" styleClass="sidebar-button" text="📢 Claims">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
             <Button fx:id="btnSettings" onAction="#handleSettings" styleClass="sidebar-button" text="⚙️ Settings" />
             <Region VBox.vgrow="ALWAYS" />
             <Button fx:id="btnLogout" onAction="#handleLogout" styleClass="sidebar-button" text="🚪 Logout" />

@@ -3,9 +3,11 @@ package com.esprit.controllers;
 import com.esprit.models.User;
 import com.esprit.services.UserService;
 import com.esprit.tests.MainprogGUI;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 
 public class AdminDashboardController {
 
@@ -17,13 +19,14 @@ public class AdminDashboardController {
     @FXML private Button btnEvents;
     @FXML private Button btnBlog;
     @FXML private Button btnReports;
+    @FXML private Button btnClaims;
     @FXML private Button btnSettings;
     @FXML private Button btnLogout;
     @FXML private Label lblUsername;
 
     @FXML private Button btnNotificationBell;
     @FXML private Label lblNotificationCount;
-    
+
     // New dashboard elements
     @FXML private Label lblTotalUsers;
     @FXML private Label lblActiveUsers;
@@ -66,6 +69,7 @@ public class AdminDashboardController {
         btnEvents.setTooltip(new Tooltip("Manage events"));
         btnBlog.setTooltip(new Tooltip("Manage blog posts"));
         btnReports.setTooltip(new Tooltip("View system reports"));
+        btnClaims.setTooltip(new Tooltip("View user claims"));
         btnSettings.setTooltip(new Tooltip("Configure system settings"));
         btnLogout.setTooltip(new Tooltip("Logout from the system"));
     }
@@ -77,12 +81,9 @@ public class AdminDashboardController {
         btnEvents.setOnAction(event -> handleEvents(event));
         btnBlog.setOnAction(event -> handleBlog(event));
         btnReports.setOnAction(event -> handleReports(event));
-        btnSettings.setOnAction(event -> handleSettings(event()));
+        btnClaims.setOnAction(event -> handleClaims(event));
+        btnSettings.setOnAction(event -> handleSettings(event));
         btnNotificationBell.setOnAction(event -> handleNotificationBellClick());
-    }
-
-    private ActionEvent event() {
-        return new ActionEvent();
     }
 
     @FXML
@@ -112,12 +113,12 @@ public class AdminDashboardController {
                 }
             };
         }
-        
+
         int totalUsers = userService.getTotalUsers();
         int activeUsers = userService.getActiveUsers();
         int newUsers = userService.getNewUsers();
         int bannedUsers = userService.getBannedUsers();
-        
+
         updateDashboardStats(totalUsers, activeUsers, newUsers, bannedUsers);
     }
 
@@ -136,8 +137,9 @@ public class AdminDashboardController {
         btnEvents.getStyleClass().remove("selected");
         btnBlog.getStyleClass().remove("selected");
         btnReports.getStyleClass().remove("selected");
+        btnClaims.getStyleClass().remove("selected");
         btnSettings.getStyleClass().remove("selected");
-        
+
         // Add selected style to active button
         activeButton.getStyleClass().add("selected");
     }
@@ -145,8 +147,9 @@ public class AdminDashboardController {
     @FXML
     private void handleDashboard(ActionEvent event) {
         styleActiveButton(btnDashboard);
-        // Refresh dashboard stats
-        setupDashboardStats();
+        if (mainApp != null) {
+            mainApp.showAdminDashboardScene();
+        }
     }
 
     @FXML
@@ -154,21 +157,29 @@ public class AdminDashboardController {
         styleActiveButton(btnManageUsers);
         if (mainApp != null) {
             mainApp.showManageUserDashboardScene();
+        } else {
+            System.err.println("Error: mainApp is null in handleManageUsers");
         }
     }
 
     @FXML
     private void handleReports(ActionEvent event) {
         styleActiveButton(btnReports);
-        try {
-            if (mainApp != null) {
-                mainApp.loadSceneInPrimaryStage("Reports.fxml", "Reports");
-            } else {
-                System.err.println("Error: mainApp is null in handleReports");
-            }
-        } catch (Exception e) {
-            System.err.println("Exception occurred while navigating to Reports.fxml:");
-            e.printStackTrace();
+        if (mainApp != null) {
+            mainApp.showReportsScene();
+        } else {
+            System.err.println("Error: mainApp is null in handleReports");
+        }
+    }
+
+    @FXML
+    private void handleClaims(ActionEvent event) {
+        styleActiveButton(btnClaims);
+        if (mainApp != null) {
+            mainApp.loadScene("/Claims.fxml", ClaimsController.class,
+                controller -> controller.setMainApp(mainApp));
+        } else {
+            System.err.println("Error: mainApp is null in handleClaims");
         }
     }
 
@@ -182,6 +193,8 @@ public class AdminDashboardController {
     void handleLogout(ActionEvent event) {
         if (mainApp != null) {
             mainApp.showLoginScene();
+        } else {
+            System.err.println("Error: mainApp is null in handleLogout");
         }
     }
 
@@ -189,6 +202,8 @@ public class AdminDashboardController {
     void handleAddUser(ActionEvent event) {
         if (mainApp != null) {
             mainApp.showAdminAddUserScene();
+        } else {
+            System.err.println("Error: mainApp is null in handleAddUser");
         }
     }
 
@@ -201,7 +216,7 @@ public class AdminDashboardController {
                     }
                 };
             }
-            
+
             try {
                 User user = userService.getUserByEmail(email);
                 if (user != null && user.getNom() != null && user.getPrenom() != null) {

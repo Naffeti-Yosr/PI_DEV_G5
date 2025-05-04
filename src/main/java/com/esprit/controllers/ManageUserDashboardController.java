@@ -136,7 +136,8 @@ public class ManageUserDashboardController {
     private void handleAddUser() {
         if (mainApp != null) {
             System.out.println("Loading Add User scene in the same stage...");
-            mainApp.loadSceneInPrimaryStage("AdminAddUser.fxml", "Add New User");
+            mainApp.loadScene("/AdminAddUser.fxml", AdminAddUserController.class,
+                controller -> controller.setMainApp(mainApp));
             loadUsers(); // Refresh the table after adding
         }
     }
@@ -198,7 +199,8 @@ public class ManageUserDashboardController {
 @FXML
 private void handleReports() {
     if (mainApp != null) {
-        mainApp.loadSceneInPrimaryStage("Reports.fxml", "Reports");
+        mainApp.loadScene("/Reports.fxml", ReportsController.class,
+            controller -> controller.setMainApp(mainApp));
     } else {
         showInfo("Reports", "Reports feature coming soon!");
     }

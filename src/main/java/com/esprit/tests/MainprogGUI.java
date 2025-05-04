@@ -95,7 +95,7 @@ public class MainprogGUI extends Application {
         }
     }
 
-    private <T> void loadScene(String fxmlPath, Class<T> controllerClass, ControllerInitializer<T> initializer) {
+    public <T> void loadScene(String fxmlPath, Class<T> controllerClass, ControllerInitializer<T> initializer) {
         try {
             System.out.println("Loading FXML from path: " + fxmlPath);
             FXMLLoader loader = new FXMLLoader();
@@ -185,84 +185,11 @@ public class MainprogGUI extends Application {
             });
     }
 
-    public void loadSceneInPrimaryStage(String fxmlFile, String title) {
-        try {
-            System.out.println("Loading " + fxmlFile + " in primary stage...");
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainprogGUI.class.getResource("/" + fxmlFile));
-            
-            if (loader.getLocation() == null) {
-                throw new IOException("Cannot find FXML file: " + fxmlFile);
-            }
-            
-            System.out.println("FXML URL: " + loader.getLocation());
-            
-            Parent root = loader.load();
-            System.out.println("FXML loaded successfully");
-
-            Object controller = loader.getController();
-            if (controller instanceof AdminAddUserController) {
-                ((AdminAddUserController) controller).setMainApp(this);
-            } else if (controller instanceof ManageUserDashboardController) {
-                ((ManageUserDashboardController) controller).setMainApp(this);
-            } else if (controller instanceof ReportsController) {
-                ((ReportsController) controller).setMainApp(this);
-            } else if (controller instanceof UpdatePasswordController) {
-                ((UpdatePasswordController) controller).setMainApp(this);
-            } else if (controller instanceof ForgetPasswordController) {
-                ((ForgetPasswordController) controller).setMainApp(this);
-            } else if (controller instanceof AdminModifyController) {
-                ((AdminModifyController) controller).setMainApp(this);
-            } else if (controller instanceof AdminDashboardController) {
-                ((AdminDashboardController) controller).setMainApp(this);
-            } else if (controller instanceof AdminAddUserController) {
-                ((AdminAddUserController) controller).setMainApp(this);
-            } else if (controller instanceof RegistrationController) {
-                ((RegistrationController) controller).setMainApp(this);
-            } else if (controller instanceof LoginController) {
-                ((LoginController) controller).setMainApp(this);
-            }
-
-            Scene scene = new Scene(root, WIDTH, HEIGHT);
-            
-            // Print available stylesheets
-            System.out.println("Available stylesheets:");
-            for (String stylesheet : scene.getStylesheets()) {
-                System.out.println("- " + stylesheet);
-            }
-            
-            // Add stylesheets programmatically as a backup
-            String[] stylesheets = {
-                "/styles/common.css",
-                "/styles/admin_dashboard_fixed.css",
-                "/styles/dashboard_cards.css"
-            };
-            
-            for (String stylesheet : stylesheets) {
-                String cssUrl = MainprogGUI.class.getResource(stylesheet).toExternalForm();
-                if (!scene.getStylesheets().contains(cssUrl)) {
-                    System.out.println("Adding stylesheet: " + cssUrl);
-                    scene.getStylesheets().add(cssUrl);
-                }
-            }
-
-            primaryStage.setTitle(title);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            System.err.println("Error loading FXML: " + fxmlFile);
-            e.printStackTrace();
-            showError("Could not load " + fxmlFile, e);
-        } catch (Exception e) {
-            System.err.println("Unexpected error: " + e.getMessage());
-            e.printStackTrace();
-            showError("Error loading scene", e);
-        }
-    }
 
     public void showAdminAddUserScene() {
         System.out.println("Loading Add User Scene in primary stage");
-        loadSceneInPrimaryStage("AdminAddUser.fxml", "Add User");
+        loadScene("/AdminAddUser.fxml", AdminAddUserController.class,
+            controller -> controller.setMainApp(this));
     }
 
 
@@ -285,6 +212,11 @@ public class MainprogGUI extends Application {
                 controller -> controller.setMainApp(this));
     }
 
+    public void showClaimsScene() {
+        loadScene("/Claims.fxml", ClaimsController.class,
+                controller -> controller.setMainApp(this));
+    }
+
     public void showUpdatePasswordScene(String email) {
         loadScene("/UpdatePassword.fxml", com.esprit.controllers.UpdatePasswordController.class,
             controller -> {
@@ -293,9 +225,68 @@ public class MainprogGUI extends Application {
             });
     }
 
+    public void loadSceneInPrimaryStage(String fxmlPath, String title) {
+        try {
+            System.out.println("Loading FXML from path: " + fxmlPath);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainprogGUI.class.getResource(fxmlPath));
+            
+            if (loader.getLocation() == null) {
+                throw new IOException("Cannot find FXML file: " + fxmlPath);
+            }
+            
+            System.out.println("FXML URL: " + loader.getLocation());
+            
+            Parent root = loader.load();
+            System.out.println("FXML loaded successfully");
+
+            // Set the MainApp reference in the controller if it has setMainApp method
+            Object controller = loader.getController();
+            if (controller != null) {
+                try {
+                    java.lang.reflect.Method setMainApp = controller.getClass().getMethod("setMainApp", MainprogGUI.class);
+                    setMainApp.invoke(controller, this);
+                } catch (NoSuchMethodException e) {
+                    // Controller doesn't have setMainApp method, that's okay
+                    System.out.println("Note: Controller doesn't have setMainApp method");
+                } catch (Exception e) {
+                    System.err.println("Error setting MainApp in controller: " + e.getMessage());
+                }
+            }
+
+            Scene scene = new Scene(root, WIDTH, HEIGHT);
+            
+            // Add stylesheets
+            String[] stylesheets = {
+                "/styles/common.css",
+                "/styles/admin_dashboard_fixed.css",
+                "/styles/dashboard_cards.css"
+            };
+            
+            for (String stylesheet : stylesheets) {
+                String cssUrl = MainprogGUI.class.getResource(stylesheet).toExternalForm();
+                if (!scene.getStylesheets().contains(cssUrl)) {
+                    scene.getStylesheets().add(cssUrl);
+                }
+            }
+
+            primaryStage.setTitle(title);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            System.err.println("Error loading FXML: " + fxmlPath);
+            e.printStackTrace();
+            showError("Could not load " + fxmlPath, e);
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            showError("Error loading scene", e);
+        }
+    }
+
 
     @FunctionalInterface
-    interface ControllerInitializer<T> {
+    public interface ControllerInitializer<T> {
         void initialize(T controller);
     }
 

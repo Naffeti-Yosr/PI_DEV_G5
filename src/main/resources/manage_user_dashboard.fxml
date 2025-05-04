@@ -74,6 +74,12 @@
                 </VBox.margin>
             </Button>
 
+            <Button fx:id="btnClaims" onAction="#handleClaims" styleClass="sidebar-button" text="📢 Claims">
+                <VBox.margin>
+                    <Insets bottom="10" />
+                </VBox.margin>
+            </Button>
+
             <Button fx:id="btnSettings" onAction="#handleSettings" styleClass="sidebar-button" text="⚙️ Settings">
                 <VBox.margin>
                     <Insets bottom="10" />
