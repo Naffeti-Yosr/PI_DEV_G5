@@ -189,7 +189,7 @@ public abstract class UserService implements IService<User> {
             ps.setString(5, user.getAddress());
             ps.setString(6, user.getPhoneNumber());
             ps.setString(7, user.getRole() != null ? user.getRole().toString() : null);
-            ps.setString(8, user.getStatus() != null ? user.getStatus().toString() : null);
+            ps.setString(8, user.getStatus() != null ? user.getStatus().getValue() : null);
             ps.setInt(9, user.getId());
 
             int affectedRows = ps.executeUpdate();

@@ -23,7 +23,7 @@ public class ManageUserDashboardController {
     @FXML private Button btnAddUserManageDashboard;
     @FXML private Button btnModifyUser;
     @FXML private Button btnDeleteUser;
-    
+
     private MainprogGUI mainApp;
     private final UserService userService;
 
@@ -45,7 +45,7 @@ public class ManageUserDashboardController {
         loadUsers();
         System.out.println("Initialization complete.");
     }
-    
+
     private void loadUsers() {
         try {
             var users = userService.get();
@@ -55,7 +55,7 @@ public class ManageUserDashboardController {
             }
             userTable.setItems(FXCollections.observableArrayList(users));
             userTable.refresh();
-            
+
             if (users.isEmpty()) {
                 Label placeholder = new Label("No users found in database");
                 userTable.setPlaceholder(placeholder);
@@ -66,7 +66,7 @@ public class ManageUserDashboardController {
             System.err.println("Error loading users: " + e.getMessage());
             e.printStackTrace();
             showError("Loading Error", "Failed to load users: " + e.getMessage());
-            
+
             Label placeholder = new Label("Error loading users");
             userTable.setPlaceholder(placeholder);
         }
@@ -74,25 +74,25 @@ public class ManageUserDashboardController {
 
     private void setupTableColumns() {
         colNom.setCellValueFactory(data -> new SimpleStringProperty(
-            data.getValue().getNom() != null ? data.getValue().getNom() : ""));
-            
+                data.getValue().getNom() != null ? data.getValue().getNom() : ""));
+
         colPrenom.setCellValueFactory(data -> new SimpleStringProperty(
-            data.getValue().getPrenom() != null ? data.getValue().getPrenom() : ""));
-            
+                data.getValue().getPrenom() != null ? data.getValue().getPrenom() : ""));
+
         colEmail.setCellValueFactory(data -> new SimpleStringProperty(
-            data.getValue().getEmail() != null ? data.getValue().getEmail() : ""));
-            
+                data.getValue().getEmail() != null ? data.getValue().getEmail() : ""));
+
         colRole.setCellValueFactory(data -> new SimpleStringProperty(
-            data.getValue().getRole() != null ? data.getValue().getRole().getValue() : ""));
-            
+                data.getValue().getRole() != null ? data.getValue().getRole().getValue() : ""));
+
         colAddress.setCellValueFactory(data -> new SimpleStringProperty(
-            data.getValue().getAddress() != null ? data.getValue().getAddress() : ""));
-            
+                data.getValue().getAddress() != null ? data.getValue().getAddress() : ""));
+
         colPhoneNumber.setCellValueFactory(data -> new SimpleStringProperty(
-            data.getValue().getPhoneNumber() != null ? data.getValue().getPhoneNumber() : ""));
-            
+                data.getValue().getPhoneNumber() != null ? data.getValue().getPhoneNumber() : ""));
+
         colStatus.setCellValueFactory(data -> new SimpleStringProperty(
-            data.getValue().getStatus() != null ? data.getValue().getStatus().toString() : ""));
+                data.getValue().getStatus() != null ? data.getValue().getStatus().toString() : ""));
 
         userTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         userTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -120,7 +120,7 @@ public class ManageUserDashboardController {
         try {
             var users = userService.search(keyword);
             userTable.setItems(FXCollections.observableArrayList(users));
-            
+
             if (users.isEmpty()) {
                 Label placeholder = new Label("No matching users found");
                 userTable.setPlaceholder(placeholder);
@@ -137,7 +137,7 @@ public class ManageUserDashboardController {
         if (mainApp != null) {
             System.out.println("Loading Add User scene in the same stage...");
             mainApp.loadScene("/AdminAddUser.fxml", AdminAddUserController.class,
-                controller -> controller.setMainApp(mainApp));
+                    controller -> controller.setMainApp(mainApp));
             loadUsers(); // Refresh the table after adding
         }
     }
@@ -196,15 +196,15 @@ public class ManageUserDashboardController {
         showInfo("Blog", "Blog management coming soon!");
     }
 
-@FXML
-private void handleReports() {
-    if (mainApp != null) {
-        mainApp.loadScene("/Reports.fxml", ReportsController.class,
-            controller -> controller.setMainApp(mainApp));
-    } else {
-        showInfo("Reports", "Reports feature coming soon!");
+    @FXML
+    private void handleReports() {
+        if (mainApp != null) {
+            mainApp.loadScene("/Reports.fxml", ReportsController.class,
+                    controller -> controller.setMainApp(mainApp));
+        } else {
+            showInfo("Reports", "Reports feature coming soon!");
+        }
     }
-}
 
     @FXML
     private void handleSettings() {
@@ -247,5 +247,20 @@ private void handleReports() {
     public void handleManageUsers(ActionEvent actionEvent) {
         // We're already on the manage users page, just refresh the view
         refreshView();
+    }
+
+    @FXML
+    private Button btnClaims;
+
+    @FXML
+    private void handleClaims(ActionEvent event) {
+        if (btnClaims != null) {
+            btnClaims.getStyleClass().add("selected");
+        }
+        if (mainApp != null) {
+            mainApp.showClaimsScene();
+        } else {
+            System.err.println("Error: mainApp is null in handleClaims");
+        }
     }
 }

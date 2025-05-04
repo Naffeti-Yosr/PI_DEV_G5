@@ -42,6 +42,18 @@ public class ReportsController {
     public void initialize() {
         setupTableColumns();
         loadNonConfirmedUsers();
+        styleButtons();
+    }
+
+    @FXML private Button btnBanUser;
+
+    private void styleButtons() {
+        if (btnConfirmUser != null) {
+            btnConfirmUser.setStyle("-fx-background-color: #28a745; -fx-text-fill: white;"); // green
+        }
+        if (btnBanUser != null) {
+            btnBanUser.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;"); // red
+        }
     }
 
     private void setupTableColumns() {
