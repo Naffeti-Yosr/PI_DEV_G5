@@ -427,6 +427,10 @@ public class AdminModifyController {
             currentBirthDate = ((Date) currentUser.getBirth_date()).toLocalDate();
         }
 
+        if (cbRole.getValue() == null || cbStatus.getValue() == null) {
+            return true; // Consider form changed if role or status is not selected
+        }
+
         return !tfNom.getText().equals(currentUser.getNom()) ||
                 !tfPrenom.getText().equals(currentUser.getPrenom()) ||
                 !tfEmail.getText().equals(currentUser.getEmail()) ||
