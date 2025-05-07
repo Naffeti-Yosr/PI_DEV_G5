@@ -32,4 +32,10 @@ public class UserService {
 
         return users;
     }
+
+    public User getById(int userId) {
+        return null;
+    }
+
+
 }

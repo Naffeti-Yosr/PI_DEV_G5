@@ -132,6 +132,7 @@ public class EvenementService implements IService<Evenement>, IEventService {
         }
     }
 
+
     @Override
     public List<Evenement> get() {
         return getAll(); // même implémentation que getAll()
@@ -195,4 +196,9 @@ public class EvenementService implements IService<Evenement>, IEventService {
             System.out.println("addParticipant() error: " + ex.getMessage());
         }
     }
+
+    public Evenement getById(int eventId) {
+        return null;
+    }
+
 }

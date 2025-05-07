@@ -7,7 +7,7 @@
       fx:controller="com.esprit.controllers.EventDetailsController"
       spacing="20"
       alignment="TOP_CENTER"
-      stylesheets="@styles/EventDetails.css"
+      stylesheets="@/styles/EventDetails.css"
       styleClass="dashboard-root">
 
     <HBox spacing="10" styleClass="header">
@@ -28,6 +28,7 @@
         <HBox spacing="20" alignment="CENTER">
             <Button fx:id="editButton" text="Modifier" styleClass="btn-edit-product"/>
             <Button fx:id="deleteButton" text="Supprimer" styleClass="btn-delete-product"/>
+            <Button fx:id="reserveButton" text="📝 Réserver" styleClass="btn-reserve-product"/>
         </HBox>
     </VBox>
 

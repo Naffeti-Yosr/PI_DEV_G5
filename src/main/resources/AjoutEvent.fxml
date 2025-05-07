@@ -8,6 +8,7 @@
             fx:controller="com.esprit.controllers.AjoutEvent"
             stylesheets="@/styles/AjoutEvent.css">
 
+    <!-- En-tête -->
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT" styleClass="header">
             <ImageView fx:id="logoImage" fitHeight="40" fitWidth="40"/>
@@ -15,18 +16,22 @@
         </HBox>
     </top>
 
+    <!-- Formulaire principal -->
     <center>
         <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;" styleClass="form-container">
-            <Button fx:id="backButton" text="← Retour" styleClass="btn btn-edit-product"/>
+
+            <Button fx:id="backButton" text="← Retour" styleClass="btn-edit-product"/>
 
             <TextField fx:id="titreField" promptText="Titre de l'événement"/>
             <TextField fx:id="descriptionField" promptText="Description"/>
             <DatePicker fx:id="datePicker" promptText="Date"/>
             <TextField fx:id="heureField" promptText="Heure (HH:mm)"/>
             <TextField fx:id="adresseField" promptText="Adresse"/>
+            <TextField fx:id="limiteParticipantsField" promptText="Limite des participants"/>
+
             <ComboBox fx:id="organisateurCombo" promptText="Organisateur"/>
-            <Button fx:id="submitButton" text="Valider" styleClass="btn btn-add-product"/>
+
+            <Button fx:id="submitButton" text="Valider" styleClass="btn-add-product"/>
         </VBox>
     </center>
-
 </BorderPane>

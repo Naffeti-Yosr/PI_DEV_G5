@@ -9,6 +9,7 @@
             stylesheets="@/styles/EventsView.css"
             prefWidth="1200" prefHeight="800">
 
+    <!-- Top section : Search bar and header -->
     <top>
         <VBox fx:id="searchContainer" spacing="10">
             <HBox spacing="20" alignment="CENTER_LEFT" styleClass="header">
@@ -16,11 +17,15 @@
                 <ImageView fx:id="logoImage" fitHeight="70" fitWidth="70" preserveRatio="true"/>
                 <Label text="📅 Liste des Événements" styleClass="header-title"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <TextField fx:id="searchField" promptText="🔍 Rechercher un événement..." maxWidth="300" styleClass="search-bar"/>
+                <TextField fx:id="searchField"
+                           promptText="🔍 Rechercher un événement..."
+                           maxWidth="300"
+                           styleClass="search-bar"/>
             </HBox>
         </VBox>
     </top>
 
+    <!-- Sidebar à gauche -->
     <left>
         <VBox fx:id="sidebar" spacing="15" styleClass="sidebar" visible="false" managed="false">
             <Button text="👤 Profil" styleClass="menu-button"/>
@@ -31,13 +36,15 @@
     </left>
 
     <center>
-        <VBox fx:id="dayFilterContainer" spacing="10">
+        <VBox fx:id="dayFilterContainer" spacing="10" style="-fx-padding: 15;">
             <HBox alignment="CENTER_RIGHT">
                 <Button fx:id="ajoutEventButton" text="➕ Ajouter Événement" styleClass="add-button"/>
             </HBox>
 
+            <!-- Barre des jours de la semaine -->
             <HBox fx:id="dayFilterBar" spacing="10" alignment="CENTER" styleClass="day-bar"/>
 
+            <!-- ScrollPane contenant les cartes d'événements -->
             <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="scroll">
                 <FlowPane fx:id="eventsFlowPane"
                           hgap="20" vgap="20"

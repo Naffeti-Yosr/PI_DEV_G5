@@ -29,11 +29,10 @@ public class AjoutEvent {
     @FXML private ComboBox<User> organisateurCombo;
     @FXML private Button submitButton;
     @FXML private Button backButton;
+    @FXML private BorderPane mainContainer;
 
     private String mode = "add";
     private Evenement currentEvenement;
-    @FXML private BorderPane mainContainer;
-
     private EventController eventController;
 
     public void setMode(String mode) {
@@ -83,22 +82,18 @@ public class AjoutEvent {
     }
 
     private void handleSubmit() {
-        EvenementService evenementService = new EvenementService();
-
-        String titre = titreField.getText();
-        String description = descriptionField.getText();
+        String titre = titreField.getText().trim();
+        String description = descriptionField.getText().trim();
         LocalDate date = datePicker.getValue();
-        String heureStr = heureField.getText();
-        String adresse = adresseField.getText();
+        String heureStr = heureField.getText().trim();
+        String adresse = adresseField.getText().trim();
         User organisateur = organisateurCombo.getValue();
 
-        if (titre.isEmpty() || description.isEmpty() || date == null || heureStr.isEmpty()
-                || adresse.isEmpty() || organisateur == null) {
+        if (titre.isEmpty() || description.isEmpty() || date == null || heureStr.isEmpty() || adresse.isEmpty() || organisateur == null) {
             showAlert(Alert.AlertType.ERROR, "Champs manquants", "Veuillez remplir tous les champs.");
             return;
         }
 
-        // 🔁 Vérification format de l’heure
         LocalTime heure;
         try {
             heure = LocalTime.parse(heureStr, DateTimeFormatter.ofPattern("HH:mm"));
@@ -107,14 +102,13 @@ public class AjoutEvent {
             return;
         }
 
-        // 🔁 Création du LocalDateTime à partir des champs date et heure
         LocalDateTime dateTime = LocalDateTime.of(date, heure);
-
-        // ✅ Vérifier que la date n’est pas dans le passé
         if (dateTime.isBefore(LocalDateTime.now())) {
             showAlert(Alert.AlertType.ERROR, "Date invalide", "La date et l'heure de l'événement sont déjà passées.");
             return;
         }
+
+        EvenementService evenementService = new EvenementService();
 
         if ("edit".equals(mode) && currentEvenement != null) {
             currentEvenement.setTitre(titre);
@@ -126,8 +120,8 @@ public class AjoutEvent {
             evenementService.update(currentEvenement);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Événement modifié avec succès !");
         } else {
-            Evenement evenement = new Evenement(0, titre, description, dateTime, adresse, organisateur);
-            evenementService.add(evenement);
+            Evenement newEvent = new Evenement(0, titre, description, dateTime, adresse, organisateur);
+            evenementService.add(newEvent);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Événement ajouté avec succès !");
         }
 
@@ -137,7 +131,6 @@ public class AjoutEvent {
 
         com.esprit.tests.App.getInstance().showEventsScreen();
     }
-
 
     public void prefillFieldsIfEdit() {
         if (currentEvenement != null) {
